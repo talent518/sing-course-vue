@@ -1,0 +1,206 @@
+@import "./realize/reset";
+@import "./realize/animation";
+@import "./realize/transition";
+@import "./realize/global";
+@import "./realize/lin-variable";
+@import "./font";
+
+.lin-container {
+  .el-divider--horizontal {
+    margin: 0px;
+  }
+  .lin-title {
+    height: 59px;
+    line-height: 59px;
+    color: $parent-title-color;
+    font-size: 16px;
+    font-weight: 500;
+    text-indent: 40px;
+    border-bottom: 1px solid #dae1ed;
+  }
+
+  .lin-wrap {
+    padding: 20px;
+  }
+}
+
+.myWrap {
+  margin-left: 20px;
+  overflow-y: hidden;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexCenterV {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexCenterH {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgColor {
+  background: linear-gradient(180deg, #fae3bb 0%, #fbcb71 100%);
+}
+
+.w100 {
+  width: 100% !important;
+}
+
+.h100 {
+  min-height: 100% !important;
+  // max-height: 100%;
+}
+
+.tableHead {
+  background-color: #eef0f3 !important;
+}
+
+.butMargin {
+  margin-bottom: 20px;
+}
+
+.el-divider--horizontal {
+  margin: 6px 0;
+}
+
+.opcaity {
+  opacity: 0;
+}
+
+.m20 {
+  margin: 18px 0;
+}
+
+.m20b {
+  margin-bottom: 20px;
+}
+
+.m30 {
+  margin: 30px 0;
+}
+
+.m30L {
+  margin-left: 30px;
+}
+
+.p15L {
+  padding-left: 15px;
+}
+
+.commonSearch {
+  display: flex;
+}
+
+.el-form100 {
+  .el-select {
+    width: 100% !important;
+  }
+  .el-date-editor--daterange {
+    width: 100% !important;
+  }
+  .el-date-editor--datetime {
+    width: 100% !important;
+  }
+  max-width: 100%;
+}
+
+.ellpis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.el-dialog {
+  min-width: 800px;
+}
+
+.weight {
+  font-weight: bold;
+}
+
+.el-dialog__header {
+  border-bottom: solid 1px #dcdfe6;
+}
+
+.red {
+  color: #f56c6c !important;
+}
+
+.mySpecialSearch {
+  .el-button + .el-button {
+    margin-left: 0 !important;
+  }
+}
+
+body,
+#app {
+  overflow-x: hidden;
+  background-color: #f0f2f5;
+}
+
+/*去掉input 输入框右边的上下箭头按钮*/
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.el-link {
+  cursor: pointer;
+}
+
+.el-tree-node__expand-icon.is-leaf {
+  color: transparent !important;
+  cursor: default;
+}
+
+.el-table thead.is-group th {
+  background-color: #ffffff;
+}
+
+.el-date-editor .el-range-separator {
+  width: 21px;
+}
+
+body .el-table th.gutter {
+  display: table-cell !important;
+}
+
+.base .el-table__body {
+  border-top: 1px solid #cccccc;
+}
+
+.el-table__row {
+  td:not(.is-hidden):last-child {
+    right: -1px;
+  }
+}
+
+.iconmenu {
+  cursor: pointer;
+}

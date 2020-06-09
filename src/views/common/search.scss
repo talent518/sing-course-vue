@@ -1,0 +1,38 @@
+.search {
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+
+.inputW {
+  width: 260px;
+}
+
+.static {
+  pointer-events: none;
+}
+
+.searchWrap {
+  padding: 20px 0;
+  display: flex;
+  max-width: 800px;
+}
+
+.search1 {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  width: 1000px;
+  .inputW {
+    width: 220px;
+  }
+}
+
+.min30 {
+  min-height: 30px;
+}
+
+.m20 {
+  margin: 20px 0;
+}
