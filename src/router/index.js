@@ -4,11 +4,11 @@ import login from "@/views/login.vue";
 import home from "@/views/Home.vue";
 import AppMain from "@/views/AppMain.vue";
 import user from "@api/user";
-import {getLocal} from "@util/local";
+import { getLocal } from "@util/local";
 import store from "../store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
-NProgress.configure({showSpinner: false});
+NProgress.configure({ showSpinner: false });
 Vue.use(VueRouter);
 const routes = [
   {
@@ -49,8 +49,6 @@ router.beforeEach(async (to, from, next) => {
     if (!(store.state && store.state.menu.hasPermission)) {
       let newRoutes = await store.dispatch("menu/getMenu");
 
-      debugger
-
       router.addRoutes([
         {
           path: "/login",
@@ -63,10 +61,8 @@ router.beforeEach(async (to, from, next) => {
           redirect: "/index",
         },
       ]);
-      next({...to, replace: true});
+      next({ ...to, replace: true });
       // 动态添加我需要的路由
-
-
     }
     if (to.name == loginV) {
       next("/");
@@ -76,7 +72,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (to.path !== loginUrl) {
-      next({name: "login"});
+      next({ name: "login" });
     } else {
       next();
       NProgress.done();

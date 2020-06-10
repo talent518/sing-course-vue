@@ -9,32 +9,59 @@ const authRouter = {
   component: () => import("@/views/main"),
   children: [
     {
-      title: '教材管理',
+      title: "教材管理",
       path: "/resource",
       name: "Resource",
       meta: {
-        skipAuth: true
+        skipAuth: true,
       },
       children: [
         {
-          title: '教材管理1',
+          title: "教材管理1",
           path: "/resource1",
           name: "Resource1",
-          component: () => import('@/views/resource/Resource1'),
+          component: () => import("@/views/resource/Resource1"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
         {
-          title: '教材管理2',
+          title: "教材管理2",
           path: "/resource2",
           name: "Resource2",
-          component: () => import('@/views/resource/Resource2'),
+          component: () => import("@/views/resource/Resource2"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
-        }
-      ]
+        },
+        {
+          title: "课程管理",
+          path: "/course",
+          name: "Course",
+          component: () => import("@/views/teach/course/CourseManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+        {
+          title: "主題管理",
+          path: "/theme",
+          name: "Theme",
+          component: () => import("@/views/teach/theme/ThemeManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+        {
+          title: "产品管理",
+          path: "/product",
+          name: "Product",
+          component: () => import("@/views/teach/product/ProductManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+      ],
     },
 
     {

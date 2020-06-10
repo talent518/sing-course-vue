@@ -12,6 +12,7 @@
   import menu from "@api/menu";
   import order from "@api/order";
   import report from "@api/report";
+  import teach from "@api/teach";
   import {cloneDeep} from "lodash";
   import dayjs from "dayjs";
 
@@ -33,6 +34,7 @@
         ApiOrder: order,
         ApiReport: report,
         cloneDeep,
+        ApiTeach:teach,
         dayjs,
       };
     },

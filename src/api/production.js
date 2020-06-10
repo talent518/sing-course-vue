@@ -321,7 +321,6 @@ class Production {
       purchaseId,
       orgId,
       uid,
-      curPage,
       productId,
       status,
       type,
