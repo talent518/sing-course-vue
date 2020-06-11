@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import VueDND from "awe-dnd";
 
 import "@assets/style/index.scss"; // eslint-disable-line
 import "@/plugins";
@@ -15,7 +16,7 @@ import myBreadcrumb from "@components/breadcrumb/breadcrumb";
 Vue.component("myTable", myTable);
 Vue.component("myForm", myForm);
 Vue.component("myBreadcrumb", myBreadcrumb);
-Vue.use(vueTime);
+Vue.use(vueTime).use(VueDND);
 
 Vue.config.productionTip = false;
 

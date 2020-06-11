@@ -52,18 +52,22 @@
       size="small"
       border
     >
-      <el-table-column prop="" label="产品编号" width=""></el-table-column>
-      <el-table-column prop="" label="产品标题" width=""></el-table-column>
+      <el-table-column prop="code" label="产品编号" width=""></el-table-column>
+      <el-table-column prop="title" label="产品标题" width=""></el-table-column>
       <el-table-column label="封面">
         <template slot-scope="scope">
-          <img src="" alt="" />
+          <img :src="scope.row.cover" alt="" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-link @click="" plain type="primary" size="mini">编辑</el-link>
-          <el-link @click="" plain type="primary" size="mini">关联教材</el-link>
-          <el-link @click="" plain type="primary" size="mini">删除</el-link>
+          <div style="display: flex; justify-content: space-around;">
+            <el-link @click="" plain type="primary" size="mini">编辑</el-link>
+            <el-link @click="relationClass" plain type="primary" size="mini"
+              >关联教材</el-link
+            >
+            <el-link @click="" plain type="primary" size="mini">删除</el-link>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -75,6 +79,7 @@
       @sizeChange="onSizeChange"
     />
     <dialog-com :dialogObj="dialogObj" @reflash="init" />
+    <relation-dialog :dialogObj="relationObj" @reflash="init" />
   </div>
 </template>
 
@@ -82,10 +87,11 @@
 import Teach from "@/views/common/teach";
 import dialogCom from "./ProductDialog";
 import page from "@/components/page/page";
+import relationDialog from "./RelationDialog";
 
 export default {
   mixins: [Teach],
-  components: { dialogCom, page },
+  components: { dialogCom, page, relationDialog },
   name: "ProductManagement",
   data() {
     return {
@@ -114,6 +120,11 @@ export default {
         type: 0,
         show: false,
         name: "",
+      },
+      relationObj: {
+        //给子组件的数据
+        id: "",
+        show: false,
       },
     };
   },
@@ -162,6 +173,12 @@ export default {
         type: 0,
         show: true,
         name: "新增课程",
+      };
+    },
+
+    relationClass() {
+      this.relationObj = {
+        show: true,
       };
     },
 

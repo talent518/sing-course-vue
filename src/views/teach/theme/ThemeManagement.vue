@@ -52,15 +52,27 @@
       size="small"
       border
     >
-      <el-table-column prop="" label="编号" width=""></el-table-column>
-      <el-table-column prop="" label="主題标题" width=""></el-table-column>
-      <el-table-column prop="" label="教材" width=""></el-table-column>
-      <el-table-column prop="" label="状态" width=""></el-table-column>
+      <el-table-column prop="code" label="编号" width=""></el-table-column>
+      <el-table-column prop="title" label="主題标题" width=""></el-table-column>
+      <el-table-column
+        prop="textbook_num"
+        label="教材"
+        width=""
+      ></el-table-column>
+      <el-table-column
+        prop="status_text"
+        label="状态"
+        width=""
+      ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-link @click="" plain type="primary" size="mini">编辑</el-link>
-          <el-link @click="" plain type="primary" size="mini">关联教材</el-link>
-          <el-link @click="" plain type="primary" size="mini">删除</el-link>
+          <div style="display: flex; justify-content: space-around;">
+            <el-link @click="" plain type="primary" size="mini">编辑</el-link>
+            <el-link @click="relationClass" plain type="primary" size="mini"
+              >关联教材</el-link
+            >
+            <el-link @click="" plain type="primary" size="mini">删除</el-link>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -72,17 +84,19 @@
       @sizeChange="onSizeChange"
     />
     <dialog-com :dialogObj="dialogObj" @reflash="init" />
+    <relation-dialog :dialogObj="relationObj" @reflash="init" />
   </div>
 </template>
 
 <script>
 import Teach from "@/views/common/teach";
 import dialogCom from "./ThemeDialog";
+import relationDialog from "./RelationDialog";
 import page from "@/components/page/page";
 
 export default {
   mixins: [Teach],
-  components: { dialogCom, page },
+  components: { dialogCom, page, relationDialog },
   name: "ThemeManagement",
   data() {
     return {
@@ -112,6 +126,11 @@ export default {
         show: false,
         name: "",
       },
+      relationObj: {
+        //给子组件的数据
+        id: "",
+        show: false,
+      },
     };
   },
   mounted() {
@@ -140,7 +159,11 @@ export default {
     clearSearch() {
       this.search.title = "";
     },
-
+    relationClass() {
+      this.relationObj = {
+        show: true,
+      };
+    },
     onPageChange(val) {
       this.page.now = val;
       this.init();

@@ -11,6 +11,7 @@
     "dll": "webpack -p --progress --config ./build/webpack.dll.conf.js"
   },
   "dependencies": {
+    "awe-dnd": "^0.3.4",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "dayjs": "^1.8.25",
