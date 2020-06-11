@@ -148,7 +148,7 @@ export default {
         pageSize: this.page.limit,
         title: this.search.title,
       };
-      let data = await this.ApiTeach.getCourseList(json);
+      let data = await this.ApiTeach.getCourseListApi(json);
       this.classList = data.items;
       this.page.total = data.total;
     },

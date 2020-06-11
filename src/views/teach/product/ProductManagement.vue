@@ -141,7 +141,7 @@ export default {
         pageSize: this.page.limit,
         title: this.search.title,
       };
-      let data = await this.ApiTeach.getProductList(json);
+      let data = await this.ApiTeach.getProductListApi(json);
       this.classList = data.items;
       this.page.total = data.total;
     },

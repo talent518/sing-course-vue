@@ -112,7 +112,7 @@ export default {
       //   pageSize: this.page.limit,
       //   title: this.search.title,
       // };
-      let data = await this.ApiTeach.getTextbookList();
+      let data = await this.ApiTeach.getTextbookListApi();
       this.list = data.items;
       // this.page.total = data.total;
     },

@@ -112,7 +112,7 @@ export default {
       //   pageSize: this.page.limit,
       //   title: this.search.title,
       // };
-      let data = await this.ApiTeach.getThemeList();
+      let data = await this.ApiTeach.getThemeListApi();
       this.list = data.items;
     },
 
