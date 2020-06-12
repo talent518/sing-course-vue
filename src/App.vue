@@ -4,7 +4,6 @@
   </div>
 </template>
 <script>
-<<<<<<< HEAD
 import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import user from "@api/user";
@@ -18,21 +17,6 @@ import base from "@api/base";
 import course from "@api/course";
 import { cloneDeep } from "lodash";
 import dayjs from "dayjs";
-=======
-  import Vue from "vue";
-  import {mapActions, mapGetters} from "vuex";
-  import user from "@api/user";
-  import other from "@api/other";
-  import production from "@api/production";
-  import menu from "@api/menu";
-  import order from "@api/order";
-  import report from "@api/report";
-  import basic from "@api/basic"
-  import base from "@api/base"
-  import {cloneDeep} from "lodash";
-  import dayjs from "dayjs";
-  import {setStorage} from "@util/storage"
->>>>>>> 0dd59ef64543f62f4fce1877d5602bfaaab005ea
 
 export default {
   name: "app",
