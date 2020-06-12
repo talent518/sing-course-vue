@@ -1,0 +1,48 @@
+$gutterSize: 16px;
+
+.section-search {
+  //margin-bottom: 10px;
+  //padding: $gutterSize $gutterSize 0 $gutterSize;
+  //background-color: #fff;
+  border-bottom: solid 1px #ebeef5;
+
+  &.border {
+    border-top: solid 1px #ebeef5;
+  }
+
+  &.search-single {
+    font-size: 0; // 去掉空隙
+    /*.el-form-item__content {
+      font-size: 0; // 去掉空隙
+    }*/
+
+    .el-form-item {
+      margin-bottom: 0;
+    }
+  }
+
+  .el-form,
+  &.el-form {
+    font-size: 0;
+
+    .el-button {
+      vertical-align: top;
+    }
+  }
+
+  .el-form--inline,
+  &.el-form--inline {
+    .el-form-item {
+      margin-right: $gutterSize;
+      margin-bottom: $gutterSize;
+
+      & + .el-form-item {
+        //margin-left: @gutterSize;
+      }
+    }
+  }
+
+  .search-btn-wrapper {
+    display: flex;
+  }
+}

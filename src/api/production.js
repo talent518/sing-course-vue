@@ -24,7 +24,7 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Production {
   getPriceType() {
@@ -32,15 +32,15 @@ class Production {
   }
 
   orderQueryStatus(purchaseNO) {
-    return get(`${url.orderQueryStatus}`, {purchaseNO});
+    return get(`${url.orderQueryStatus}`, { purchaseNO });
   }
 
   getProductPay(id) {
-    return get(`${url.getProductPay}`, {id});
+    return get(`${url.getProductPay}`, { id });
   }
 
   getProductsByUserId(uid) {
-    return get(`${url.getProduct}`, {uid});
+    return get(`${url.getProduct}`, { uid });
   }
 
   //$cardId = null, $beginDate = null, $endDate = null, $pageSize = 10, $curPage = 1
@@ -49,16 +49,16 @@ class Production {
   }
 
   paySell({
-            sellId,
-            orgId,
-            productId,
-            uid,
-            beginDate,
-            endDate,
-            type,
-            curPage,
-            pageSize,
-          }) {
+    sellId,
+    orgId,
+    productId,
+    uid,
+    beginDate,
+    endDate,
+    type,
+    curPage,
+    pageSize,
+  }) {
     return get(`${url.paySell}`, {
       sellId,
       orgId,
@@ -73,13 +73,13 @@ class Production {
   }
 
   vipBatchCards({
-                  cardId = "",
-                  beginDate = "",
-                  endDate = "",
-                  pageSize,
-                  curPage,
-                  id,
-                }) {
+    cardId = "",
+    beginDate = "",
+    endDate = "",
+    pageSize,
+    curPage,
+    id,
+  }) {
     return get(`${url.vipBatchCards}`, {
       id,
       cardId,
@@ -94,8 +94,8 @@ class Production {
     return put(`${url.vipBatchProd}/${id}`);
   }
 
-  vipBatchProd({productId, num, remark}) {
-    return post(`${url.vipBatchProd}`, {productId, num, remark});
+  vipBatchProd({ productId, num, remark }) {
+    return post(`${url.vipBatchProd}`, { productId, num, remark });
   }
 
   getBathSetting() {
@@ -111,14 +111,14 @@ class Production {
   }
 
   getVipBatch({
-                productId = "",
-                orgId = "",
-                uid = "",
-                beginDate = "",
-                endDate = "",
-                pageSize,
-                curPage,
-              }) {
+    productId = "",
+    orgId = "",
+    uid = "",
+    beginDate = "",
+    endDate = "",
+    pageSize,
+    curPage,
+  }) {
     return get(`${url.getVipBatch}`, {
       productId,
       orgId,
@@ -131,7 +131,7 @@ class Production {
   }
 
   productPruStatus(id, status) {
-    return get(`${url.productPruStatus}`, {id, status});
+    return get(`${url.productPruStatus}`, { id, status });
   }
 
   stockLogType() {
@@ -139,15 +139,15 @@ class Production {
   }
 
   productStockLog({
-                    uid = "",
-                    productId = "",
-                    type = "",
-                    curPage = 1,
-                    pageSize = 10,
-                    isFirst = 1,
-                    beginDate = "",
-                    endDate = "",
-                  }) {
+    uid = "",
+    productId = "",
+    type = "",
+    curPage = 1,
+    pageSize = 10,
+    isFirst = 1,
+    beginDate = "",
+    endDate = "",
+  }) {
     return get(`${url.productStockLog}`, {
       uid,
       productId,
@@ -161,15 +161,15 @@ class Production {
   }
 
   productStock({
-                 productId = "",
-                 identityId = "",
-                 curPage = "",
-                 pageSize = 10,
-                 orgId = "",
-                 uid = "",
-                 beginAmount = "",
-                 endAmount = "",
-               }) {
+    productId = "",
+    identityId = "",
+    curPage = "",
+    pageSize = 10,
+    orgId = "",
+    uid = "",
+    beginAmount = "",
+    endAmount = "",
+  }) {
     return get(`${url.productStock}`, {
       productId,
       identityId,
@@ -183,7 +183,7 @@ class Production {
   }
 
   productRequest(date = "") {
-    return get(`${url.productRequest}`, {date});
+    return get(`${url.productRequest}`, { date });
   }
 
   delProductPurchase(purchaseId) {
@@ -191,30 +191,30 @@ class Production {
   }
 
   postProductPurchase({
-                        uid,
-                        nickname,
-                        username,
-                        orgId,
-                        orgName,
-                        identityId,
-                        identityName,
-                        fromUid,
-                        fromNick,
-                        fromName,
-                        productId,
-                        productName,
-                        amount,
-                        priceId,
-                        price = 0,
-                        money,
-                        fromOrgId,
-                        fromOrgName,
-                        fromIdentityId,
-                        fromIdentityName,
-                        fromAmount,
-                        type,
-                        remark,
-                      }) {
+    uid,
+    nickname,
+    username,
+    orgId,
+    orgName,
+    identityId,
+    identityName,
+    fromUid,
+    fromNick,
+    fromName,
+    productId,
+    productName,
+    amount,
+    priceId,
+    price = 0,
+    money,
+    fromOrgId,
+    fromOrgName,
+    fromIdentityId,
+    fromIdentityName,
+    fromAmount,
+    type,
+    remark,
+  }) {
     return post(`${url.productPurchase}`, {
       uid,
       nickname,
@@ -243,31 +243,31 @@ class Production {
   }
 
   putProductPurchase({
-                       uid,
-                       nickname,
-                       username,
-                       orgId,
-                       orgName,
-                       identityId,
-                       identityName,
-                       fromUid,
-                       fromNick,
-                       fromName,
-                       productId,
-                       productName,
-                       amount,
-                       priceId,
-                       price = 0,
-                       money,
-                       fromOrgId,
-                       fromOrgName,
-                       fromIdentityId,
-                       fromIdentityName,
-                       fromAmount,
-                       purchaseId,
-                       type,
-                       remark,
-                     }) {
+    uid,
+    nickname,
+    username,
+    orgId,
+    orgName,
+    identityId,
+    identityName,
+    fromUid,
+    fromNick,
+    fromName,
+    productId,
+    productName,
+    amount,
+    priceId,
+    price = 0,
+    money,
+    fromOrgId,
+    fromOrgName,
+    fromIdentityId,
+    fromIdentityName,
+    fromAmount,
+    purchaseId,
+    type,
+    remark,
+  }) {
     return put(`${url.productPurchase}/${purchaseId}`, {
       uid,
       nickname,
@@ -304,19 +304,18 @@ class Production {
   }
 
   productPurchase({
-                    curPage,
-                    pageSize = 10,
-                    purchaseId = "",
-                    orgId = "",
-                    uid = "",
-                    productId = "",
-                    status = "",
-                    type = "",
-                    beginDate = "",
-                    endDate = "",
-                  }) {
+    curPage,
+    pageSize = 10,
+    purchaseId = "",
+    orgId = "",
+    uid = "",
+    productId = "",
+    status = "",
+    type = "",
+    beginDate = "",
+    endDate = "",
+  }) {
     return get(`${url.productPurchase}`, {
-      curPage,
       pageSize,
       purchaseId,
       orgId,
@@ -330,10 +329,10 @@ class Production {
   }
 
   getProduct(refresh = 0) {
-    return get(`${url.getProduct}`, {refresh});
+    return get(`${url.getProduct}`, { refresh });
   }
 
-  productPrice({productId, identityId, curPage, pageSize = 10}) {
+  productPrice({ productId, identityId, curPage, pageSize = 10 }) {
     return get(`${url.productPrice}`, {
       productId,
       identityId,
@@ -343,19 +342,19 @@ class Production {
   }
 
   postProductPrice({
-                     productId,
-                     identityId,
-                     firstPurchasePrice,
-                     secondPurchasePrice,
-                     beginDate,
-                     endDate,
-                     firstProfitPrice, //首次经销分润
-                     secondProfitPrice, //二次裂变分润
-                     warningAmount,
-                     firstWarningAmount,
-                     secondWarningAmount,
-                     type,
-                   }) {
+    productId,
+    identityId,
+    firstPurchasePrice,
+    secondPurchasePrice,
+    beginDate,
+    endDate,
+    firstProfitPrice, //首次经销分润
+    secondProfitPrice, //二次裂变分润
+    warningAmount,
+    firstWarningAmount,
+    secondWarningAmount,
+    type,
+  }) {
     return post(`${url.productPrice}`, {
       productId,
       identityId,
@@ -377,20 +376,20 @@ class Production {
   }
 
   putProductPrice({
-                    priceId,
-                    productId,
-                    identityId,
-                    firstPurchasePrice,
-                    secondPurchasePrice,
-                    beginDate,
-                    endDate,
-                    firstProfitPrice, //首次经销分润
-                    secondProfitPrice, //二次裂变分润
-                    warningAmount,
-                    firstWarningAmount,
-                    secondWarningAmount,
-                    type,
-                  }) {
+    priceId,
+    productId,
+    identityId,
+    firstPurchasePrice,
+    secondPurchasePrice,
+    beginDate,
+    endDate,
+    firstProfitPrice, //首次经销分润
+    secondProfitPrice, //二次裂变分润
+    warningAmount,
+    firstWarningAmount,
+    secondWarningAmount,
+    type,
+  }) {
     return put(`${url.productPrice}/${priceId}`, {
       productId,
       identityId,

@@ -1,5 +1,8 @@
+import { mapGetters } from "vuex";
 export default {
   inject: [
+    "ApiBasic",
+    "ApiBase",
     "ApiProduction",
     "ApiOther",
     "ApiUser",
@@ -8,7 +11,13 @@ export default {
     "ApiMenu",
     "dayjs",
     "ApiOrder",
+    "ApiCourse",
   ],
+  computed: {
+    ...mapGetters("course", {
+      dictoryObj: "dictoryObj",
+    }),
+  },
   data() {
     return {
       loading: true,
@@ -77,8 +86,7 @@ export default {
       });
       return list;
     },
-    filterAllChild() {
-    },
+    filterAllChild() {},
     async remoteMethod(name) {
       this.userList = await this.ApiUser.getSelectUsers(name);
     },

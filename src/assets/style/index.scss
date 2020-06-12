@@ -5,6 +5,8 @@
 @import "./realize/lin-variable";
 @import "./font";
 
+@import "./section/search";
+
 .lin-container {
   .el-divider--horizontal {
     margin: 0px;
@@ -22,11 +24,6 @@
   .lin-wrap {
     padding: 20px;
   }
-}
-
-.myWrap {
-  margin-left: 20px;
-  overflow-y: hidden;
 }
 
 .textLeft {
@@ -134,10 +131,6 @@
 
 .weight {
   font-weight: bold;
-}
-
-.el-dialog__header {
-  border-bottom: solid 1px #dcdfe6;
 }
 
 .red {

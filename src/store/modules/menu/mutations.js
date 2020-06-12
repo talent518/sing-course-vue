@@ -26,8 +26,5 @@ const mutations = {
   set_all_buttons(state, allButtons) {
     state.allButtons = allButtons;
   },
-  set_all_buttons(state, allButtons) {
-    state.allButtons = allButtons;
-  },
 };
 export default mutations;

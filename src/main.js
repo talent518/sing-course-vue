@@ -18,6 +18,16 @@ Vue.component("myForm", myForm);
 Vue.component("myBreadcrumb", myBreadcrumb);
 Vue.use(vueTime).use(VueDND);
 
+// 表格内开关 组件
+import CcCellSwitch from "@components/cc/CcCellSwitch";
+
+Vue.component("CcCellSwitch", CcCellSwitch);
+
+// 数字区间 组件
+import CcNumberRange from "@components/cc/CcNumberRange";
+
+Vue.component("CcNumberRange", CcNumberRange);
+
 Vue.config.productionTip = false;
 
 export default new Vue({

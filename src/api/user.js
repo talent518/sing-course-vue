@@ -15,12 +15,12 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
-import {getLocal, setLocal} from "@util/local";
+const { get, post, patch, put, delete: del } = ajax(prefix)();
+import { getStorage, setStorage } from "@util/storage";
 
 class User {
   getSelectUsers(name) {
-    return get(`${url.getSelectUsers}`, {name});
+    return get(`${url.getSelectUsers}`, { name });
   }
 
   getUserIdentitys() {
@@ -45,11 +45,11 @@ class User {
   }
 
   getUserAuth(id) {
-    return get(`${url.getUserAuth}`, {uid: id});
+    return get(`${url.getUserAuth}`, { uid: id });
   }
 
   getRole(roleName = "") {
-    return get(`${url.getRole}`, {roleName});
+    return get(`${url.getRole}`, { roleName });
   }
 
   // getRoleByName(roleName = "") {
@@ -59,20 +59,20 @@ class User {
     return del(`${url.getRole}/${roleId}`);
   }
 
-  postRole({roleName, menuIds, remark}) {
-    return post(`${url.getRole}`, {roleName, menuIds, remark});
+  postRole({ roleName, menuIds, remark }) {
+    return post(`${url.getRole}`, { roleName, menuIds, remark });
   }
 
-  putRole({roleId, roleName, menuIds, remark}) {
-    return put(`${url.getRole}/${roleId}`, {roleName, menuIds, remark});
+  putRole({ roleId, roleName, menuIds, remark }) {
+    return put(`${url.getRole}/${roleId}`, { roleName, menuIds, remark });
   }
 
   getUserMenu() {
     return get(`${url.getUserMenu}`);
   }
 
-  userLogin({username = "admin", password = "admin8"}) {
-    return post(`${url.userLogin}`, {username, password});
+  userLogin({ username = "admin", password = "admin8" }) {
+    return post(`${url.userLogin}`, { username, password });
   }
 
   getUser() {
@@ -84,23 +84,23 @@ class User {
   }
 
   postUser({
-             nickname,
-             username,
-             password,
-             mobile = "",
-             orgId,
-             isManager,
-             bankCard = "",
-             bankType = "",
-             identityId,
-             superior = "",
-             bankBranch = "",
-             enabled = 1,
-             wxAppId = "",
-             wxMchId = "",
-             wxKey = "",
-             wxAppSecret = "",
-           }) {
+    nickname,
+    username,
+    password,
+    mobile = "",
+    orgId,
+    isManager,
+    bankCard = "",
+    bankType = "",
+    identityId,
+    superior = "",
+    bankBranch = "",
+    enabled = 1,
+    wxAppId = "",
+    wxMchId = "",
+    wxKey = "",
+    wxAppSecret = "",
+  }) {
     return post(`${url.getUser}`, {
       nickname,
       username,
@@ -122,23 +122,23 @@ class User {
   }
 
   putUser({
-            nickname,
-            username,
-            mobile = "",
-            orgId,
-            isManager,
-            bankCard = "",
-            bankType = "",
-            identityId,
-            superior = "",
-            bankBranch = "",
-            enabled = 1,
-            uid,
-            wxAppId = "",
-            wxMchId = "",
-            wxKey = "",
-            wxAppSecret = "",
-          }) {
+    nickname,
+    username,
+    mobile = "",
+    orgId,
+    isManager,
+    bankCard = "",
+    bankType = "",
+    identityId,
+    superior = "",
+    bankBranch = "",
+    enabled = 1,
+    uid,
+    wxAppId = "",
+    wxMchId = "",
+    wxKey = "",
+    wxAppSecret = "",
+  }) {
     return put(`${url.getUser}/${uid}`, {
       nickname,
       username,
@@ -158,18 +158,18 @@ class User {
     });
   }
 
-  putPassWord({uid, password}) {
-    return put(`${url.getUser}/${uid}`, {password});
+  putPassWord({ uid, password }) {
+    return put(`${url.getUser}/${uid}`, { password });
   }
 
   userList({
-             nickname = "",
-             username = "",
-             mobile = "",
-             orgId = "",
-             curPage,
-             pageSize = 10,
-           }) {
+    nickname = "",
+    username = "",
+    mobile = "",
+    orgId = "",
+    curPage,
+    pageSize = 10,
+  }) {
     return get(`${url.getUser}`, {
       nickname,
       username,
@@ -182,10 +182,10 @@ class User {
   }
 
   async userRetoken() {
-    let token = getLocal("token");
+    let token = getStorage("token");
     let data = await get(`${url.userRetoken}`);
     if (data.code !== 401) {
-      setLocal("token", data);
+      setStorage("token", data);
       return true;
     }
     return false;

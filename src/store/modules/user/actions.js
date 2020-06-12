@@ -1,25 +1,25 @@
 import user from "@api/user";
-import {setLocal} from "@util/local";
+import { setStorage } from "@util/storage";
 
 const actions = {
-  async userLogin({commit}, param) {
+  async userLogin({ commit }, param) {
     let data = await user.userLogin(param);
     commit("set_user", data);
-    setLocal("token", data.token);
-    // setLocal("user", data);
+    setStorage("token", data.token);
+    // setStorage("user", data);
     return data;
   },
-  async getUserInfo({commit}) {
+  async getUserInfo({ commit }) {
     let data = await user.getCurrentUser();
     //commit("set_userInfo", data);
     commit("set_userInfo", data);
   },
 
-  async addUser({commit}, param) {
+  async addUser({ commit }, param) {
     let data = await user.postUser(param);
     return data;
   },
-  async getRole({commit}, param) {
+  async getRole({ commit }, param) {
     let data = await user.getRole(param);
     commit("set_Roles", data);
   },

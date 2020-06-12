@@ -9,27 +9,27 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Report {
-  exportProfitLog({id, uid, orgId}) {
-    return get(`${url.exportProfitLog}`, {id, uid, orgId});
+  exportProfitLog({ id, uid, orgId }) {
+    return get(`${url.exportProfitLog}`, { id, uid, orgId });
   }
 
-  payLog({id, uid, orgId, pageSize, curPage}) {
-    return get(`${url.payLog}`, {id, uid, orgId, pageSize, curPage});
+  payLog({ id, uid, orgId, pageSize, curPage }) {
+    return get(`${url.payLog}`, { id, uid, orgId, pageSize, curPage });
   }
 
-  getOrderReport({id, uid, orgId}) {
-    return get(`${url.getOrderReport}`, {id, uid, orgId});
+  getOrderReport({ id, uid, orgId }) {
+    return get(`${url.getOrderReport}`, { id, uid, orgId });
   }
 
   getOrderReportBySelect() {
     return get(`${url.getOrderReport}`);
   }
 
-  getNaturalReport({id, provId, cityId}) {
-    return get(`${url.naturalReport}`, {id, provId, cityId});
+  getNaturalReport({ id, provId, cityId }) {
+    return get(`${url.naturalReport}`, { id, provId, cityId });
   }
 
   getNaturalReportBySelect() {
@@ -37,11 +37,11 @@ class Report {
   }
 
   exportProfit(id) {
-    return get(`${url.exportProfit}`, {id});
+    return get(`${url.exportProfit}`, { id });
   }
 
   exportNatural(id) {
-    return get(`${url.exportNatural}`, {id});
+    return get(`${url.exportNatural}`, { id });
   }
 }
 

@@ -3,6 +3,7 @@
     <el-table
       :data="data"
       border
+      size="small"
       :fit="fit"
       v-loading="loading"
       v-bind="$attrs"
@@ -14,30 +15,29 @@
   </section>
 </template>
 <script>
-  export default {
-    name: "myTable",
-    props: {
-      data: {
-        type: Array,
-        dafault() {
-          return [];
-        },
-      },
-      loading: {
-        type: Boolean,
-        default: false,
-      },
-      mh: {
-        type: [Number, String],
-        default: (410 * document.documentElement.clientHeight) / 625,
+export default {
+  name: "myTable",
+  props: {
+    data: {
+      type: Array,
+      dafault() {
+        return [];
       },
     },
-    data() {
-      return {
-        fit: true,
-      };
+    loading: {
+      type: Boolean,
+      default: false,
     },
-    mounted() {
+    mh: {
+      type: [Number, String],
+      default: (410 * document.documentElement.clientHeight) / 625,
     },
-  };
+  },
+  data() {
+    return {
+      fit: true,
+    };
+  },
+  mounted() {},
+};
 </script>

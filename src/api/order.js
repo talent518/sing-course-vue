@@ -8,20 +8,20 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Order {
   exportOrder({
-                orgId,
-                uid,
-                productId,
-                type,
-                status,
-                orderNO,
-                beginDate,
-                endDate,
-                buyType,
-              }) {
+    orgId,
+    uid,
+    productId,
+    type,
+    status,
+    orderNO,
+    beginDate,
+    endDate,
+    buyType,
+  }) {
     return get(`${url.exportOrder}`, {
       orgId,
       uid,
@@ -40,18 +40,18 @@ class Order {
   }
 
   getOrders({
-              orgId,
-              uid,
-              productId,
-              type,
-              status,
-              orderNO,
-              beginDate,
-              endDate,
-              curPage,
-              pageSize,
-              buyType,
-            }) {
+    orgId,
+    uid,
+    productId,
+    type,
+    status,
+    orderNO,
+    beginDate,
+    endDate,
+    curPage,
+    pageSize,
+    buyType,
+  }) {
     return get(`${url.getProduct}`, {
       orgId,
       uid,
