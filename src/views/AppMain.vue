@@ -25,7 +25,7 @@
 
 <script>
   import {mapActions, mapGetters} from "vuex";
-  import {setStorage} from "@util/local";
+  import {setStorage} from "@util/storage";
 
   export default {
     name: "AppMain",

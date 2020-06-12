@@ -16,6 +16,7 @@
   import base from "@api/base"
   import {cloneDeep} from "lodash";
   import dayjs from "dayjs";
+  import {setStorage} from "@util/storage"
 
   export default {
     name: "app",
@@ -58,13 +59,13 @@
       * SegmentLeadTypeEnum  环节引导类型
       * SegmentTypeEnum  环节类型
       * */
-      getEnum() {
+      async getEnum() {
         let param = {
           enum: ['BooleanEnum', 'SegmentLeadTypeEnum', 'SegmentTypeEnum']
         }
-        let data = base.getEnum(param);
+        let data = await base.getEnum(param);
 
-        localStorage.setItem(JSON.stringify(data))
+        setStorage('enum', data);
         console.log(data);
       }
     }

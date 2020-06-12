@@ -99,14 +99,17 @@
     methods: {
       handleAdd() {
         this.dialogData = {
-          show: true
+          show: true,
+          param: {
+            id: 0
+          }
         }
       },
 
-      handleEdit() {
+      handleEdit(row) {
         this.dialogData = {
           show: true,
-          param: {}
+          param: row
         }
       },
 
@@ -119,10 +122,10 @@
 
         let _targetText = '', _target; // 要到达的状态
         if (val === 0) {
-          _target = 1;
+          _target = 'enable';
           _targetText = '启用'
         } else if (val === 1) {
-          _target = 0;
+          _target = 'disable';
           _targetText = '停用'
         }
 
@@ -139,7 +142,7 @@
             status: _target
           }
 
-          this.ApiBasic.putSegment(param).then(res => {
+          this.ApiBasic.postSegmentStatus(param).then(res => {
             this.$message({type: 'success', message: '修改成功!'});
             this.getData();
             this.loading = false

@@ -4,7 +4,7 @@ import login from "@/views/login.vue";
 import home from "@/views/Home.vue";
 import AppMain from "@/views/AppMain.vue";
 import user from "@api/user";
-import {getStorage} from "@util/local";
+import {getStorage} from "@util/storage";
 import store from "../store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style

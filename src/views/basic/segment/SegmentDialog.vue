@@ -17,18 +17,43 @@
         <el-form-item label="状态">
           <el-switch
             v-model="form.status"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             active-color="#13ce66">
           </el-switch>
         </el-form-item>
 
-        <el-form-item label="环节模板状态">
-          <el-select v-model="model" placeholder="请选择">
-            <el-option :label="item.label" :value="item.value"></el-option>
-            <el-option :label="item.label" :value="item.value"></el-option>
-
+        <el-form-item label="环节模板类别">
+          <el-select v-model="form.type" placeholder="请选择">
+            <el-option
+              v-for="item in SEGMENT_TYPE_ENUM"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key">
+            </el-option>
           </el-select>
+        </el-form-item>
+
+        <el-form-item label="环节模板样式">
+          <!--<el-upload
+            :show-file-list="false"
+            class="upload-item"
+            action="/api/public/upload"
+            list-type="text"
+            :http-request="uploadFileVideo1Banner">
+            <el-button><i class="iconfont icon-cloud-upload"></i> 上传音频</el-button>
+          </el-upload>-->
+
+          <el-upload
+            class="upload-item"
+            action="/api/public/upload"
+            :show-file-list="false"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple>
+            <img v-if="form.preview_image" :src="form.preview_image" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
 
       </el-form>
@@ -46,11 +71,12 @@
   import commonMessage from "@/views/common/commonMessage"
   import menuRole from "@/views/common/menuRole"
   import {upload} from "@api/upload"
+  import {getEnum} from "@util/storage"
 
   const FORM_DEFAULT = {
     title: '',
     type: '',
-    status: '1',
+    status: 1,
     preview_image: '',
   }
 
@@ -75,8 +101,16 @@
       return {
         title: '',
 
+        SEGMENT_TYPE_ENUM: getEnum('SegmentTypeEnum'),
+
         form: JSON.parse(JSON.stringify(FORM_DEFAULT))
       }
+    },
+
+    computed: {
+      /*SEGMENT_TYPE_ENUM() {
+        return getEnum('SegmentTypeEnum')
+      }*/
     },
 
     watch: {
@@ -97,14 +131,11 @@
       },
 
 
-      uploadFileVideo1Banner(a) {
-        upload('http://admin.test.changchangenglish.com/api/public/upload/zone', {
-          file: a.file,
-          type: 'local'
-        }).then(res => {
+      uploadFile(e) {
+        upload(e.file).then(res => {
           console.log('!!!!', res);
-          /*res.url = process.env.MEDIA_URL + res.url;
-          this.fileList.push(res)*/
+          // this.fileList.push(res)
+          this.form.preview_image = res.url
         })
       },
 

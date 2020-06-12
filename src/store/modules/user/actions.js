@@ -1,5 +1,5 @@
 import user from "@api/user";
-import {setStorage} from "@util/local";
+import {setStorage} from "@util/storage";
 
 const actions = {
   async userLogin({commit}, param) {

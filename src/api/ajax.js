@@ -1,7 +1,7 @@
 import axios from "axios";
 import Vue from "vue";
 import errcode from "@api/errcode";
-import {getStorage} from "@util/local";
+import {getStorage} from "@util/storage";
 
 const configUrlNoTip = [
   "user/retoken",
