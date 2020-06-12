@@ -4,91 +4,108 @@
   </div>
 </template>
 <script>
-  import Vue from "vue";
-  import {mapActions, mapGetters} from "vuex";
-  import user from "@api/user";
-  import other from "@api/other";
-  import production from "@api/production";
-  import menu from "@api/menu";
-  import order from "@api/order";
-  import report from "@api/report";
-  import basic from "@api/basic"
-  import base from "@api/base"
-  import {cloneDeep} from "lodash";
-  import dayjs from "dayjs";
+import Vue from "vue";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import user from "@api/user";
+import other from "@api/other";
+import production from "@api/production";
+import menu from "@api/menu";
+import order from "@api/order";
+import report from "@api/report";
+import basic from "@api/basic";
+import base from "@api/base";
+import course from "@api/course";
+import { cloneDeep } from "lodash";
+import dayjs from "dayjs";
 
-  export default {
-    name: "app",
+export default {
+  name: "app",
 
-    data() {
-      return {
-        eventBus: new Vue(),
+  data() {
+    return {
+      eventBus: new Vue(),
+      o: {},
+    };
+  },
+
+  computed: {},
+
+  provide() {
+    return {
+      eventBus: this.eventBus,
+      ApiUser: user,
+      ApiOther: other,
+      ApiProduction: production,
+      ApiMenu: menu,
+      ApiOrder: order,
+      ApiReport: report,
+      ApiBasic: basic,
+      ApiBase: base,
+      ApiCourse: course,
+      cloneDeep,
+      dayjs,
+      dictoryObj: this.dictoryObj,
+    };
+  },
+
+  mounted() {
+    this.getEnum();
+  },
+
+  methods: {
+    ...mapMutations("course", {
+      set_dictoryObj: "set_dictoryObj",
+    }),
+    /*
+     * BooleanEnum  是否
+     * DubbingTypeEnum  配音类型
+     * ElementTypeEnum  课程元素类型
+     * EvaluationSwitchTypeEnum  评测切换方式
+     * QuestionMaterialTypeEnum  评测素材类型
+     * SegmentLeadTypeEnum  环节引导类型
+     * SegmentTypeEnum  环节类型
+     * */
+    async getEnum() {
+      let param = {
+        enum: [
+          "BooleanEnum",
+          "DubbingTypeEnum",
+          "ElementTypeEnum",
+          "EvaluationSwitchTypeEnum",
+          "QuestionMaterialTypeEnum",
+          "SegmentLeadTypeEnum",
+          "SegmentTypeEnum",
+        ],
       };
+      let o = {};
+      let data = await base.getEnum(param);
+      data.forEach((item) => {
+        o[item.name] = item.items;
+      });
+      this.set_dictoryObj(o);
     },
-
-    computed: {},
-
-    provide() {
-      return {
-        eventBus: this.eventBus,
-        ApiUser: user,
-        ApiOther: other,
-        ApiProduction: production,
-        ApiMenu: menu,
-        ApiOrder: order,
-        ApiReport: report,
-        ApiBasic: basic,
-        ApiBase: base,
-        cloneDeep,
-        dayjs,
-      };
-    },
-
-    mounted() {
-      this.getEnum();
-    },
-
-    methods: {
-      /*
-      * BooleanEnum  是否
-      * DubbingTypeEnum  配音类型
-      * ElementTypeEnum  课程元素类型
-      * EvaluationSwitchTypeEnum  评测切换方式
-      * QuestionMaterialTypeEnum  评测素材类型
-      * SegmentLeadTypeEnum  环节引导类型
-      * SegmentTypeEnum  环节类型
-      * */
-      getEnum() {
-        let param = {
-          enum: ['BooleanEnum', 'SegmentLeadTypeEnum', 'SegmentTypeEnum']
-        }
-        let data = base.getEnum(param);
-
-        localStorage.setItem(JSON.stringify(data))
-        console.log(data);
-      }
-    }
-  };
+  },
+};
 </script>
 
 <style lang="scss">
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
     color: #2c3e50;
-  }
 
-  #nav {
-    padding: 30px;
-
-    a {
-      font-weight: bold;
-      color: #2c3e50;
-
-      &.router-link-exact-active {
-        color: #42b983;
-      }
+    &.router-link-exact-active {
+      color: #42b983;
     }
   }
+}
 </style>
