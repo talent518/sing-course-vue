@@ -4,7 +4,7 @@ import login from "@/views/login.vue";
 import home from "@/views/Home.vue";
 import AppMain from "@/views/AppMain.vue";
 import user from "@api/user";
-import {getLocal} from "@util/local";
+import {getStorage} from "@util/local";
 import store from "../store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
@@ -26,7 +26,7 @@ const router = new VueRouter({
 const loginUrl = "/login";
 const loginV = "login";
 // router.beforeEach(async (to, from, next) => {
-//   let token = getLocal("token");
+//   let token = getStorage("token");
 //   if (token) {
 //     if (to.name === loginV) {
 //       next({ name: "index" });
@@ -48,8 +48,6 @@ router.beforeEach(async (to, from, next) => {
   if (isValid) {
     if (!(store.state && store.state.menu.hasPermission)) {
       let newRoutes = await store.dispatch("menu/getMenu");
-
-      debugger
 
       router.addRoutes([
         {

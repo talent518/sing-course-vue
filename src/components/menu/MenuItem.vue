@@ -32,6 +32,8 @@
     Report: "icon-dashboard",
     LogView: "icon-rizhi",
     Resource: "icon-file-copy",
+    Basic: "icon-build",
+    Product: "icon-appstore",
   };
   import {mapMutations} from "vuex";
 

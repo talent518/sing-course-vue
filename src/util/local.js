@@ -1,5 +1,5 @@
 //把获得到的token存到localStorage里
-export const setLocal = (key, value) => {
+export const setStorage = (key, value) => {
   if (typeof value == "object") {
     //如果传过来的是对象，则转换成字符串
     value = JSON.stringify(value);
@@ -8,6 +8,6 @@ export const setLocal = (key, value) => {
 };
 
 //获取localStorage里的token
-export const getLocal = (key) => {
+export const getStorage = (key) => {
   return localStorage.getItem(key);
 };

@@ -1,12 +1,12 @@
 import user from "@api/user";
-import {setLocal} from "@util/local";
+import {setStorage} from "@util/local";
 
 const actions = {
   async userLogin({commit}, param) {
     let data = await user.userLogin(param);
     commit("set_user", data);
-    setLocal("token", data.token);
-    // setLocal("user", data);
+    setStorage("token", data.token);
+    // setStorage("user", data);
     return data;
   },
   async getUserInfo({commit}) {

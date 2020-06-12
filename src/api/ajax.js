@@ -1,7 +1,7 @@
 import axios from "axios";
 import Vue from "vue";
 import errcode from "@api/errcode";
-import {getLocal} from "@util/local";
+import {getStorage} from "@util/local";
 
 const configUrlNoTip = [
   "user/retoken",
@@ -48,7 +48,7 @@ export default (baseURL) => {
       o = {};
     service.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = getLocal("token");
+        config.headers.Authorization = getStorage("token");
         return config;
       },
       (error) => {

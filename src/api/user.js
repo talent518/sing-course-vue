@@ -16,7 +16,7 @@ import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
 const {get, post, patch, put, delete: del} = ajax(prefix)();
-import {getLocal, setLocal} from "@util/local";
+import {getStorage, setStorage} from "@util/local";
 
 class User {
   getSelectUsers(name) {
@@ -182,10 +182,10 @@ class User {
   }
 
   async userRetoken() {
-    let token = getLocal("token");
+    let token = getStorage("token");
     let data = await get(`${url.userRetoken}`);
     if (data.code !== 401) {
-      setLocal("token", data);
+      setStorage("token", data);
       return true;
     }
     return false;

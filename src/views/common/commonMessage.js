@@ -1,5 +1,7 @@
 export default {
   inject: [
+    "ApiBasic",
+    "ApiBase",
     "ApiProduction",
     "ApiOther",
     "ApiUser",

@@ -17,7 +17,7 @@
 
     <!-- <keep-alive> -->
     <transition name="el-fade-in-linear" mode="out-in">
-      <router-view class="myWrap"></router-view>
+      <router-view class="app-main"></router-view>
     </transition>
     <!-- </keep-alive> -->
   </section>
@@ -25,7 +25,7 @@
 
 <script>
   import {mapActions, mapGetters} from "vuex";
-  import {setLocal} from "@util/local";
+  import {setStorage} from "@util/local";
 
   export default {
     name: "AppMain",
@@ -53,7 +53,7 @@
     },
     methods: {
       goOut() {
-        setLocal("token", "");
+        setStorage("token", "");
         document.location.reload();
       },
       ...mapActions("menu", {
@@ -69,6 +69,11 @@
 </script>
 
 <style lang="scss">
+
+  .app-main {
+    padding: 16px;
+  }
+
   .app-header {
     position: relative;
     z-index: 100;

@@ -316,7 +316,6 @@ class Production {
                     endDate = "",
                   }) {
     return get(`${url.productPurchase}`, {
-      curPage,
       pageSize,
       purchaseId,
       orgId,

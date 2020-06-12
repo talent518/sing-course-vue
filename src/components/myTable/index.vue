@@ -3,6 +3,7 @@
     <el-table
       :data="data"
       border
+      size="small"
       :fit="fit"
       v-loading="loading"
       v-bind="$attrs"
