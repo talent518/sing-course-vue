@@ -22,7 +22,7 @@
         <el-form-item label="课程副标题">
           <el-input
             placeholder="请输入"
-            v-model="form.title"
+            v-model="form.sub_title"
             clearable
           ></el-input>
         </el-form-item>

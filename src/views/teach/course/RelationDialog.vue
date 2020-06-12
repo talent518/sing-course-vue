@@ -8,10 +8,20 @@
       append-to-body
     >
       <div class="handle-box">
-        <el-link @click="relationMaterial" plain type="primary" size="mini"
+        <el-link
+          v-if="element_type == 0 || element_type == 1"
+          @click="relationMaterial"
+          plain
+          type="primary"
+          size="mini"
           >关联教材</el-link
         >
-        <el-link @click="relationTheme" plain type="primary" size="mini"
+        <el-link
+          v-if="element_type == 0 || element_type == 2"
+          @click="relationTheme"
+          plain
+          type="primary"
+          size="mini"
           >关联主题</el-link
         >
 
@@ -24,63 +34,29 @@
         </template>
       </div>
       <div class="class-list-box">
-        <div class="class-box">
+        <div
+          class="class-box"
+          v-for="(item, index) in list"
+          v-dragging="{ item: item, list: list, group: 'list' }"
+          :key="index"
+        >
           <div class="title">
-            1.Day1 一个人睡
+            {{ item.element.title }}
           </div>
           <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
+            <img :src="item.element.cover" alt="" />
 
             <template>
-              <el-popconfirm title="确定要移除吗？" @onConfirm="deleteClass">
+              <el-popconfirm
+                title="确定要移除吗？"
+                @onConfirm="deleteClass(item.element.id)"
+              >
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>
             </template>
           </div>
         </div>
       </div>
-
-      <!--<div class="color-list" style="display: flex; flex-wrap: wrap;">-->
-      <!--  <div-->
-      <!--    class="color-item"-->
-      <!--    v-for="color in colors"-->
-      <!--    v-dragging="{ item: color, list: colors, group: 'color' }"-->
-      <!--    :key="color.text"-->
-      <!--    style="width: 200px;"-->
-      <!--  >-->
-      <!--    {{ color.text }}-->
-      <!--  </div>-->
-      <!--</div>-->
     </el-dialog>
     <relation-material-dialog :dialogObj="relationMaterialObj" />
     <relation-theme-dialog :dialogObj="relationThemeObj" />
@@ -90,7 +66,9 @@
 <script>
 import RelationMaterialDialog from "./RelationMaterialDialog";
 import RelationThemeDialog from "./RelationThemeDialog";
+import Teach from "@/views/common/teach";
 export default {
+  mixins: [Teach],
   name: "RelationDialog",
   props: ["dialogObj"],
   components: { RelationMaterialDialog, RelationThemeDialog },
@@ -104,46 +82,28 @@ export default {
         //给子组件的数据
         show: false,
       },
-      // colors: [
-      //   {
-      //     text: "111",
-      //   },
-      //   {
-      //     text: "222",
-      //   },
-      //   {
-      //     text: "333",
-      //   },
-      //   {
-      //     text: "444",
-      //   },
-      //   {
-      //     text: "555",
-      //   },
-      //   {
-      //     text: "666",
-      //   },
-      //   {
-      //     text: "777",
-      //   },
-      //   {
-      //     text: "888",
-      //   },
-      //   {
-      //     text: "999",
-      //   },
-      // ],
+      id: "",
+      element_type: "",
+      list: [],
     };
   },
   mounted() {
-    // this.$dragging.$on("dragged", ({ value }) => {
-    //   console.log(value.item);
-    //   console.log(value.list);
-    //   console.log(value.otherData);
-    // });
-    // this.$dragging.$on("dragend", () => {});
+    this.$dragging.$on("dragged", ({ value }) => {
+      console.log(value.list);
+    });
+    this.$dragging.$on("dragend", () => {});
   },
   methods: {
+    async init() {
+      let json = {
+        course_id: this.id,
+        element_type: this.element_type,
+        scene: "all",
+      };
+      let data = await this.ApiTeach.getCourseDetailRelationApi(json);
+      this.list = data.items;
+      // this.page.total = data.total;
+    },
     //提交表单内容
     sub() {},
     relationMaterial() {
@@ -156,30 +116,37 @@ export default {
         show: true,
       };
     },
-    deleteClass() {
-      console.log("删除单个");
+    //删除单个
+    deleteClass(id) {
+      this.ApiTeach.delCourseDetailApi(id).then((res) => {
+        this.init();
+      });
     },
+    //删除全部
     deleteAllClass() {
-      console.log("删除全部");
+      let json = {
+        is_all: "all",
+        course_id: this.id,
+      };
+      this.ApiTeach.delAllCourseDetailApi(json).then((res) => {
+        this.init();
+        this.element_type = 0;
+      });
     },
   },
   watch: {
-    // "dialogObj.show"() {
-    //   this.$nextTick(() => {
-    //     this.form.title = "";
-    //     this.form.sub_title = [];
-    //     this.form.cover = "";
-    //     this.form.status = 1;
-    //     if (this.dialogObj.type == 2) {
-    //       this.form = {
-    //         title: this.dialogObj.title,
-    //         sub_title: this.dialogObj.sub_title,
-    //         cover: this.dialogObj.cover,
-    //         status: this.dialogObj.status,
-    //       };
-    //     }
-    //   });
-    // },
+    "dialogObj.show"(value) {
+      if (value) {
+        this.list = [];
+        this.$nextTick(() => {
+          this.id = this.dialogObj.id;
+          this.element_type = this.dialogObj.element_type;
+          if (this.element_type != 0) {
+            this.init();
+          }
+        });
+      }
+    },
   },
 };
 </script>
@@ -213,6 +180,7 @@ export default {
       img {
         width: 180px;
         height: 140px;
+        display: block;
       }
       i {
         display: block;

@@ -63,10 +63,23 @@
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link @click="" plain type="primary" size="mini">编辑</el-link>
-            <el-link @click="relationClass" plain type="primary" size="mini"
+            <el-link
+              @click="relationCourse(scope.row.id)"
+              plain
+              type="primary"
+              size="mini"
               >关联教材</el-link
             >
-            <el-link @click="" plain type="primary" size="mini">删除</el-link>
+            <template>
+              <el-popconfirm
+                title="确定要删除课程吗？"
+                @onConfirm="delProduct(scope.row.id)"
+              >
+                <el-link plain type="primary" size="mini" slot="reference"
+                  >删除</el-link
+                >
+              </el-popconfirm>
+            </template>
           </div>
         </template>
       </el-table-column>
@@ -141,6 +154,11 @@ export default {
         pageSize: this.page.limit,
         title: this.search.title,
       };
+      if (this.activeName == "enable") {
+        json.status = 1;
+      } else if (this.activeName == "disable") {
+        json.status = 0;
+      }
       let data = await this.ApiTeach.getProductListApi(json);
       this.classList = data.items;
       this.page.total = data.total;
@@ -165,6 +183,13 @@ export default {
       this.init();
     },
 
+    //删除课程
+    delProduct(id) {
+      this.ApiTeach.delProductApi(id).then((res) => {
+        this.init();
+      });
+    },
+
     /**
      * 新增课程
      */
@@ -172,11 +197,23 @@ export default {
       this.dialogObj = {
         type: 0,
         show: true,
-        name: "新增课程",
+        name: "新增产品",
       };
     },
 
-    relationClass() {
+    editTheme(val) {
+      this.dialogObj = {
+        type: 2,
+        show: true,
+        name: "修改产品",
+        title: val.title,
+        sub_title: val.sub_title,
+        status: val.status,
+        cover: val.cover,
+      };
+    },
+
+    relationCourse() {
       this.relationObj = {
         show: true,
       };
@@ -184,6 +221,7 @@ export default {
 
     handleClick(tab) {
       console.log(tab.name);
+      this.init();
     },
   },
 };

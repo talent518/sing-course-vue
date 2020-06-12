@@ -37,7 +37,7 @@
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="addClass">新增</el-button>
+    <el-button type="success" size="small" @click="addTheme">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -67,11 +67,30 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
-            <el-link @click="" plain type="primary" size="mini">编辑</el-link>
-            <el-link @click="relationClass" plain type="primary" size="mini"
+            <el-link
+              @click="editTheme(scope.row)"
+              plain
+              type="primary"
+              size="mini"
+              >编辑</el-link
+            >
+            <el-link
+              @click="relationMaterial(scope.row.id)"
+              plain
+              type="primary"
+              size="mini"
               >关联教材</el-link
             >
-            <el-link @click="" plain type="primary" size="mini">删除</el-link>
+            <template>
+              <el-popconfirm
+                title="确定要删除课程吗？"
+                @onConfirm="delTheme(scope.row.id)"
+              >
+                <el-link plain type="primary" size="mini" slot="reference"
+                  >删除</el-link
+                >
+              </el-popconfirm>
+            </template>
           </div>
         </template>
       </el-table-column>
@@ -146,9 +165,21 @@ export default {
         pageSize: this.page.limit,
         title: this.search.title,
       };
+      if (this.activeName == "enable") {
+        json.status = 1;
+      } else if (this.activeName == "disable") {
+        json.status = 0;
+      }
       let data = await this.ApiTeach.getThemeListApi(json);
       this.classList = data.items;
       this.page.total = data.total;
+    },
+
+    //删除课程
+    delTheme(id) {
+      this.ApiTeach.delThemeApi(id).then((res) => {
+        this.init();
+      });
     },
 
     handleSearch() {
@@ -159,8 +190,9 @@ export default {
     clearSearch() {
       this.search.title = "";
     },
-    relationClass() {
+    relationMaterial(id) {
       this.relationObj = {
+        id: id,
         show: true,
       };
     },
@@ -177,16 +209,29 @@ export default {
     /**
      * 新增课程
      */
-    addClass() {
+    addTheme() {
       this.dialogObj = {
-        type: 0,
+        type: 1,
         show: true,
-        name: "新增课程",
+        name: "新增主题",
+      };
+    },
+
+    editTheme(val) {
+      this.dialogObj = {
+        type: 2,
+        show: true,
+        name: "修改主题",
+        title: val.title,
+        sub_title: val.sub_title,
+        status: val.status,
+        cover: val.cover,
       };
     },
 
     handleClick(tab) {
       console.log(tab.name);
+      this.init();
     },
   },
 };

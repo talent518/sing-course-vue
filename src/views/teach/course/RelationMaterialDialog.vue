@@ -11,7 +11,7 @@
         <div class="course-management-form">
           <el-form-item label="教材编号：">
             <el-select
-              v-model="search.label"
+              v-model="search.code"
               multiple
               filterable
               clearable
@@ -86,7 +86,7 @@ export default {
       loading: false,
       search: {
         title: "",
-        label: "",
+        code: "",
       },
       list: [],
       watchList: [
@@ -100,19 +100,19 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    // this.init();
   },
   methods: {
     //提交表单内容
     sub() {},
 
     async init() {
-      // let json = {
-      //   pageIndex: this.page.now,
-      //   pageSize: this.page.limit,
-      //   title: this.search.title,
-      // };
-      let data = await this.ApiTeach.getTextbookListApi();
+      let json = {
+        scene: "all",
+        title: this.search.title,
+        code: this.search.code,
+      };
+      let data = await this.ApiTeach.getTextbookListApi(json);
       this.list = data.items;
       // this.page.total = data.total;
     },
@@ -131,22 +131,11 @@ export default {
     },
   },
   watch: {
-    // "dialogObj.show"() {
-    //   this.$nextTick(() => {
-    //     this.form.title = "";
-    //     this.form.sub_title = [];
-    //     this.form.cover = "";
-    //     this.form.status = 1;
-    //     if (this.dialogObj.type == 2) {
-    //       this.form = {
-    //         title: this.dialogObj.title,
-    //         sub_title: this.dialogObj.sub_title,
-    //         cover: this.dialogObj.cover,
-    //         status: this.dialogObj.status,
-    //       };
-    //     }
-    //   });
-    // },
+    "dialogObj.show"(value) {
+      if (value) {
+        this.init();
+      }
+    },
   },
 };
 </script>

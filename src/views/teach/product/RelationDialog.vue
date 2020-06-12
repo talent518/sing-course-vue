@@ -8,7 +8,7 @@
       append-to-body
     >
       <div class="handle-box">
-        <el-link @click="relationCource" plain type="primary" size="mini"
+        <el-link @click="relationCourse" plain type="primary" size="mini"
           >关联课程</el-link
         >
 
@@ -21,156 +21,100 @@
         </template>
       </div>
       <div class="class-list-box">
-        <div class="class-box">
+        <div
+          class="class-box"
+          v-for="(item, index) in list"
+          v-dragging="{ item: item, list: list, group: 'list' }"
+          :key="index"
+        >
           <div class="title">
-            1.Day1 一个人睡
+            {{ item.textbook.course_title }}
           </div>
           <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
-            <i class="iconfont el-icon-delete"></i>
-          </div>
-        </div>
-
-        <div class="class-box">
-          <div class="title">
-            1.Day1 一个人睡
-          </div>
-          <div class="img-box">
-            <img src="../../../assets/image/login/homeLogo.png" alt="" />
+            <img :src="item.textbook.cover" alt="" />
 
             <template>
-              <el-popconfirm title="确定要移除吗？" @onConfirm="deleteClass">
+              <el-popconfirm
+                title="确定要移除吗？"
+                @onConfirm="deleteClass(item.textbook.id)"
+              >
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>
             </template>
           </div>
         </div>
       </div>
-
-      <!--<div class="color-list" style="display: flex; flex-wrap: wrap;">-->
-      <!--  <div-->
-      <!--    class="color-item"-->
-      <!--    v-for="color in colors"-->
-      <!--    v-dragging="{ item: color, list: colors, group: 'color' }"-->
-      <!--    :key="color.text"-->
-      <!--    style="width: 200px;"-->
-      <!--  >-->
-      <!--    {{ color.text }}-->
-      <!--  </div>-->
-      <!--</div>-->
     </el-dialog>
-    <relation-cource-dialog :dialogObj="relationCourceObj" />
+    <relation-course-dialog :dialogObj="relationCourseObj" />
   </div>
 </template>
 
 <script>
-import RelationCourceDialog from "./RelationCourceDialog";
+import RelationCourseDialog from "./RelationCourseDialog";
+import Teach from "@/views/common/teach";
 export default {
+  mixins: [Teach],
   name: "RelationDialog",
   props: ["dialogObj"],
-  components: { RelationCourceDialog },
+  components: { RelationCourseDialog },
   data() {
     return {
-      relationCourceObj: {
+      relationCourseObj: {
         //给子组件的数据
         show: false,
       },
-      // colors: [
-      //   {
-      //     text: "111",
-      //   },
-      //   {
-      //     text: "222",
-      //   },
-      //   {
-      //     text: "333",
-      //   },
-      //   {
-      //     text: "444",
-      //   },
-      //   {
-      //     text: "555",
-      //   },
-      //   {
-      //     text: "666",
-      //   },
-      //   {
-      //     text: "777",
-      //   },
-      //   {
-      //     text: "888",
-      //   },
-      //   {
-      //     text: "999",
-      //   },
-      // ],
+      list: [],
     };
   },
   mounted() {
-    // this.$dragging.$on("dragged", ({ value }) => {
-    //   console.log(value.item);
-    //   console.log(value.list);
-    //   console.log(value.otherData);
-    // });
-    // this.$dragging.$on("dragend", () => {});
+    this.$dragging.$on("dragged", ({ value }) => {
+      console.log(value.list);
+    });
+    this.$dragging.$on("dragend", () => {});
   },
   methods: {
+    async init() {
+      let json = {
+        product_id: this.id,
+        scene: "all",
+      };
+      let data = await this.ApiTeach.getProductDetailRelationApi(json);
+      this.list = data.items;
+      // this.page.total = data.total;
+    },
     //提交表单内容
     sub() {},
-    relationCource() {
-      this.relationCourceObj = {
+    relationCourse() {
+      this.relationCourseObj = {
         show: true,
       };
     },
-    relationTheme() {
-      this.relationThemeObj = {
-        show: true,
-      };
+    //删除单个
+    deleteClass(id) {
+      this.ApiTeach.delProductDetailApi(id).then((res) => {
+        this.init();
+      });
     },
-    deleteClass() {
-      console.log("删除单个");
-    },
+    //删除全部
     deleteAllClass() {
-      console.log("删除全部");
+      let json = {
+        is_all: "all",
+        product_id: this.id,
+      };
+      this.ApiTeach.delAllProductDetailApi(json).then((res) => {
+        this.init();
+      });
     },
   },
   watch: {
-    // "dialogObj.show"() {
-    //   this.$nextTick(() => {
-    //     this.form.title = "";
-    //     this.form.sub_title = [];
-    //     this.form.cover = "";
-    //     this.form.status = 1;
-    //     if (this.dialogObj.type == 2) {
-    //       this.form = {
-    //         title: this.dialogObj.title,
-    //         sub_title: this.dialogObj.sub_title,
-    //         cover: this.dialogObj.cover,
-    //         status: this.dialogObj.status,
-    //       };
-    //     }
-    //   });
-    // },
+    "dialogObj.show"(value) {
+      if (value) {
+        this.$nextTick(() => {
+          this.id = this.dialogObj.id;
+          this.init();
+        });
+      }
+    },
   },
 };
 </script>
