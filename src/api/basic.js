@@ -7,8 +7,8 @@ class Basic {
     return get('course/segment-templates', json);
   }
 
-  putSegment(json) {
-    return get(`course/segment-templates/${json.id}`, json);
+  postSegmentStatus(json) {
+    return post(`course/segment-templates/${json.id}/${json.status}`);
   }
 
   getScore(json) {

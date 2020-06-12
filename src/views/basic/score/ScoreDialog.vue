@@ -107,6 +107,7 @@
   import menuRole from "@/views/common/menuRole"
   import ScoreStar from "@/views/basic/score/ScoreStar"
   import {upload} from "@api/upload"
+  import {getStorage, setStorage} from "@util/storage"
 
   const FORM_DEFAULT = {
     title: '',

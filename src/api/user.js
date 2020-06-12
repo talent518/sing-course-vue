@@ -16,7 +16,7 @@ import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
 const {get, post, patch, put, delete: del} = ajax(prefix)();
-import {getStorage, setStorage} from "@util/local";
+import {getStorage, setStorage} from "@util/storage";
 
 class User {
   getSelectUsers(name) {
