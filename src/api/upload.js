@@ -9,12 +9,27 @@ const MAX_FILESIZE = 1024 * 1024 * 10;
  * @returns {Promise}
  */
 export function upload(file) {
+
   return new Promise((resolve, reject) => {
+
+    /**
+     * 判断文件类型
+     * "video/mp4"
+     * "audio/mpeg"
+     * "image/jpeg"
+     */
+    console.log('file', file);
+    let _fileType = file.type.split('/')[0], _scene = '';
+    if (_fileType && (_fileType === 'video' || _fileType === 'audio')) {
+      _scene = _fileType
+    } else {
+      _scene = 'static'
+    }
 
     axios.get(`${process.env.VUE_APP_API}config/qinius`, {
       params: {
         file_name: file.name,
-        scene: 'static'
+        scene: _scene
       }
     })
       .then(res => {
@@ -26,8 +41,8 @@ export function upload(file) {
           let observable = qiniu.upload(file, res.data.data.name, res.data.data.token, putExtra, congif);
           let observer = {
             next(res) {
-              let progress = Number(res.total.percent.toFixed(0));
-              /*if (json.obj) {
+              /*let progress = Number(res.total.percent.toFixed(0));
+              if (json.obj) {
                 json.obj.file.percent = progress;
                 json.obj.onProgress(json.obj.file);
               }

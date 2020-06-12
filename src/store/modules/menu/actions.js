@@ -105,7 +105,7 @@ const getTreeList = (menuList, parentId = 0, menu = []) => {
     routerSkipAuth(router.children, menu)
   }
 
-  console.log('menu', menu);
+  // console.log('menu', menu);
   return menu;
 };
 

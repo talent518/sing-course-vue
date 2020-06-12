@@ -10,7 +10,7 @@
     <div>
 
       <el-form :model="form" label-width="100px" size="small">
-        <el-form-item label="环节模板名称">
+        <el-form-item label="名称">
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -23,7 +23,7 @@
           </el-switch>
         </el-form-item>
 
-        <el-form-item label="环节模板类别">
+        <el-form-item label="类别">
           <el-select v-model="form.type" placeholder="请选择">
             <el-option
               v-for="item in SEGMENT_TYPE_ENUM"
@@ -34,7 +34,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="环节模板样式">
+        <el-form-item label="样式">
           <!--<el-upload
             :show-file-list="false"
             class="upload-item"
@@ -47,11 +47,17 @@
           <el-upload
             class="upload-item"
             action="/api/public/upload"
+            accept="image/*"
             :show-file-list="false"
             :http-request="uploadFile"
             list-type="picture-card"
             multiple>
-            <img v-if="form.preview_image" :src="form.preview_image" class="avatar">
+            <el-image
+              style="width: 100%; height: 100%"
+              fit="contain"
+              v-if="form.preview_image"
+              :src="form.preview_image">
+            </el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -122,10 +128,10 @@
     methods: {
       init() {
         if (!this.dialogData.param.id) {
-          this.title = '新增';
+          this.title = '新增环节模板';
           this.form = JSON.parse(JSON.stringify(FORM_DEFAULT))
         } else {
-          this.title = '编辑';
+          this.title = '编辑环节模板';
           this.form = this.dialogData.param
         }
       },
@@ -133,8 +139,6 @@
 
       uploadFile(e) {
         upload(e.file).then(res => {
-          console.log('!!!!', res);
-          // this.fileList.push(res)
           this.form.preview_image = res.url
         })
       },
@@ -155,13 +159,26 @@
 
         }*/
 
-        let json = {
-          title: '评分标准名',
-          rule: JSON.stringify(this.form.rule),
-          evaluate_voice: JSON.stringify(this.form.evaluate_voice),
-          retry_voice: this.form.retry_voice,
-        }
 
+        let
+          form = this.form,
+          json = {
+            title: form.title,
+            type: form.type,
+            status: form.status,
+            preview_image: form.preview_image,
+          };
+
+        this.dialogData.param.id && (json.id = this.dialogData.param.id);
+
+        this.ApiBasic.putSegment(json).then(res => {
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          });
+          this.dialogToggle();
+          this.$parent.getData();
+        })
 
       },
 
