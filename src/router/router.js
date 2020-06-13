@@ -18,8 +18,8 @@ const authRouter = {
       children: [
         {
           title: '环节模板',
-          path: "/segment",
-          name: "Segment",
+          path: "/templateSegment",
+          name: "TemplateSegment",
           component: () => import('@/views/basic/segment/Segment'),
           meta: {
             skipAuth: true
@@ -84,7 +84,7 @@ const authRouter = {
       ]
     },
 
-    {
+    /*{
       title: '产品管理',
       path: "/product",
       name: "Product",
@@ -111,7 +111,7 @@ const authRouter = {
           },
         }
       ]
-    },
+    },*/
 
     {
       path: "/index",
