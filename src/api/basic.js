@@ -13,7 +13,7 @@ class Basic {
 
   // 添加
   postSegment(json) {
-    return post(`course/segment-templates/${json.id}/${json.status}`);
+    return post(`course/segment-templates`, json);
   }
 
   // 修改

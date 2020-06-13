@@ -38,7 +38,7 @@
         <template slot-scope="scope">
           <el-button
             plain size="small" type="primary"
-            @click="handlePreview(scope.row.id)">预览
+            @click="handlePreview(scope.row)">预览
           </el-button>
 
           <el-button
@@ -55,7 +55,7 @@
       layout="prev, pager, next,total"
       :total="page.total"
       :page-size="page.size"
-      @current-change="pageCurrentChange(index)"
+      @current-change="pageCurrentChange"
       :current-page.sync="page.index"></el-pagination>
 
     <segment-dialog :dialog-data="dialogData"></segment-dialog>
@@ -100,6 +100,7 @@
       handleAdd() {
         this.dialogData = {
           show: true,
+          type: 'add',
           param: {
             id: 0
           }
@@ -109,12 +110,17 @@
       handleEdit(row) {
         this.dialogData = {
           show: true,
+          type: 'edit',
           param: row
         }
       },
 
-      handlePreview() {
-
+      handlePreview(row) {
+        this.dialogData = {
+          show: true,
+          type: 'view',
+          param: row
+        }
       },
 
 

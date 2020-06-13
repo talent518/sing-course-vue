@@ -9,7 +9,7 @@
     append-to-body>
     <div>
 
-      <el-form :model="form" label-width="100px" size="small">
+      <el-form :model="form" label-width="80px" size="small">
         <el-form-item label="名称">
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
@@ -65,7 +65,7 @@
       </el-form>
 
     </div>
-    <div slot="footer">
+    <div slot="footer" v-if="dialogData.type !== 'view'">
       <el-button @click="dialogToggle">取 消</el-button>
       <el-button type="primary" @click="dialogSave">确 定</el-button>
     </div>
@@ -96,6 +96,7 @@
         type: Object,
         default: {
           show: false,
+          type: '',
           param: {
             id: 0
           }
@@ -113,12 +114,6 @@
       }
     },
 
-    computed: {
-      /*SEGMENT_TYPE_ENUM() {
-        return getEnum('SegmentTypeEnum')
-      }*/
-    },
-
     watch: {
       'dialogData.show'(val) {
         if (val) this.init();
@@ -127,11 +122,14 @@
 
     methods: {
       init() {
-        if (!this.dialogData.param.id) {
+        if (this.dialogData.type == 'add') {
           this.title = '新增环节模板';
           this.form = JSON.parse(JSON.stringify(FORM_DEFAULT))
-        } else {
+        } else if (this.dialogData.type == 'edit') {
           this.title = '编辑环节模板';
+          this.form = this.dialogData.param
+        } else if (this.dialogData.type == 'view') {
+          this.title = '查看环节模板';
           this.form = this.dialogData.param
         }
       },
@@ -161,6 +159,7 @@
 
 
         let
+          api,
           form = this.form,
           json = {
             title: form.title,
@@ -169,9 +168,14 @@
             preview_image: form.preview_image,
           };
 
-        this.dialogData.param.id && (json.id = this.dialogData.param.id);
+        if (this.dialogData.param.id) {
+          json.id = this.dialogData.param.id;
+          api = this.ApiBasic.putSegment;
+        } else {
+          api = this.ApiBasic.postSegment;
+        }
 
-        this.ApiBasic.putSegment(json).then(res => {
+        api(json).then(res => {
           this.$message({
             type: 'success',
             message: '保存成功'
