@@ -99,12 +99,10 @@
             type="primary"
             @click="showDetail(scope, 1)"
             v-if="scope.row.firstWarningAmount < scope.row.firstAmount"
-          >{{ scope.row.firstAmount }}
-          </el-link
-          >
-          <el-link v-else type="danger" @click="showDetail(scope, 1)">{{
-            scope.row.firstAmount
-            }}
+            >{{ scope.row.firstAmount }}
+          </el-link>
+          <el-link v-else type="danger" @click="showDetail(scope, 1)"
+            >{{ scope.row.firstAmount }}
           </el-link>
         </template>
       </el-table-column>
@@ -119,12 +117,10 @@
             type="primary"
             @click="showDetail(scope, 0)"
             v-if="scope.row.secondWarningAmount < scope.row.secondAmount"
-          >{{ scope.row.secondAmount }}
-          </el-link
-          >
-          <el-link v-else type="danger" @click="showDetail(scope, 1)">{{
-            scope.row.secondAmount
-            }}
+            >{{ scope.row.secondAmount }}
+          </el-link>
+          <el-link v-else type="danger" @click="showDetail(scope, 1)"
+            >{{ scope.row.secondAmount }}
           </el-link>
         </template>
       </el-table-column>
@@ -172,16 +168,14 @@
           <el-button type="success" @click="searchChildTable">查询</el-button>
         </el-col>
       </el-row>
-      <my-table :data="data1"
-      >
+      <my-table :data="data1">
         <el-table-column
           :prop="item.prop"
           :label="item.label"
           v-for="item in c1"
           :key="item.prop"
         >
-        </el-table-column
-        >
+        </el-table-column>
       </my-table>
       <el-pagination
         class="m20"
@@ -197,176 +191,176 @@
   </section>
 </template>
 <script>
-  import menuRole from "@/views/common/menuRole";
-  import commonMessage from "@/views/common/commonMessage";
-  import commonSelect from "@/views/common/commonSelect";
+import menuRole from "@/views/common/menuRole";
+import commonMessage from "@/views/common/commonMessage";
+import commonSelect from "@/views/common/commonSelect";
 
-  export default {
-    name: "StockManager",
-    mixins: [menuRole, commonMessage, commonSelect],
-    data() {
-      return {
-        orgId: "",
-        data: [],
-        productId: "",
-        columnslist: [
-          {prop: "orgName", label: "所属组织"},
-          {prop: "nickname", label: "经销人员"},
-          {prop: "identityV", label: "身份"},
-          {prop: "productV", label: "商品名称"},
-          // { prop: "priceV", label: "销售价" },
-          // { prop: "firstAmount", label: "首次经销库存数" },
-          // { prop: "firstTempAmount", label: "首次经销暂扣库存数" },
-          // { prop: "secondAmount", label: "二次经销库存数" },
-          // { prop: "secondTempAmount", label: "二次经销暂扣库存数" },
-        ],
-        products: [],
-        orgs: [],
-        identityId: "",
-        identitys: [],
-        valueDate: [],
-        typeList: [],
-        rowId: "",
-        type: "",
-        data1: [],
-        c1: [
-          {prop: "typeV", label: "类型"},
-          {prop: "amount", label: "库存变化"},
-          {prop: "createTime", label: "时间"},
-          {prop: "newAmount", label: "剩余库存"},
-        ],
-        stockTypes: [],
-        username: "",
-        beginDate: "",
-        endDate: "",
-        name: "",
-        beginAmount: "",
-        endAmount: "",
-        pageSize: 5,
+export default {
+  name: "StockManager",
+  mixins: [menuRole, commonMessage, commonSelect],
+  data() {
+    return {
+      orgId: "",
+      data: [],
+      productId: "",
+      columnslist: [
+        { prop: "orgName", label: "所属组织" },
+        { prop: "nickname", label: "经销人员" },
+        { prop: "identityV", label: "身份" },
+        { prop: "productV", label: "商品名称" },
+        // { prop: "priceV", label: "销售价" },
+        // { prop: "firstAmount", label: "首次经销库存数" },
+        // { prop: "firstTempAmount", label: "首次经销暂扣库存数" },
+        // { prop: "secondAmount", label: "二次经销库存数" },
+        // { prop: "secondTempAmount", label: "二次经销暂扣库存数" },
+      ],
+      products: [],
+      orgs: [],
+      identityId: "",
+      identitys: [],
+      valueDate: [],
+      typeList: [],
+      rowId: "",
+      type: "",
+      data1: [],
+      c1: [
+        { prop: "typeV", label: "类型" },
+        { prop: "amount", label: "库存变化" },
+        { prop: "createTime", label: "时间" },
+        { prop: "newAmount", label: "剩余库存" },
+      ],
+      stockTypes: [],
+      username: "",
+      beginDate: "",
+      endDate: "",
+      name: "",
+      beginAmount: "",
+      endAmount: "",
+      pageSize: 5,
+    };
+  },
+  methods: {
+    searchChildTable() {
+      this.getPageStockLog();
+    },
+    changeType(val) {
+      this.curPage = 1;
+      this.o.curPage = 1;
+      this.o.type = this.type;
+      this.searchChildTable();
+      //this.getPageStockLog();
+    },
+    changeDate() {
+      this.curPage = 1;
+      this.o.curPage = 1;
+      if (this.valueDate && this.valueDate.length) {
+        this.beginDate = this.dayjs(this.valueDate[0]).format("YYYY-MM-DD");
+        this.endDate = this.dayjs(this.valueDate[1]).format("YYYY-MM-DD");
+        this.o.beginDate = this.beginDate;
+        this.o.endDate = this.endDate;
+      } else {
+        this.o.beginDate = this.beginDate = "";
+        this.o.endDate = this.endDate = "";
+      }
+    },
+    async searchM() {
+      this.productStock();
+    },
+    async getPageStockLog() {
+      let d = await this.getProductStockLog(this.o);
+      this.total = d.rowCount;
+      d.list.forEach((i) => {
+        this.stockTypes.forEach((item) => {
+          if (i.type === item.value) {
+            i.typeV = item.name;
+          }
+        });
+      });
+      this.data1 = d.list;
+      this.open();
+    },
+    resetData() {
+      this.curPage = 1;
+      this.valueDate = [];
+      this.beginAmount = "";
+      this.endAmount = "";
+      this.type = "";
+    },
+    async showDetail({ row }, isFirst) {
+      this.resetData();
+      this.o = {
+        curPage: this.curPage,
+        pageSize: this.pageSize,
+        uid: row.uid,
+        productId: row.productId,
+        type: this.type,
+        isFirst,
+        beginDate: this.beginDate,
+        endDate: this.endDate,
       };
+      await this.stockLogType();
+      this.getPageStockLog();
     },
-    methods: {
-      searchChildTable() {
-        this.getPageStockLog();
-      },
-      changeType(val) {
-        this.curPage = 1;
-        this.o.curPage = 1;
-        this.o.type = this.type;
-        this.searchChildTable();
-        //this.getPageStockLog();
-      },
-      changeDate() {
-        this.curPage = 1;
-        this.o.curPage = 1;
-        if (this.valueDate && this.valueDate.length) {
-          this.beginDate = this.dayjs(this.valueDate[0]).format("YYYY-MM-DD");
-          this.endDate = this.dayjs(this.valueDate[1]).format("YYYY-MM-DD");
-          this.o.beginDate = this.beginDate;
-          this.o.endDate = this.endDate;
-        } else {
-          this.o.beginDate = this.beginDate = "";
-          this.o.endDate = this.endDate = "";
-        }
-      },
-      async searchM() {
-        this.productStock();
-      },
-      async getPageStockLog() {
-        let d = await this.getProductStockLog(this.o);
-        this.total = d.rowCount;
-        d.list.forEach((i) => {
-          this.stockTypes.forEach((item) => {
-            if (i.type === item.value) {
-              i.typeV = item.name;
-            }
-          });
-        });
-        this.data1 = d.list;
-        this.open();
-      },
-      resetData() {
-        this.curPage = 1;
-        this.valueDate = [];
-        this.beginAmount = "";
-        this.endAmount = "";
-        this.type = "";
-      },
-      async showDetail({row}, isFirst) {
-        this.resetData();
-        this.o = {
-          curPage: this.curPage,
-          pageSize: this.pageSize,
-          uid: row.uid,
-          productId: row.productId,
-          type: this.type,
-          isFirst,
-          beginDate: this.beginDate,
-          endDate: this.endDate,
-        };
-        await this.stockLogType();
-        this.getPageStockLog();
-      },
-      currentChange() {
-        this.o.curPage = this.curPage;
-        this.getPageStockLog();
-      },
-      async getProductStockLog(obj) {
-        return await this.ApiProduction.productStockLog(obj);
-      },
-      async getProduct() {
-        this.products = await this.ApiProduction.getProduct();
-      },
-      async stockLogType() {
-        this.stockTypes = await this.ApiProduction.stockLogType();
-      },
+    currentChange() {
+      this.o.curPage = this.curPage;
+      this.getPageStockLog();
+    },
+    async getProductStockLog(obj) {
+      return await this.ApiProduction.productStockLog(obj);
+    },
+    async getProduct() {
+      this.products = await this.ApiProduction.getProduct();
+    },
+    async stockLogType() {
+      this.stockTypes = await this.ApiProduction.stockLogType();
+    },
 
-      async getIndetitys() {
-        this.identitys = await this.ApiUser.getUserIdentitys();
-      },
-      async productPurchaseType() {
-        this.typeList = await this.ApiProduction.productPurchaseType();
-      },
-      changeNumber() {
-        this.beginAmount = parseInt(this.beginAmount) || "";
-        this.endAmount = parseInt(this.endAmount) || "";
-      },
-      async productStock() {
-        this.openLoading();
-        let d = await this.ApiProduction.productStock({
-          productId: this.productId,
-          orgId: this.orgId,
-          curPage: this.curPage,
-          uid: this.uid,
-          pageSize: this.pageSize,
-          beginAmount: this.beginAmount,
-          endAmount: this.endAmount,
-        });
-        d.list.forEach((item) => {
-          this.identitys.forEach((i) => {
-            if (i.id === item.identityId) {
-              item.identityV = i.name;
-            }
-          });
-          this.products.forEach((i) => {
-            if (i.id === item.productId) {
-              item.productV = i.name;
-              item.priceV = i.price;
-            }
-          });
-        });
-        this.data = d.list;
-        this.closeLoading();
-      },
+    async getIndetitys() {
+      this.identitys = await this.ApiUser.getUserIdentitys();
     },
-    async mounted() {
-      await this.productPurchaseType();
-      await this.getProduct();
-      await this.getOrgs();
-      await this.getIndetitys();
-      await this.productStock();
-      this.remoteMethod("");
-      //this.stockLogType();
+    async productPurchaseType() {
+      this.typeList = await this.ApiProduction.productPurchaseType();
     },
-  };
+    changeNumber() {
+      this.beginAmount = parseInt(this.beginAmount) || "";
+      this.endAmount = parseInt(this.endAmount) || "";
+    },
+    async productStock() {
+      this.openLoading();
+      let d = await this.ApiProduction.productStock({
+        productId: this.productId,
+        orgId: this.orgId,
+        curPage: this.curPage,
+        uid: this.uid,
+        pageSize: this.pageSize,
+        beginAmount: this.beginAmount,
+        endAmount: this.endAmount,
+      });
+      d.list.forEach((item) => {
+        this.identitys.forEach((i) => {
+          if (i.id === item.identityId) {
+            item.identityV = i.name;
+          }
+        });
+        this.products.forEach((i) => {
+          if (i.id === item.productId) {
+            item.productV = i.name;
+            item.priceV = i.price;
+          }
+        });
+      });
+      this.data = d.list;
+      this.closeLoading();
+    },
+  },
+  async mounted() {
+    await this.productPurchaseType();
+    await this.getProduct();
+    await this.getOrgs();
+    await this.getIndetitys();
+    await this.productStock();
+    this.remoteMethod("");
+    //this.stockLogType();
+  },
+};
 </script>
