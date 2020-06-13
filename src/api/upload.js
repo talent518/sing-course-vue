@@ -35,6 +35,9 @@ export function upload(file) {
       .then(res => {
           let putExtra = {
             fname: file.name,
+            params:{
+              'x:fullname':res.data.data.new_name
+            }
             // mimeType: json.mimeType || null
           };
           let congif = {};
