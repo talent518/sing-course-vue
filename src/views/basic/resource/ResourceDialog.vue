@@ -1,7 +1,7 @@
 <template>
 
   <el-dialog
-    class="segement-dialog"
+    class="resource-dialog"
     top="5vh"
     :title="title"
     :visible.sync="dialogData.show"
@@ -9,57 +9,60 @@
     append-to-body>
     <div>
 
-      <el-form :model="form" label-width="80px" size="small">
-        <el-form-item label="模板名称：">
-          <el-input v-model="form.title" placeholder="请输入"></el-input>
+      <el-form :model="form" label-width="100px" size="small">
+        <el-form-item label="名称：">
+          <el-input v-model="form.template_data.title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="状态">
+        <el-form-item label="状态：">
           <el-switch
-            v-model="form.status"
+            v-model="form.template_data.status"
             :active-value="1"
             :inactive-value="0"
             active-color="#13ce66">
           </el-switch>
         </el-form-item>
 
-        <el-form-item label="类别">
-          <el-select v-model="form.type" placeholder="请选择">
-            <el-option
-              v-for="item in SEGMENT_TYPE_ENUM"
-              :key="item.key"
-              :label="item.value"
-              :value="item.key">
-            </el-option>
+        <el-form-item label="模板：">
+          <el-select v-model="form.template_data.layout" placeholder="请选择">
+            <el-option label="横向大卡片" :value="1"></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="样式">
-          <!--<el-upload
-            :show-file-list="false"
-            class="upload-item"
-            action="/api/public/upload"
-            list-type="text"
-            :http-request="uploadFileVideo1Banner">
-            <el-button><i class="iconfont icon-cloud-upload"></i> 上传音频</el-button>
-          </el-upload>-->
+        <el-form-item label="过渡环节：">
+          <el-radio-group v-model="form.template_data.is_excessive">
+            <el-radio :label="1" border style="margin-right: 0;">是</el-radio>
+            <el-radio :label="0" border>否</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="image/*"
-            :show-file-list="false"
-            :http-request="uploadFile"
-            list-type="picture-card"
-            multiple>
-            <el-image
-              style="width: 100%; height: 100%"
-              fit="contain"
-              v-if="form.preview_image"
-              :src="form.preview_image">
-            </el-image>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-form-item label="关联环节：">
+
+          <el-card class="segment-card" shadow="hover" :body-style="{ padding: '12px' }">
+            <div slot="header" class="clearfix">
+              <el-input v-model="form.template_data_details[0].d_title" placeholder="标题"></el-input>
+            </div>
+
+            <el-upload
+              class="upload-item"
+              action="/api/public/upload"
+              accept="image/*"
+              :show-file-list="false"
+              :http-request="uploadFile"
+              list-type="picture-card"
+              multiple>
+              <el-image
+                style="width: 100%; height: 100%"
+                fit="contain"
+                v-if="form.preview_image"
+                :src="form.preview_image">
+              </el-image>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+
+          </el-card>
+
+
         </el-form-item>
 
       </el-form>
@@ -80,11 +83,44 @@
   import {getEnum} from "@util/storage"
 
   const FORM_DEFAULT = {
-    title: '',
-    type: '',
-    status: 1,
-    preview_image: '',
+    template_data: {
+      title: '',
+      layout: 1,
+      status: 1,
+      is_excessive: 1,
+    },
+    template_data_details: [
+      {
+        segment_template_id: 0,
+        lead_type: "",
+        d_title: '',
+        cover: ''
+      },
+    ]
   }
+  /*
+    {
+      "template_data":{
+        "title":"这是教材标题",
+        "layout":"教材模板类型：1：横向大卡片",
+        "status":"状态 0：禁用，1：启用",
+        "is_excessive":"是否存在过度环节 0：否，1：是'"
+    },
+      "template_data_details":[
+      {
+        "segment_template_id":1,
+        "lead_type":"Video",
+        "d_title":1,
+        "cover":1
+      },
+      {
+        "segment_template_id":1,
+        "lead_type":"Video",
+        "d_title":1,
+        "cover":1
+      }
+    ]
+    }*/
 
   export default {
     name: "ResourceDialog",
@@ -192,7 +228,9 @@
 </script>
 
 <style lang="scss">
-  .segment-dialog {
-
+  .resource-dialog {
+    .segment-card {
+      width: 25%;
+    }
   }
 </style>

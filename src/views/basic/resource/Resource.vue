@@ -23,8 +23,8 @@
         prop="title"
         label="关联环节">
         <template slot-scope="scope">
-          <template v-if="scope.row.segment_info.length">
-            <div v-for="item in scope.row.segment_info">{{item.title}}</div>
+          <template v-if="scope.row.template_data_details.length">
+            <div v-for="item in scope.row.template_data_details">{{item.title}}</div>
           </template>
           <template v-else>-</template>
         </template>

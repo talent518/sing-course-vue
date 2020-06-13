@@ -64,23 +64,14 @@ const authRouter = {
       },
       children: [
         {
-          title: '教材管理1',
-          path: "/resource1",
-          name: "Resource1",
-          component: () => import('@/views/resource/Resource1'),
+          title: '教材列表',
+          path: "/resource",
+          name: "Resource",
+          component: () => import('@/views/resource/Resource'),
           meta: {
             skipAuth: true
           },
         },
-        {
-          title: '教材管理2',
-          path: "/resource2",
-          name: "Resource2",
-          component: () => import('@/views/resource/Resource2'),
-          meta: {
-            skipAuth: true
-          },
-        }
       ]
     },
 

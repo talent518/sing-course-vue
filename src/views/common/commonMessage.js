@@ -1,7 +1,9 @@
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   inject: [
     "ApiBasic",
+    "ApiResource",
     "ApiBase",
     "ApiProduction",
     "ApiOther",
@@ -86,7 +88,8 @@ export default {
       });
       return list;
     },
-    filterAllChild() {},
+    filterAllChild() {
+    },
     async remoteMethod(name) {
       this.userList = await this.ApiUser.getSelectUsers(name);
     },
