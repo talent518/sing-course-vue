@@ -27,6 +27,10 @@ class Basic {
     return put(`course/textbook-templates/${json.id}`, json);
   }
 
+  postResource(json) {
+    return post(`course/textbook-templates`, json);
+  }
+
 
   getScore(json) {
     return get('config/score-configs', json);

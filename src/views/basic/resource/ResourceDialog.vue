@@ -3,6 +3,7 @@
   <el-dialog
     class="resource-dialog"
     top="5vh"
+    width="1200px"
     :title="title"
     :visible.sync="dialogData.show"
     :close-on-click-modal="false"
@@ -38,29 +39,67 @@
 
         <el-form-item label="关联环节：">
 
-          <el-card class="segment-card" shadow="hover" :body-style="{ padding: '12px' }">
-            <div slot="header" class="clearfix">
-              <el-input v-model="form.template_data_details[0].d_title" placeholder="标题"></el-input>
+          <div class="segment-card">
+
+            <div v-for="(segement, index) in form.template_data_details" class=" card-item">
+
+              <div class="card-item-header">
+                <el-select v-model="segement.segment_template_id" placeholder="选择环节">
+                  <el-option
+                    v-for="item in listSegment"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+
+                <el-button-group>
+                  <el-button type="default" icon="el-icon-minus" @click="segmentDel(index)" :disabled="form.template_data_details.length < 2"></el-button>
+                  <el-button type="default" icon="el-icon-plus" @click="segmentAdd(index)"></el-button>
+                </el-button-group>
+              </div>
+
+              <el-card shadow="hover" :body-style="{ padding: '12px' }">
+
+                <div class="header">
+                  <el-input v-model="segement.title" placeholder="标题"></el-input>
+                </div>
+
+                <el-divider></el-divider>
+
+                <el-upload
+                  class="upload-item"
+                  action="/api/public/upload"
+                  accept="image/*"
+                  :show-file-list="false"
+                  :http-request="(file)=>{return uploadFile(file, index)}"
+                  list-type="picture-card"
+                  multiple>
+                  <el-image
+                    style="width: 100%; height: 100%"
+                    fit="cover"
+                    v-if="segement.cover"
+                    :src="segement.cover">
+                  </el-image>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+
+                <el-divider></el-divider>
+
+                <el-select v-model="segement.lead_type" placeholder="关联引导">
+                  <el-option
+                    v-for="item in dictoryObj.SegmentLeadTypeEnum"
+                    :key="item.key"
+                    :label="item.value"
+                    :value="item.key">
+                  </el-option>
+                </el-select>
+
+              </el-card>
+
             </div>
 
-            <el-upload
-              class="upload-item"
-              action="/api/public/upload"
-              accept="image/*"
-              :show-file-list="false"
-              :http-request="uploadFile"
-              list-type="picture-card"
-              multiple>
-              <el-image
-                style="width: 100%; height: 100%"
-                fit="contain"
-                v-if="form.preview_image"
-                :src="form.preview_image">
-              </el-image>
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-
-          </el-card>
+          </div>
 
 
         </el-form-item>
@@ -91,12 +130,19 @@
     },
     template_data_details: [
       {
-        segment_template_id: 0,
+        segment_template_id: '',
         lead_type: "",
-        d_title: '',
+        title: '',
         cover: ''
       },
     ]
+  }
+
+  const SEGMENT_ITEM = {
+    segment_template_id: '',
+    lead_type: "",
+    title: '',
+    cover: ''
   }
   /*
     {
@@ -145,6 +191,9 @@
         title: '',
 
         SEGMENT_TYPE_ENUM: getEnum('SegmentTypeEnum'),
+        listSegment: [],
+
+        SEGMENT_ITEM: SEGMENT_ITEM,
 
         form: JSON.parse(JSON.stringify(FORM_DEFAULT))
       }
@@ -158,6 +207,10 @@
 
     methods: {
       init() {
+        console.log(this.dictoryObj);
+
+        this.getSegmentAll();
+
         if (this.dialogData.type == 'add') {
           this.title = '新增教材模板';
           this.form = JSON.parse(JSON.stringify(FORM_DEFAULT))
@@ -170,11 +223,22 @@
         }
       },
 
+      async getSegmentAll() {
+        let res = await this.ApiBasic.getSegment({scene: 'all'});
+        this.listSegment = res.items;
+      },
 
-      uploadFile(e) {
-        upload(e.file).then(res => {
-          this.form.preview_image = res.url
-        })
+      segmentAdd(index) {
+        this.form.template_data_details.splice(index, 0, JSON.parse(JSON.stringify(SEGMENT_ITEM)))
+      },
+
+      segmentDel(index) {
+        this.form.template_data_details.splice(index, 1)
+      },
+
+      async uploadFile(e, index) {
+        let res = await upload(e.file);
+        this.form.template_data_details[index].cover = res.url
       },
 
       openMedia(url) {
@@ -196,19 +260,18 @@
 
         let
           api,
-          form = this.form,
           json = {
-            title: form.title,
-            type: form.type,
-            status: form.status,
-            preview_image: form.preview_image,
+            template_data: JSON.stringify(this.form.template_data),
+            template_data_details: JSON.stringify(this.form.template_data_details),
           };
+
+        console.log(json);
 
         if (this.dialogData.param.id) {
           json.id = this.dialogData.param.id;
           api = this.ApiBasic.putSegment;
         } else {
-          api = this.ApiBasic.postSegment;
+          api = this.ApiBasic.postResource;
         }
 
         api(json).then(res => {
@@ -230,7 +293,63 @@
 <style lang="scss">
   .resource-dialog {
     .segment-card {
-      width: 25%;
+      display: flex;
+      margin: 0 -6px;
+      /*width: 100%;*/
+
+      .card-item {
+        box-sizing: border-box;
+        flex-shrink: 0;
+        flex-grow: 0;
+        padding: 0 6px;
+        width: 20%;
+
+        .card-item-header {
+          display: flex;
+          margin-bottom: 12px;
+          .el-select {
+            flex-grow: 0;
+          }
+
+          .el-button-group {
+            margin-left: 12px;
+            flex-shrink: 0;
+            .el-button {
+              padding-left: 11px;
+              padding-right: 11px;
+            }
+          }
+        }
+
+        .el-divider--horizontal {
+          margin: 12px -12px;
+          width: auto;
+          background-color: #EBEEF5;
+        }
+
+        .upload-item {
+          display: flex;
+          justify-content: center;
+          .el-upload--picture-card {
+            overflow: hidden;
+            position: relative;
+            width: 100px;
+            height: 100px;
+            /*line-height: 100px;*/
+            border-radius: 50%;
+            .avatar-uploader-icon {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              z-index: 1;
+              transform: translate(-50%, -50%);
+            }
+          }
+        }
+
+      }
+
     }
+
   }
 </style>
