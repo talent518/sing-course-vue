@@ -29,14 +29,22 @@
 
         <el-form-item label="课程封面">
           <el-upload
-            class="course-avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            class="upload-item"
+            action="/api/public/upload"
+            accept="image/*"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple
           >
-            <img v-if="form.cover" :src="form.cover" class="course-avatar" />
-            <i v-else class="el-icon-plus course-avatar-uploader-icon"></i>
+            <el-image
+              style="width: 100%; height: 100%;"
+              fit="contain"
+              v-if="form.cover"
+              :src="form.cover"
+            >
+            </el-image>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
 
@@ -62,7 +70,10 @@
 </template>
 
 <script>
+import { upload } from "@api/upload";
+import Teach from "@/views/common/teach";
 export default {
+  mixins: [Teach],
   name: "CourseDialog",
   props: ["dialogObj"],
   data() {
@@ -85,6 +96,13 @@ export default {
   methods: {
     //提交表单内容
     sub() {},
+
+    uploadFile(e) {
+      upload(e.file).then((res) => {
+        console.log(res.url);
+        this.form.cover = res.url;
+      });
+    },
 
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
