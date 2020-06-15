@@ -11,14 +11,24 @@ class Basic {
     return post(`course/segment-templates/${json.id}/${json.status}`);
   }
 
-  // 添加
   postSegment(json) {
-    return post(`course/segment-templates/${json.id}/${json.status}`);
+    return post(`course/segment-templates`, json);
   }
 
-  // 修改
   putSegment(json) {
     return put(`course/segment-templates/${json.id}`, json);
+  }
+
+  getResource(json) {
+    return get(`course/textbook-templates`, json);
+  }
+
+  putResource(json) {
+    return put(`course/textbook-templates/${json.id}`, json);
+  }
+
+  postResource(json) {
+    return post(`course/textbook-templates`, json);
   }
 
   getScore(json) {

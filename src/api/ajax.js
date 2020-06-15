@@ -88,7 +88,10 @@ export default (baseURL) => {
                   errmessage = errmessage[0];
                 }
               } else {
-                errmessage = data.data;
+                errmessage = data.data || data.message;
+              }
+              if (errmessage == null || errmessage == "") {
+                errmessage = data.message;
               }
               Vue.prototype.$message({
                 showClose: true,
@@ -113,6 +116,7 @@ export default (baseURL) => {
         if (item === "get") {
           return service[item](url, { params: { ...params } });
         } else {
+          debugger;
           return service[item](url, params);
         }
       };

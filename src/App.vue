@@ -18,6 +18,7 @@ import course from "@api/course";
 import { cloneDeep } from "lodash";
 import dayjs from "dayjs";
 import teach from "@api/teach";
+import resource from "@api/resource";
 
 export default {
   name: "app",
@@ -41,6 +42,7 @@ export default {
       ApiOrder: order,
       ApiReport: report,
       ApiBasic: basic,
+      ApiResource: resource,
       ApiBase: base,
       ApiCourse: course,
       ApiTeach: teach,

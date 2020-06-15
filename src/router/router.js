@@ -18,8 +18,8 @@ const authRouter = {
       children: [
         {
           title: "环节模板",
-          path: "/segment",
-          name: "Segment",
+          path: "/templateSegment",
+          name: "TemplateSegment",
           component: () => import("@/views/basic/segment/Segment"),
           meta: {
             skipAuth: true,
@@ -63,6 +63,15 @@ const authRouter = {
         skipAuth: true,
       },
       children: [
+        {
+          title: "教材列表",
+          path: "/resource",
+          name: "Resource",
+          component: () => import("@/views/resource/Resource"),
+          meta: {
+            skipAuth: true,
+          },
+        },
         {
           title: "教材管理1",
           path: "/resource1",

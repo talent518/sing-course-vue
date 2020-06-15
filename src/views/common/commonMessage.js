@@ -1,7 +1,9 @@
 import { mapGetters } from "vuex";
+
 export default {
   inject: [
     "ApiBasic",
+    "ApiResource",
     "ApiBase",
     "ApiProduction",
     "ApiOther",

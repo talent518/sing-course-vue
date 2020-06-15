@@ -46,8 +46,8 @@
         </el-form-item>
 
         <el-form-item label="评价语音">
-          <div class="score-item">
-            <score-star star="1"></score-star>
+          <div v-for="(item, index) in form.evaluate_voice" class="score-item">
+            <score-star :star="index + 1"></score-star>
 
             <div class="audio-item">
               <el-upload
@@ -55,7 +55,11 @@
                 class="upload-item"
                 action="/api/public/upload"
                 list-type="text"
-                :http-request="uploadFileVideo1Banner"
+                :http-request="
+                  (file) => {
+                    return uploadFile(file, 'evaluate_voice', index);
+                  }
+                "
               >
                 <el-button
                   ><i class="iconfont icon-cloud-upload"></i>
@@ -63,19 +67,14 @@
                 >
               </el-upload>
               <el-button
-                ><i class="iconfont icon-play-circle"></i> 打开音频</el-button
+                v-if="form.evaluate_voice[index]"
+                @click="openMedia(form.evaluate_voice[index])"
+                type="primary"
+                plain
               >
+                <i class="iconfont icon-play-circle"></i> 播放音频
+              </el-button>
             </div>
-          </div>
-
-          <div class="score-item">
-            <score-star star="2"></score-star>
-            <cc-number-range></cc-number-range>
-          </div>
-
-          <div class="score-item">
-            <score-star star="3"></score-star>
-            <cc-number-range></cc-number-range>
           </div>
         </el-form-item>
 
@@ -96,21 +95,27 @@
         <el-form-item label="重试录音">
           <div class="audio-item">
             <el-upload
-              :show-file-list="false"
               class="upload-item"
               action="/api/public/upload"
+              accept="audio/mp3"
+              :show-file-list="false"
               list-type="text"
-              :http-request="uploadFileVideo1Banner"
+              :http-request="
+                (file) => {
+                  return uploadFile(file, 'retry_voice');
+                }
+              "
             >
               <el-button
                 ><i class="iconfont icon-cloud-upload"></i> 上传音频</el-button
               >
             </el-upload>
             <el-button
+              v-if="form.retry_voice"
               :disabled="!form.retry_voice"
               @click="openMedia(form.retry_voice)"
             >
-              <i class="iconfont icon-play-circle"></i> 打开音频
+              <i class="iconfont icon-play-circle"></i> 播放音频
             </el-button>
           </div>
         </el-form-item>
@@ -137,7 +142,7 @@ const FORM_DEFAULT = {
     [31, 80],
     [80, 100],
   ],
-  evaluate_voice: ["", "", ""],
+  evaluate_voice: [0, 0, 0],
   retry_voice: "",
 };
 
@@ -185,19 +190,16 @@ export default {
       }
     },
 
-    uploadFileVideo1Banner(a) {
-      upload("http://admin.test.changchangenglish.com/api/public/upload/zone", {
-        file: a.file,
-        type: "local",
-      }).then((res) => {
-        console.log("!!!!", res);
-        /*res.url = process.env.MEDIA_URL + res.url;
-          this.fileList.push(res)*/
-      });
+    async uploadFile(e, type, index) {
+      let res = await upload(e.file);
+      if (type == "retry_voice") {
+        this.form.retry_voice = res.url;
+      } else if (type == "evaluate_voice") {
+        this.form.evaluate_voice.splice(index, 1, res.url);
+      }
     },
 
     openMedia(url) {
-      console.log("media url", url);
       window.open(url, "_blank");
     },
 
@@ -212,13 +214,17 @@ export default {
         }*/
 
       let json = {
-        title: "评分标准名",
+        title: this.form.title,
         rule: JSON.stringify(this.form.rule),
         evaluate_voice: JSON.stringify(this.form.evaluate_voice),
         retry_voice: this.form.retry_voice,
       };
 
-      this.ApiBasic.postScore(json).then((res) => {});
+      this.ApiBasic.postScore(json).then((res) => {
+        this.$message.success("保存成功");
+        this.dialogToggle();
+        this.$parent.getData();
+      });
     },
   },
 };

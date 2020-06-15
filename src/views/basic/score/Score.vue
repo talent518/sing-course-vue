@@ -37,7 +37,7 @@
       layout="prev, pager, next,total"
       :total="page.total"
       :page-size="page.size"
-      @current-change="pageCurrentChange(index)"
+      @current-change="pageCurrentChange"
       :current-page.sync="page.index"
     ></el-pagination>
 

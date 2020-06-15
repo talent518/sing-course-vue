@@ -1,8 +1,173 @@
-<template> </template>
+<template>
+  <div>
+    <el-form size="small" inline class="section-search">
+      <el-form-item>
+        <el-button type="success" plain @click="handleDialog('add')"
+          >新增教材模板</el-button
+        >
+      </el-form-item>
+    </el-form>
+
+    <my-table :data="list">
+      <el-table-column prop="id" label="id"></el-table-column>
+
+      <el-table-column prop="code" label="编号"></el-table-column>
+
+      <el-table-column prop="title" label="标题"></el-table-column>
+
+      <el-table-column prop="title" label="关联环节">
+        <template slot-scope="scope">
+          <template v-if="scope.row.template_data_details.length">
+            <div v-for="item in scope.row.template_data_details">
+              {{ item.title }}
+            </div>
+          </template>
+          <template v-else>-</template>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="status_text" label="状态">
+        <template slot-scope="scope">
+          <cc-cell-switch
+            :value="scope.row.status"
+            @click="handleSwitch(scope.row.id, scope.row.status)"
+          ></cc-cell-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            plain
+            size="small"
+            type="primary"
+            @click="handleDialog('add', scope.row)"
+            >预览
+          </el-button>
+
+          <el-button
+            plain
+            size="small"
+            type="warning"
+            @click="handleDialog('edit', scope.row)"
+            >编辑
+          </el-button>
+        </template>
+      </el-table-column>
+    </my-table>
+
+    <el-pagination
+      class="m20"
+      background
+      layout="prev, pager, next,total"
+      :total="page.total"
+      :page-size="page.size"
+      @current-change="pageCurrentChange"
+      :current-page.sync="page.index"
+    ></el-pagination>
+
+    <resource-dialog :dialog-data="dialogData"></resource-dialog>
+  </div>
+</template>
 
 <script>
+import commonMessage from "@/views/common/commonMessage";
+import menuRole from "@/views/common/menuRole";
+import ResourceDialog from "@/views/basic/resource/ResourceDialog";
+
 export default {
-  name: "Resource",
+  name: "TemplateResource",
+
+  mixins: [commonMessage, menuRole],
+
+  components: { ResourceDialog },
+
+  data() {
+    return {
+      loading: true,
+      dialogData: {
+        show: false,
+      },
+
+      list: [],
+
+      page: {
+        total: 0,
+        index: 1,
+        size: 10,
+      },
+    };
+  },
+
+  mounted() {
+    this.getData();
+  },
+
+  methods: {
+    handleDialog(type, row) {
+      this.dialogData = {
+        show: true,
+        type: type,
+        param: row ? row : { id: 0 },
+      };
+    },
+
+    handleSwitch(id, val) {
+      let _targetText = "",
+        _target; // 要到达的状态
+      if (val === 0) {
+        _target = "enable";
+        _targetText = "启用";
+      } else if (val === 1) {
+        _target = "disable";
+        _targetText = "停用";
+      }
+
+      this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.loading = true;
+
+          let param = {
+            id: id,
+            status: _target,
+          };
+
+          this.ApiBasic.putResource(param)
+            .then((res) => {
+              this.$message.success("修改成功");
+              this.getData();
+              this.loading = false;
+            })
+            .catch((err) => {
+              console.log(err);
+              this.loading = false;
+            });
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
+    },
+
+    async getData() {
+      let param = {
+        pageIndex: this.page.index,
+        pageSize: this.page.size,
+      };
+      let res = await this.ApiBasic.getResource(param);
+      this.loading = false;
+      this.list = res.items;
+      this.page.total = res.total;
+    },
+
+    pageCurrentChange(index) {
+      this.page.index = index;
+      this.getData();
+    },
+  },
 };
 </script>
 

@@ -35,6 +35,9 @@ export function upload(file) {
       .then((res) => {
         let putExtra = {
           fname: file.name,
+          params: {
+            "x:fullname": res.data.data.new_name,
+          },
           // mimeType: json.mimeType || null
         };
         let congif = {};
@@ -70,7 +73,7 @@ export function upload(file) {
             }
           },
           complete(res) {
-            res.url = process.env.VUE_APP_MEDIA + res.key;
+            res.url = res.fullname;
             res.name = file.name;
             resolve(res);
           },

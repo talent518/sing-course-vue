@@ -1,6 +1,6 @@
 <template>
   <el-form
-    label-width="100px"
+    label-width="150px"
     class="demo-ruleForm"
     autocomplete="off"
     :model="model"
@@ -11,21 +11,21 @@
   </el-form>
 </template>
 <script>
-  export default {
-    name: "myTable",
-    props: {
-      model: {
-        type: Object,
-        dafault() {
-          return {};
-        },
-      },
-      rules: {
-        type: Object,
-        dafault() {
-          return {};
-        },
+export default {
+  name: "myTable",
+  props: {
+    model: {
+      type: Object,
+      dafault() {
+        return {};
       },
     },
-  };
+    rules: {
+      type: Object,
+      dafault() {
+        return {};
+      },
+    },
+  },
+};
 </script>

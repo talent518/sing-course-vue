@@ -17,8 +17,9 @@ class Course {
     dubbing_type,
     dubbing_content,
     dubbing_answer,
+    dubbing_content_tran,
   }) {
-    return get(`${url.voiceQuestions}`, {
+    return post(`${url.voiceQuestions}`, {
       title,
       material_type,
       material_url,
@@ -26,6 +27,7 @@ class Course {
       dubbing_type,
       dubbing_content,
       dubbing_answer,
+      dubbing_content_tran,
     });
   }
   putVoiceQuestions({
@@ -37,8 +39,9 @@ class Course {
     dubbing_type,
     dubbing_content,
     dubbing_answer,
+    dubbing_content_tran,
   }) {
-    return get(`${url.voiceQuestions}/${id}`, {
+    return put(`${url.voiceQuestions}/${id}`, {
       title,
       material_type,
       material_url,
@@ -46,10 +49,11 @@ class Course {
       dubbing_type,
       dubbing_content,
       dubbing_answer,
+      dubbing_content_tran,
     });
   }
   delVoiceQuestions(id) {
-    return get(`${url.voiceQuestions}/${id}`);
+    return del(`${url.voiceQuestions}/${id}`);
   }
 }
 

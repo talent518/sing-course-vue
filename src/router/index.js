@@ -50,11 +50,11 @@ router.beforeEach(async (to, from, next) => {
       let newRoutes = await store.dispatch("menu/getMenu");
 
       router.addRoutes([
-        {
+        /*{
           path: "/login",
           name: "login",
           component: login,
-        },
+        },*/
         ...newRoutes,
         {
           path: "*",
