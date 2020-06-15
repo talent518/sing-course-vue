@@ -52,12 +52,12 @@
         border
       >
         <el-table-column type="selection" width="40"></el-table-column>
-        <el-table-column prop="" label="课程编号"></el-table-column>
-        <el-table-column prop="" label="课程标题"></el-table-column>
+        <el-table-column prop="code" label="课程编号"></el-table-column>
+        <el-table-column prop="title" label="课程标题"></el-table-column>
         <el-table-column prop="" label="课程类型"></el-table-column>
-        <el-table-column prop="" label="教具"></el-table-column>
-        <el-table-column prop="" label="主题"></el-table-column>
-        <el-table-column prop="" label="课程"></el-table-column>
+        <!--<el-table-column prop="" label="教具"></el-table-column>-->
+        <el-table-column prop="theme_num" label="主题"></el-table-column>
+        <el-table-column prop="textbook_num" label="课程"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogObj.show = false"
@@ -70,7 +70,9 @@
 </template>
 
 <script>
+import Teach from "@/views/common/teach";
 export default {
+  mixins: [Teach],
   name: "RelationCourceDialog",
   props: ["dialogObj"],
   data() {
@@ -94,17 +96,33 @@ export default {
   mounted() {},
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let json = {
+        product_id: this.dialogObj.id,
+      };
+      let arr = [];
+      this.selected.forEach((val) => {
+        arr.push(val.id);
+      });
+      json.element_id = arr.join(",");
+      this.ApiTeach.postProductDetailApi(json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+        this.$emit("reflash");
+        this.dialogObj.show = false;
+      });
+    },
 
     async init() {
-      // let json = {
-      //   pageIndex: this.page.now,
-      //   pageSize: this.page.limit,
-      //   title: this.search.title,
-      // };
-      // let data = await this.ApiTeach.getCourseList(json);
-      // this.classList = data.items;
-      // this.page.total = data.total;
+      let json = {
+        scene: "all",
+        title: this.search.title,
+        code: this.search.code,
+      };
+      let data = await this.ApiTeach.getCourseListApi(json);
+      this.list = data.items;
     },
 
     handleSearch() {
@@ -121,22 +139,11 @@ export default {
     },
   },
   watch: {
-    // "dialogObj.show"() {
-    //   this.$nextTick(() => {
-    //     this.form.title = "";
-    //     this.form.sub_title = [];
-    //     this.form.cover = "";
-    //     this.form.status = 1;
-    //     if (this.dialogObj.type == 2) {
-    //       this.form = {
-    //         title: this.dialogObj.title,
-    //         sub_title: this.dialogObj.sub_title,
-    //         cover: this.dialogObj.cover,
-    //         status: this.dialogObj.status,
-    //       };
-    //     }
-    //   });
-    // },
+    "dialogObj.show"(value) {
+      if (value) {
+        this.init();
+      }
+    },
   },
 };
 </script>

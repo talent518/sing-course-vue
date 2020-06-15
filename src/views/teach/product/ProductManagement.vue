@@ -54,9 +54,14 @@
     >
       <el-table-column prop="code" label="产品编号" width=""></el-table-column>
       <el-table-column prop="title" label="产品标题" width=""></el-table-column>
+      <el-table-column
+        prop="layout_text"
+        label="布局类型"
+        width=""
+      ></el-table-column>
       <el-table-column label="封面">
         <template slot-scope="scope">
-          <img :src="scope.row.cover" alt="" />
+          <img class="coverImg" :src="scope.row.cover" alt="" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -74,7 +79,7 @@
               plain
               type="primary"
               size="mini"
-              >关联教材</el-link
+              >关联课程</el-link
             >
             <template>
               <el-popconfirm
@@ -218,17 +223,18 @@ export default {
         cover: val.cover,
         id: val.id,
         content: val.content,
+        layout: val.layout,
       };
     },
 
-    relationCourse() {
+    relationCourse(id) {
       this.relationObj = {
         show: true,
+        id: id,
       };
     },
 
     handleClick(tab) {
-      console.log(tab.name);
       this.init();
     },
   },
@@ -241,5 +247,9 @@ export default {
   .product-management-form {
     padding-top: 20px;
   }
+}
+.coverImg {
+  width: 100px;
+  height: 100px;
 }
 </style>

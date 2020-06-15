@@ -112,11 +112,13 @@ export default {
     relationMaterial() {
       this.relationMaterialObj = {
         show: true,
+        id: this.id,
       };
     },
     relationTheme() {
       this.relationThemeObj = {
         show: true,
+        id: this.id,
       };
     },
     //删除单个

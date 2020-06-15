@@ -54,9 +54,9 @@
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
         <el-table-column prop="title" label="教材标题"></el-table-column>
-        <el-table-column prop="cover" label="封面" width="">
+        <el-table-column label="封面" width="">
           <template slot-scope="scope">
-            <img src="" alt="" />
+            <img class="coverImg" :src="scope.row.cover" alt="" />
           </template>
         </el-table-column>
         <el-table-column
@@ -104,7 +104,25 @@ export default {
   },
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let json = {
+        course_id: this.dialogObj.id,
+        element_type: 2,
+      };
+      let arr = [];
+      this.selected.forEach((val) => {
+        arr.push(val.id);
+      });
+      json.element_id = arr.join(",");
+      this.ApiTeach.postCourseDetailApi(json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+        this.$emit("reflash");
+        this.dialogObj.show = false;
+      });
+    },
 
     async init() {
       let json = {
@@ -139,4 +157,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.coverImg {
+  width: 100px;
+  height: 100px;
+}
+</style>
