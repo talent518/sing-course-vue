@@ -6,7 +6,7 @@ class Resource {
   getResource(json) {
     return get('course/textbooks', json);
   }
-  
+
 
 }
 
