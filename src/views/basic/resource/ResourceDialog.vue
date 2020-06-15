@@ -137,239 +137,239 @@
 </template>
 
 <script>
-import commonMessage from "@/views/common/commonMessage";
-import menuRole from "@/views/common/menuRole";
-import { upload } from "@api/upload";
-// import {getEnum} from "@util/storage"
+  import commonMessage from "@/views/common/commonMessage";
+  import menuRole from "@/views/common/menuRole";
+  import {upload} from "@api/upload";
+  // import {getEnum} from "@util/storage"
 
-const FORM_DEFAULT = {
-  template_data: {
-    title: "",
-    layout: 1,
-    status: 1,
-    is_excessive: 1,
-  },
-  template_data_details: [
-    {
-      segment_template_id: "",
-      lead_type: "",
+  const FORM_DEFAULT = {
+    template_data: {
       title: "",
-      cover: "",
+      layout: 1,
+      status: 1,
+      is_excessive: 1,
     },
-  ],
-};
-
-const SEGMENT_ITEM = {
-  segment_template_id: "",
-  lead_type: "",
-  title: "",
-  cover: "",
-};
-/*
-    {
-      "template_data":{
-        "title":"这是教材标题",
-        "layout":"教材模板类型：1：横向大卡片",
-        "status":"状态 0：禁用，1：启用",
-        "is_excessive":"是否存在过度环节 0：否，1：是'"
-    },
-      "template_data_details":[
+    template_data_details: [
       {
-        "segment_template_id":1,
-        "lead_type":"Video",
-        "d_title":1,
-        "cover":1
+        segment_template_id: "",
+        lead_type: "",
+        title: "",
+        cover: "",
       },
+    ],
+  };
+
+  const SEGMENT_ITEM = {
+    segment_template_id: "",
+    lead_type: "",
+    title: "",
+    cover: "",
+  };
+  /*
       {
-        "segment_template_id":1,
-        "lead_type":"Video",
-        "d_title":1,
-        "cover":1
-      }
-    ]
-    }*/
+        "template_data":{
+          "title":"这是教材标题",
+          "layout":"教材模板类型：1：横向大卡片",
+          "status":"状态 0：禁用，1：启用",
+          "is_excessive":"是否存在过度环节 0：否，1：是'"
+      },
+        "template_data_details":[
+        {
+          "segment_template_id":1,
+          "lead_type":"Video",
+          "d_title":1,
+          "cover":1
+        },
+        {
+          "segment_template_id":1,
+          "lead_type":"Video",
+          "d_title":1,
+          "cover":1
+        }
+      ]
+      }*/
 
-export default {
-  name: "TemplateResourceDialog",
+  export default {
+    name: "TemplateResourceDialog",
 
-  mixins: [commonMessage, menuRole],
+    mixins: [commonMessage, menuRole],
 
-  props: {
-    dialogData: {
-      type: Object,
-      default: {
-        show: false,
-        type: "",
-        param: {
-          id: 0,
+    props: {
+      dialogData: {
+        type: Object,
+        default: {
+          show: false,
+          type: "",
+          param: {
+            id: 0,
+          },
         },
       },
     },
-  },
 
-  data() {
-    return {
-      title: "",
+    data() {
+      return {
+        title: "",
 
-      listSegment: [],
+        listSegment: [],
 
-      SEGMENT_ITEM: SEGMENT_ITEM,
+        SEGMENT_ITEM: SEGMENT_ITEM,
 
-      form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
-    };
-  },
-
-  watch: {
-    "dialogData.show"(val) {
-      if (val) this.init();
-    },
-  },
-
-  methods: {
-    init() {
-      console.log(this.dictoryObj);
-
-      this.getSegmentAll();
-
-      if (this.dialogData.type == "add") {
-        this.title = "新增教材模板";
-        this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-      } else if (this.dialogData.type == "edit") {
-        this.title = "编辑教材模板";
-        this.form = {
-          template_data: this.dialogData.param,
-          template_data_details: this.dialogData.param.template_data_details,
-        };
-      } else if (this.dialogData.type == "view") {
-        this.title = "查看教材模板";
-        this.form = this.dialogData.param;
-      }
+        form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+      };
     },
 
-    async getSegmentAll() {
-      let res = await this.ApiBasic.getSegment({ scene: "all" });
-      this.listSegment = res.items;
+    watch: {
+      "dialogData.show"(val) {
+        if (val) this.init();
+      },
     },
 
-    segmentAdd(index) {
-      this.form.template_data_details.splice(
-        index + 1,
-        0,
-        JSON.parse(JSON.stringify(SEGMENT_ITEM))
-      );
-    },
+    methods: {
+      init() {
+        console.log(this.dictoryObj);
 
-    segmentDel(index) {
-      this.form.template_data_details.splice(index, 1);
-    },
+        this.getSegmentAll();
 
-    async uploadFile(e, index) {
-      let res = await upload(e.file);
-      this.form.template_data_details[index].cover = res.url;
-    },
+        if (this.dialogData.type == "add") {
+          this.title = "新增教材模板";
+          this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+        } else if (this.dialogData.type == "edit") {
+          this.title = "编辑教材模板";
+          this.form = {
+            template_data: this.dialogData.param,
+            template_data_details: this.dialogData.param.template_data_details.length ? this.dialogData.param.template_data_details : FORM_DEFAULT.template_data_details,
+          };
+        } else if (this.dialogData.type == "view") {
+          this.title = "查看教材模板";
+          this.form = this.dialogData.param;
+        }
+      },
 
-    openMedia(url) {
-      console.log("media url", url);
-      window.open(url, "_blank");
-    },
+      async getSegmentAll() {
+        let res = await this.ApiBasic.getSegment({scene: "all"});
+        this.listSegment = res.items;
+      },
 
-    dialogToggle() {
-      this.dialogData.show = !this.dialogData.show;
-    },
+      segmentAdd(index) {
+        this.form.template_data_details.splice(
+          index + 1,
+          0,
+          JSON.parse(JSON.stringify(SEGMENT_ITEM))
+        );
+      },
 
-    dialogSave() {
-      // 校验
-      /*if () {
+      segmentDel(index) {
+        this.form.template_data_details.splice(index, 1);
+      },
 
-        }*/
+      async uploadFile(e, index) {
+        let res = await upload(e.file);
+        this.form.template_data_details[index].cover = res.url;
+      },
 
-      let api,
-        json = {
-          template_data: JSON.stringify(this.form.template_data),
-          template_data_details: JSON.stringify(
-            this.form.template_data_details
-          ),
-        };
+      openMedia(url) {
+        console.log("media url", url);
+        window.open(url, "_blank");
+      },
 
-      console.log(json);
+      dialogToggle() {
+        this.dialogData.show = !this.dialogData.show;
+      },
 
-      if (this.dialogData.param.id) {
-        json.id = this.dialogData.param.id;
-        api = this.ApiBasic.putResource;
-      } else {
-        api = this.ApiBasic.postResource;
-      }
+      dialogSave() {
+        // 校验
+        /*if () {
 
-      api(json).then((res) => {
-        this.$message({
-          type: "success",
-          message: "保存成功",
+          }*/
+
+        let api,
+          json = {
+            template_data: JSON.stringify(this.form.template_data),
+            template_data_details: JSON.stringify(
+              this.form.template_data_details
+            ),
+          };
+
+        console.log(json);
+
+        if (this.dialogData.param.id) {
+          json.id = this.dialogData.param.id;
+          api = this.ApiBasic.putResource;
+        } else {
+          api = this.ApiBasic.postResource;
+        }
+
+        api(json).then((res) => {
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+          this.dialogToggle();
+          this.$parent.getData();
         });
-        this.dialogToggle();
-        this.$parent.getData();
-      });
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss">
-.template-resource-dialog {
-  .segment-card {
-    display: flex;
-    margin: 0 -6px;
-    /*width: 100%;*/
+  .template-resource-dialog {
+    .segment-card {
+      display: flex;
+      margin: 0 -6px;
+      /*width: 100%;*/
 
-    .card-item {
-      box-sizing: border-box;
-      flex-shrink: 0;
-      flex-grow: 0;
-      padding: 0 6px;
-      width: 20%;
+      .card-item {
+        box-sizing: border-box;
+        flex-shrink: 0;
+        flex-grow: 0;
+        padding: 0 6px;
+        width: 20%;
 
-      .card-item-header {
-        display: flex;
-        margin-bottom: 12px;
-        .el-select {
-          flex-grow: 0;
-        }
+        .card-item-header {
+          display: flex;
+          margin-bottom: 12px;
+          .el-select {
+            flex-grow: 0;
+          }
 
-        .el-button-group {
-          margin-left: 12px;
-          flex-shrink: 0;
-          .el-button {
-            padding-left: 11px;
-            padding-right: 11px;
+          .el-button-group {
+            margin-left: 12px;
+            flex-shrink: 0;
+            .el-button {
+              padding-left: 11px;
+              padding-right: 11px;
+            }
           }
         }
-      }
 
-      .el-divider--horizontal {
-        margin: 12px -12px;
-        width: auto;
-        background-color: #ebeef5;
-      }
+        .el-divider--horizontal {
+          margin: 12px -12px;
+          width: auto;
+          background-color: #ebeef5;
+        }
 
-      .upload-item {
-        display: flex;
-        justify-content: center;
-        .el-upload--picture-card {
-          overflow: hidden;
-          position: relative;
-          width: 100px;
-          height: 100px;
-          /*line-height: 100px;*/
-          border-radius: 50%;
-          .avatar-uploader-icon {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            transform: translate(-50%, -50%);
+        .upload-item {
+          display: flex;
+          justify-content: center;
+          .el-upload--picture-card {
+            overflow: hidden;
+            position: relative;
+            width: 100px;
+            height: 100px;
+            /*line-height: 100px;*/
+            border-radius: 50%;
+            .avatar-uploader-icon {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              z-index: 1;
+              transform: translate(-50%, -50%);
+            }
           }
         }
       }
     }
   }
-}
 </style>

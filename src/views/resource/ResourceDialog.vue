@@ -6,22 +6,19 @@
     :title="title"
     :visible.sync="dialogData.show"
     :close-on-click-modal="false"
-    append-to-body
-  >
+    append-to-body>
     <div>
       <el-form :model="form" label-width="100px" size="small">
         <el-form-item label="课节标题：">
           <el-input
             v-model="form.template_data.title"
-            placeholder="请输入"
-          ></el-input>
+            placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="课节副标题：">
           <el-input
             v-model="form.template_data.title"
-            placeholder="请输入"
-          ></el-input>
+            placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="封面：">
@@ -32,14 +29,12 @@
             :show-file-list="false"
             :http-request="uploadFile"
             list-type="picture-card"
-            multiple
-          >
+            multiple>
             <el-image
               style="width: 100%; height: 100%;"
               fit="contain"
               v-if="form.cover"
-              :src="form.cover"
-            >
+              :src="form.cover">
             </el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -50,28 +45,30 @@
             v-model="form.template_data.status"
             :active-value="1"
             :inactive-value="0"
-            active-color="#13ce66"
-          >
+            active-color="#13ce66">
           </el-switch>
+        </el-form-item>
+
+        <el-form-item label="教材模板：">
+          <el-radio-group v-model="form.template_data.textbook_template_id">
+            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;">{{item.title}}</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="关联环节：">
           <div class="segment-card">
             <div
               v-for="(segement, index) in form.template_data_details"
-              class="card-item"
-            >
+              class="card-item">
               <div class="card-item-header">
                 <el-select
                   v-model="segement.segment_template_id"
-                  placeholder="选择环节"
-                >
+                  placeholder="选择环节">
                   <el-option
                     v-for="item in listSegment"
                     :key="item.id"
                     :label="item.title"
-                    :value="item.id"
-                  >
+                    :value="item.id">
                   </el-option>
                 </el-select>
 
@@ -80,13 +77,11 @@
                     type="default"
                     icon="el-icon-minus"
                     @click="segmentDel(index)"
-                    :disabled="form.template_data_details.length < 2"
-                  ></el-button>
+                    :disabled="form.template_data_details.length < 2"></el-button>
                   <el-button
                     type="default"
                     icon="el-icon-plus"
-                    @click="segmentAdd(index)"
-                  ></el-button>
+                    @click="segmentAdd(index)"></el-button>
                 </el-button-group>
               </div>
 
@@ -94,8 +89,7 @@
                 <div class="header">
                   <el-input
                     v-model="segement.title"
-                    placeholder="标题"
-                  ></el-input>
+                    placeholder="标题"></el-input>
                 </div>
 
                 <el-divider></el-divider>
@@ -105,20 +99,14 @@
                   action="/api/public/upload"
                   accept="image/*"
                   :show-file-list="false"
-                  :http-request="
-                    (file) => {
-                      return uploadFile(file, index);
-                    }
-                  "
+                  :http-request="(file) => {return uploadFile(file, index);}"
                   list-type="picture-card"
-                  multiple
-                >
+                  multiple>
                   <el-image
                     style="width: 100%; height: 100%;"
                     fit="cover"
                     v-if="segement.cover"
-                    :src="segement.cover"
-                  >
+                    :src="segement.cover">
                   </el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -130,8 +118,7 @@
                     v-for="item in dictoryObj.SegmentLeadTypeEnum"
                     :key="item.key"
                     :label="item.value"
-                    :value="item.key"
-                  >
+                    :value="item.key">
                   </el-option>
                 </el-select>
               </el-card>
@@ -148,241 +135,232 @@
 </template>
 
 <script>
-import commonMessage from "@/views/common/commonMessage";
-import menuRole from "@/views/common/menuRole";
-import { upload } from "@api/upload";
+  import commonMessage from "@/views/common/commonMessage";
+  import menuRole from "@/views/common/menuRole";
+  import {upload} from "@api/upload";
 
-const FORM_DEFAULT = {
-  template_data: {
-    title: "",
-    layout: 1,
-    status: 1,
-    is_excessive: 1,
-  },
-  template_data_details: [
-    {
-      segment_template_id: "",
-      lead_type: "",
+  const FORM_DEFAULT = {
+    template_data: {
+      textbook_template_id: "",
       title: "",
-      cover: "",
+      sub_title: "",
+      cover: '',
+      status: 1,
     },
-  ],
-};
-
-const SEGMENT_ITEM = {
-  segment_template_id: "",
-  lead_type: "",
-  title: "",
-  cover: "",
-};
-/*
-    {
-      "template_data":{
-        "title":"这是教材标题",
-        "layout":"教材模板类型：1：横向大卡片",
-        "status":"状态 0：禁用，1：启用",
-        "is_excessive":"是否存在过度环节 0：否，1：是'"
-    },
-      "template_data_details":[
+    template_data_details: [
       {
-        "segment_template_id":1,
-        "lead_type":"Video",
-        "d_title":1,
-        "cover":1
+        textbook_template_id: '',
+        segment_template_id: "",
+        lead_type: "",
+        title: "",
+        cover: "",
       },
+    ],
+    textbook_segment_data_details: [
       {
-        "segment_template_id":1,
-        "lead_type":"Video",
-        "d_title":1,
-        "cover":1
-      }
+        segment_template_id: '',
+        resources_content: {
+          auto_play: '',
+          urls: [""]
+        },
+        score_config_id: ""
+      },
     ]
-    }*/
+  };
 
-export default {
-  name: "ResourceDialog",
+  const SEGMENT_ITEM = {
+    segment_template_id: "",
+    lead_type: "",
+    title: "",
+    cover: "",
+  };
 
-  mixins: [commonMessage, menuRole],
+  export default {
+    name: "ResourceDialog",
 
-  props: {
-    dialogData: {
-      type: Object,
-      default: {
-        show: false,
-        type: "",
-        param: {
-          id: 0,
+    mixins: [commonMessage, menuRole],
+
+    props: {
+      dialogData: {
+        type: Object,
+        default: {
+          show: false,
+          type: "",
+          param: {
+            id: 0,
+          },
         },
       },
     },
-  },
 
-  data() {
-    return {
-      title: "",
+    data() {
+      return {
+        title: "",
 
-      listSegment: [],
+        listSegment: [],
 
-      SEGMENT_ITEM: SEGMENT_ITEM,
+        listTemplateResource: [],
 
-      form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
-    };
-  },
+        SEGMENT_ITEM: SEGMENT_ITEM,
 
-  watch: {
-    "dialogData.show"(val) {
-      if (val) this.init();
-    },
-  },
-
-  methods: {
-    init() {
-      console.log(this.dictoryObj);
-
-      // this.getSegmentAll();
-      this.getTemplateResourceAll();
-
-      if (this.dialogData.type == "add") {
-        this.title = "新增教材";
-        this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-      } else if (this.dialogData.type == "edit") {
-        this.title = "编辑教材";
-        this.form = this.dialogData.param;
-      } else if (this.dialogData.type == "view") {
-        this.title = "查看教材";
-        this.form = this.dialogData.param;
-      }
+        form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+      };
     },
 
-    async getSegmentAll() {
-      let res = await this.ApiBasic.getSegment({ scene: "all" });
-      this.listSegment = res.items;
+    watch: {
+      "dialogData.show"(val) {
+        if (val) this.init();
+      },
     },
 
-    async getTemplateResourceAll() {
-      let res = await this.ApiBasic.getResource({ scene: "all" });
-      this.listTemplateResource = res.items;
-    },
+    methods: {
+      init() {
+        console.log(this.dictoryObj);
 
-    segmentAdd(index) {
-      this.form.template_data_details.splice(
-        index + 1,
-        0,
-        JSON.parse(JSON.stringify(SEGMENT_ITEM))
-      );
-    },
+        // this.getSegmentAll();
+        this.getTemplateResourceAll();
 
-    segmentDel(index) {
-      this.form.template_data_details.splice(index, 1);
-    },
+        if (this.dialogData.type == "add") {
+          this.title = "新增教材";
+          this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+        } else if (this.dialogData.type == "edit") {
+          this.title = "编辑教材";
+          this.form = this.dialogData.param;
+        } else if (this.dialogData.type == "view") {
+          this.title = "查看教材";
+          this.form = this.dialogData.param;
+        }
+      },
 
-    async uploadFile(e, index) {
-      let res = await upload(e.file);
-      this.form.template_data_details[index].cover = res.url;
-    },
+      async getSegmentAll() {
+        let res = await this.ApiBasic.getSegment({scene: "all"});
+        this.listSegment = res.items;
+      },
 
-    openMedia(url) {
-      console.log("media url", url);
-      window.open(url, "_blank");
-    },
+      async getTemplateResourceAll() {
+        let res = await this.ApiBasic.getResource({scene: "all"});
+        this.listTemplateResource = res.items;
+        // 新增默认选中第一个
+        if (this.dialogData.type == 'add') {
+          this.form.template_data.textbook_template_id = res.items[0].id
+        }
+      },
 
-    dialogToggle() {
-      this.dialogData.show = !this.dialogData.show;
-    },
+      segmentAdd(index) {
+        this.form.template_data_details.splice(index + 1, 0, JSON.parse(JSON.stringify(SEGMENT_ITEM)));
+      },
 
-    dialogSave() {
-      // 校验
-      /*if () {
+      segmentDel(index) {
+        this.form.template_data_details.splice(index, 1);
+      },
 
-        }*/
+      async uploadFile(e, index) {
+        let res = await upload(e.file);
+        this.form.template_data_details[index].cover = res.url;
+      },
 
-      let api,
-        json = {
-          template_data: JSON.stringify(this.form.template_data),
-          template_data_details: JSON.stringify(
-            this.form.template_data_details
-          ),
-        };
+      openMedia(url) {
+        console.log("media url", url);
+        window.open(url, "_blank");
+      },
 
-      console.log(json);
+      dialogToggle() {
+        this.dialogData.show = !this.dialogData.show;
+      },
 
-      if (this.dialogData.param.id) {
-        json.id = this.dialogData.param.id;
-        api = this.ApiBasic.putSegment;
-      } else {
-        api = this.ApiBasic.postResource;
-      }
+      dialogSave() {
+        // 校验
+        /*if () {
 
-      api(json).then((res) => {
-        this.$message({
-          type: "success",
-          message: "保存成功",
+          }*/
+
+        let api,
+          json = {
+            template_data: JSON.stringify(this.form.template_data),
+            template_data_details: JSON.stringify(
+              this.form.template_data_details
+            ),
+          };
+
+        console.log(json);
+
+        if (this.dialogData.param.id) {
+          json.id = this.dialogData.param.id;
+          api = this.ApiBasic.putSegment;
+        } else {
+          api = this.ApiBasic.postResource;
+        }
+
+        api(json).then((res) => {
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+          this.dialogToggle();
+          this.$parent.getData();
         });
-        this.dialogToggle();
-        this.$parent.getData();
-      });
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss">
-.resource-dialog {
-  .segment-card {
-    display: flex;
-    margin: 0 -6px;
-    /*width: 100%;*/
+  .resource-dialog {
+    .segment-card {
+      display: flex;
+      margin: 0 -6px;
+      /*width: 100%;*/
 
-    .card-item {
-      box-sizing: border-box;
-      flex-shrink: 0;
-      flex-grow: 0;
-      padding: 0 6px;
-      width: 20%;
+      .card-item {
+        box-sizing: border-box;
+        flex-shrink: 0;
+        flex-grow: 0;
+        padding: 0 6px;
+        width: 20%;
 
-      .card-item-header {
-        display: flex;
-        margin-bottom: 12px;
-        .el-select {
-          flex-grow: 0;
-        }
+        .card-item-header {
+          display: flex;
+          margin-bottom: 12px;
+          .el-select {
+            flex-grow: 0;
+          }
 
-        .el-button-group {
-          margin-left: 12px;
-          flex-shrink: 0;
-          .el-button {
-            padding-left: 11px;
-            padding-right: 11px;
+          .el-button-group {
+            margin-left: 12px;
+            flex-shrink: 0;
+            .el-button {
+              padding-left: 11px;
+              padding-right: 11px;
+            }
           }
         }
-      }
 
-      .el-divider--horizontal {
-        margin: 12px -12px;
-        width: auto;
-        background-color: #ebeef5;
-      }
+        .el-divider--horizontal {
+          margin: 12px -12px;
+          width: auto;
+          background-color: #ebeef5;
+        }
 
-      .upload-item {
-        display: flex;
-        justify-content: center;
-        .el-upload--picture-card {
-          overflow: hidden;
-          position: relative;
-          width: 100px;
-          height: 100px;
-          /*line-height: 100px;*/
-          border-radius: 50%;
-          .avatar-uploader-icon {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            transform: translate(-50%, -50%);
+        .upload-item {
+          display: flex;
+          justify-content: center;
+          .el-upload--picture-card {
+            overflow: hidden;
+            position: relative;
+            width: 100px;
+            height: 100px;
+            /*line-height: 100px;*/
+            border-radius: 50%;
+            .avatar-uploader-icon {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              z-index: 1;
+              transform: translate(-50%, -50%);
+            }
           }
         }
       }
     }
   }
-}
 </style>
