@@ -11,7 +11,7 @@
     "dll": "webpack -p --progress --config ./build/webpack.dll.conf.js"
   },
   "dependencies": {
-    "@tinymce/tinymce-vue": "^3.2.2",
+    "@tinymce/tinymce-vue": "^1.1.2",
     "awe-dnd": "^0.3.4",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",

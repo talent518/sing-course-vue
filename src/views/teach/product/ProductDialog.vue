@@ -48,9 +48,9 @@
           </el-upload>
         </el-form-item>
 
-        <!--<el-form-item label="产品说明">-->
-        <!--  <editor-detail :lookData="form.desc" />-->
-        <!--</el-form-item>-->
+        <el-form-item label="产品说明">
+          <editor-detail :lookData="form.desc" />
+        </el-form-item>
 
         <el-form-item label="状态">
           <el-switch
@@ -77,6 +77,7 @@
 import { upload } from "@api/upload";
 import Teach from "@/views/common/teach";
 import editorDetail from "@/components/editorDetail/editorDetail";
+
 export default {
   mixins: [Teach],
   name: "ProductDialog",
@@ -175,9 +176,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .product-avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .product-avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -186,10 +189,12 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .product-avatar {
   width: 178px;
   height: 178px;
   display: block;
 }
+
 /*}*/
 </style>

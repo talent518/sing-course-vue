@@ -34,10 +34,10 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="铺满">
-          <el-switch v-model="form.big"> </el-switch>
+          <el-switch v-model="form.big"></el-switch>
         </el-form-item>
         <el-form-item label="居中">
-          <el-switch v-model="form.center"> </el-switch>
+          <el-switch v-model="form.center"></el-switch>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -50,8 +50,8 @@
 
 <script>
 import tinymce from "tinymce/tinymce";
-import "tinymce/themes/modern/theme";
 import Editor from "@tinymce/tinymce-vue";
+import "tinymce/themes/modern/theme";
 import "tinymce/plugins/link";
 import "tinymce/plugins/code";
 import "tinymce/plugins/table";
@@ -65,6 +65,7 @@ import "tinymce/plugins/fullpage";
 import "tinymce/plugins/textpattern";
 import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/media";
+
 import { upload } from "@api/upload";
 
 export default {
@@ -85,9 +86,9 @@ export default {
       init: {
         toolbar:
           "bold italic underline strikethrough | fontselect | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | ",
-        language_url: "/admin-course/static/tinymce/zh_CN.js",
         language: "zh_CN",
-        skin_url: "/admin-course/static/tinymce/skins/lightgray",
+        language_url: "static/tinymce/langs/zh_CN.js",
+        skin_url: "/static/tinymce/skins/lightgray",
         height: 500,
         plugins:
           "preview textpattern colorpicker lists code colorpicker fullpage textcolor wordcount contextmenu media",
