@@ -6,6 +6,8 @@ class Resource {
   getResource(json) {
     return get('course/textbooks', json);
   }
+  
+
 }
 
 export default new Resource();

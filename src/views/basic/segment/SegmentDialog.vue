@@ -26,7 +26,7 @@
         <el-form-item label="类别">
           <el-select v-model="form.type" placeholder="请选择">
             <el-option
-              v-for="item in SEGMENT_TYPE_ENUM"
+              v-for="item in dictoryObj.SegmentTypeEnum"
               :key="item.key"
               :label="item.value"
               :value="item.key">
@@ -77,7 +77,6 @@
   import commonMessage from "@/views/common/commonMessage"
   import menuRole from "@/views/common/menuRole"
   import {upload} from "@api/upload"
-  import {getEnum} from "@util/storage"
 
   const FORM_DEFAULT = {
     title: '',
@@ -107,9 +106,6 @@
     data() {
       return {
         title: '',
-
-        SEGMENT_TYPE_ENUM: getEnum('SegmentTypeEnum'),
-
         form: JSON.parse(JSON.stringify(FORM_DEFAULT))
       }
     },
@@ -122,6 +118,9 @@
 
     methods: {
       init() {
+
+        console.log(this.dictoryObj);
+
         if (this.dialogData.type == 'add') {
           this.title = '新增环节模板';
           this.form = JSON.parse(JSON.stringify(FORM_DEFAULT))

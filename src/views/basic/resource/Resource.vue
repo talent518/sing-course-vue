@@ -135,7 +135,7 @@
             status: _target
           }
 
-          this.ApiBasic.putResource(param).then(res => {
+          this.ApiBasic.postResourceStatus(param).then(res => {
             this.$message.success('修改成功');
             this.getData();
             this.loading = false

@@ -27,6 +27,10 @@ class Basic {
     return put(`course/textbook-templates/${json.id}`, json);
   }
 
+  postResourceStatus(json) {
+    return post(`course/textbook-templates/${json.id}/${json.status}`);
+  }
+
   postResource(json) {
     return post(`course/textbook-templates`, json);
   }

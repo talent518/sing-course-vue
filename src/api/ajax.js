@@ -1,7 +1,7 @@
 import axios from "axios";
 import Vue from "vue";
 import errcode from "@api/errcode";
-import { getStorage } from "@util/storage";
+import {getStorage} from "@util/storage";
 
 const configUrlNoTip = [
   "user/retoken",
@@ -16,7 +16,7 @@ const configUrlNoTip = [
 ];
 
 //特殊的url 特殊处理
-function special({ config }) {
+function special({config}) {
   if (config.url.includes("vip-batch") && config.method === "put") {
     return true;
   }
@@ -114,9 +114,9 @@ export default (baseURL) => {
     methods.forEach((item = {}) => {
       o[item] = (url, params = {}) => {
         if (item === "get") {
-          return service[item](url, { params: { ...params } });
+          return service[item](url, {params: {...params}});
         } else {
-          debugger;
+          // debugger;
           return service[item](url, params);
         }
       };

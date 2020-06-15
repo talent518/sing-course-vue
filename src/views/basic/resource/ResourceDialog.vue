@@ -119,7 +119,7 @@
   import commonMessage from "@/views/common/commonMessage"
   import menuRole from "@/views/common/menuRole"
   import {upload} from "@api/upload"
-  import {getEnum} from "@util/storage"
+  // import {getEnum} from "@util/storage"
 
   const FORM_DEFAULT = {
     template_data: {
@@ -190,7 +190,6 @@
       return {
         title: '',
 
-        SEGMENT_TYPE_ENUM: getEnum('SegmentTypeEnum'),
         listSegment: [],
 
         SEGMENT_ITEM: SEGMENT_ITEM,
@@ -229,7 +228,7 @@
       },
 
       segmentAdd(index) {
-        this.form.template_data_details.splice(index, 0, JSON.parse(JSON.stringify(SEGMENT_ITEM)))
+        this.form.template_data_details.splice(index + 1, 0, JSON.parse(JSON.stringify(SEGMENT_ITEM)))
       },
 
       segmentDel(index) {

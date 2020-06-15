@@ -21,11 +21,10 @@ export const getStorage = (key) => {
   }
 };
 
-export const getEnum = (key) => {
-  let
+/*export const getEnum = (key) => {
     _enum = getStorage('enum'),
     _idx = _enum.findIndex(i => {
       return i.name === key
     });
   return _enum[_idx].items
-};
+};*/
