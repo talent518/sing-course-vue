@@ -183,7 +183,6 @@ export default {
             };
           }
         });
-        console.log(this.dictoryObj.CourseTypeEnum);
       }
     },
   },

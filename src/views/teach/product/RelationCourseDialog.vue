@@ -105,7 +105,6 @@ export default {
         arr.push(val.id);
       });
       json.element_id = arr.join(",");
-      console.log(json);
       this.ApiTeach.postProductDetailApi(json).then((res) => {
         this.$message({
           type: "success",
@@ -143,7 +142,6 @@ export default {
     "dialogObj.show"(value) {
       if (value) {
         this.init();
-        console.log(this.dialogObj);
       }
     },
   },

@@ -235,7 +235,6 @@ export default {
     },
 
     handleClick(tab) {
-      console.log(tab.name);
       this.init();
     },
   },

@@ -114,7 +114,6 @@ export default {
         arr.push(val.id);
       });
       json.element_id = arr.join(",");
-      console.log(json);
       this.ApiTeach.postCourseDetailApi(json).then((res) => {
         this.$message({
           type: "success",
