@@ -1,10 +1,10 @@
 import ajax from "./ajax";
 
-const {get, post, patch, put, delete: del} = ajax(process.env.VUE_APP_API)();
+const { get, post, patch, put, delete: del } = ajax(process.env.VUE_APP_API)();
 
 class Basic {
   getSegment(json) {
-    return get('course/segment-templates', json);
+    return get("course/segment-templates", json);
   }
 
   postSegmentStatus(json) {
@@ -35,17 +35,16 @@ class Basic {
     return post(`course/textbook-templates`, json);
   }
 
-
   getScore(json) {
-    return get('config/score-configs', json);
+    return get("config/score-configs", json);
   }
 
   postScore(json) {
-    return post('config/score-configs', json)
+    return post("config/score-configs", json);
   }
 
   delScore(id) {
-    return post(`config/score-configs/${id}/disable`)
+    return post(`config/score-configs/${id}/disable`);
   }
 }
 

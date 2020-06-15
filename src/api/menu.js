@@ -6,7 +6,7 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Menu {
   dictMenus() {
@@ -17,11 +17,11 @@ class Menu {
     return get(`${url.getMenu}`);
   }
 
-  postMenuMove({fromId, toId}) {
-    return get(`${url.menuMove}`, {fromId, toId});
+  postMenuMove({ fromId, toId }) {
+    return get(`${url.menuMove}`, { fromId, toId });
   }
 
-  postMenu({parentId, menuType, menuKey, menuName, menuLink, menuSort}) {
+  postMenu({ parentId, menuType, menuKey, menuName, menuLink, menuSort }) {
     return post(`${url.getMenu}`, {
       parentId,
       menuType,
@@ -32,7 +32,7 @@ class Menu {
     });
   }
 
-  putMenu({menuType, menuKey, menuName, menuLink, menuId, menuSort}) {
+  putMenu({ menuType, menuKey, menuName, menuLink, menuId, menuSort }) {
     return put(`${url.getMenu}/${menuId}`, {
       menuType,
       menuKey,

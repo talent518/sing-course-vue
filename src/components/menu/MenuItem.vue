@@ -15,7 +15,8 @@
     <div
       @click="goto(item.menuKey)"
       class="menu-text"
-      v-if="item.parentId != 0">
+      v-if="item.parentId != 0"
+    >
       {{ item.menuName }}
     </div>
     <div class="menu-text" v-else @click="goto(item.menuKey)">
@@ -26,37 +27,36 @@
 </template>
 
 <script>
-  const iconObj = {
-    SysManager: "icon-setting",
-    PurchaseManager: "icon-YUAN",
-    Report: "icon-dashboard",
-    LogView: "icon-rizhi",
-    Resource: "icon-file-copy",
-    Basic: "icon-build",
-    Product: "icon-appstore",
-  };
-  import {mapMutations} from "vuex";
+const iconObj = {
+  SysManager: "icon-setting",
+  PurchaseManager: "icon-YUAN",
+  Report: "icon-dashboard",
+  LogView: "icon-rizhi",
+  Resource: "icon-file-copy",
+  Basic: "icon-build",
+  Product: "icon-appstore",
+};
+import { mapMutations } from "vuex";
 
-  export default {
-    name: "MenuItem",
-    props: {
-      item: {
-        type: Object,
-        default: () => {
-        },
-      },
+export default {
+  name: "MenuItem",
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
     },
-    methods: {
-      myFont(item) {
-        return iconObj[item.menuKey];
-      },
-      ...mapMutations("menu", {
-        set_menu_name: "set_menu_name",
-      }),
-      goto(name) {
-        this.set_menu_name(name);
-        this.$router.push({name});
-      },
+  },
+  methods: {
+    myFont(item) {
+      return iconObj[item.menuKey];
     },
-  };
+    ...mapMutations("menu", {
+      set_menu_name: "set_menu_name",
+    }),
+    goto(name) {
+      this.set_menu_name(name);
+      this.$router.push({ name });
+    },
+  },
+};
 </script>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as qiniu from 'qiniu-js'
+import * as qiniu from "qiniu-js";
 
 const MAX_FILESIZE = 1024 * 1024 * 10;
 
@@ -9,42 +9,48 @@ const MAX_FILESIZE = 1024 * 1024 * 10;
  * @returns {Promise}
  */
 export function upload(file) {
-
   return new Promise((resolve, reject) => {
-
     /**
      * 判断文件类型
      * "video/mp4"
      * "audio/mpeg"
      * "image/jpeg"
      */
-    console.log('file', file);
-    let _fileType = file.type.split('/')[0], _scene = '';
-    if (_fileType && (_fileType === 'video' || _fileType === 'audio')) {
-      _scene = _fileType
+    console.log("file", file);
+    let _fileType = file.type.split("/")[0],
+      _scene = "";
+    if (_fileType && (_fileType === "video" || _fileType === "audio")) {
+      _scene = _fileType;
     } else {
-      _scene = 'static'
+      _scene = "static";
     }
 
-    axios.get(`${process.env.VUE_APP_API}config/qinius`, {
-      params: {
-        file_name: file.name,
-        scene: _scene
-      }
-    })
-      .then(res => {
-          let putExtra = {
-            fname: file.name,
-            params: {
-              'x:fullname': res.data.data.new_name
-            }
-            // mimeType: json.mimeType || null
-          };
-          let congif = {};
-          let observable = qiniu.upload(file, res.data.data.name, res.data.data.token, putExtra, congif);
-          let observer = {
-            next(res) {
-              /*let progress = Number(res.total.percent.toFixed(0));
+    axios
+      .get(`${process.env.VUE_APP_API}config/qinius`, {
+        params: {
+          file_name: file.name,
+          scene: _scene,
+        },
+      })
+      .then((res) => {
+        let putExtra = {
+          fname: file.name,
+          params: {
+            "x:fullname": res.data.data.new_name,
+          },
+          // mimeType: json.mimeType || null
+        };
+        let congif = {};
+        let observable = qiniu.upload(
+          file,
+          res.data.data.name,
+          res.data.data.token,
+          putExtra,
+          congif
+        );
+        let observer = {
+          next(res) {
+            /*let progress = Number(res.total.percent.toFixed(0));
               if (json.obj) {
                 json.obj.file.percent = progress;
                 json.obj.onProgress(json.obj.file);
@@ -54,28 +60,26 @@ export function upload(file) {
               })) {
                 store.dispatch('setProgress', {type: 'change', id: json.file.uid, num: progress});
               }*/
-            },
-            error(err) {
-              if (document.getElementsByClassName('el-message').length > 0) {
-
-              } else {
-                reject(err);
-                console.log('请求失败！请检查网络')
-                /*this.$message({
+          },
+          error(err) {
+            if (document.getElementsByClassName("el-message").length > 0) {
+            } else {
+              reject(err);
+              console.log("请求失败！请检查网络");
+              /*this.$message({
                   type: 'error',
                   message: '请求失败！请检查网络',
                 });*/
-              }
-            },
-            complete(res) {
-              res.url = res.fullname;
-              res.name = file.name;
-              resolve(res);
             }
-          };
-          let subscription = observable.subscribe(observer)
-        }
-      );
+          },
+          complete(res) {
+            res.url = res.fullname;
+            res.name = file.name;
+            resolve(res);
+          },
+        };
+        let subscription = observable.subscribe(observer);
+      });
 
     /*if (json.type === 'local') {
 
@@ -131,6 +135,5 @@ export function upload(file) {
       };
       fun()
     }*/
-
-  })
+  });
 }

@@ -5,7 +5,7 @@
         <div class="titleFlex">
           <div class="title">配音标题：</div>
           <div>
-            <el-input v-model="searchObj.title"/>
+            <el-input v-model="searchObj.title" />
           </div>
         </div>
       </el-col>
@@ -47,9 +47,8 @@
       <el-table-column label="原生录音" prop="ori_sound">
         <template slot-scope="{ row }">
           <el-button type="primary" @click="openMediaBy(row)"
-          >播放录音
-          </el-button
-          >
+            >播放录音
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column prop="dubbing_content" label="配音内容">
@@ -69,14 +68,14 @@
             size="small"
             type="warning"
             @click="handleEdit(scope.row)"
-          >编辑
+            >编辑
           </el-button>
           <el-button
             plain
             size="small"
             type="danger"
             @click="handleDelete(scope.row.id)"
-          >删除
+            >删除
           </el-button>
         </template>
       </el-table-column>
@@ -164,9 +163,8 @@
             v-if="model.ori_sound"
             type="success"
             @click="openMedia"
-          >播放音频
-          </el-button
-          >
+            >播放音频
+          </el-button>
         </el-form-item>
         <el-form-item label="配音类型：" prop="dubbing_type">
           <el-select
@@ -193,250 +191,249 @@
 </template>
 
 <script>
-  import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
-  import ScoreDialog from "@/views/basic/score/ScoreDialog";
-  import {upload} from "@api/upload";
+import commonMessage from "@/views/common/commonMessage";
+import menuRole from "@/views/common/menuRole";
+import ScoreDialog from "@/views/basic/score/ScoreDialog";
+import { upload } from "@api/upload";
 
-  export default {
-    name: "Exercises",
-    mixins: [commonMessage, menuRole],
-    components: {ScoreDialog},
-    data() {
-      return {
-        searchObj: {
-          title: "",
-          total: 0,
-          pageIndex: 1,
-          pageSize: 5,
-        },
-        model: {
-          title: "",
-          material_type: "",
-          material_url: "",
-          ori_sound: "",
-          dubbing_type: "",
-          dubbing_content: "<p class='red'>1234</p>",
-          dubbing_answer: "123",
-        },
-        cols: [
-          {name: "编号", prop: "code"},
-          {name: "配音标题", prop: "title"},
-          {name: "素材类型", prop: "material_typeV"},
-          {name: "配音类型", prop: "dubbing_typeV"},
-        ],
-        cols1: [
-          {name: "配音内容", prop: "ori_sound"},
-          {name: "配音答案", prop: ""},
-        ],
-        list: [],
-        state: 0,
-        rules: {
-          title: [
-            {
-              required: true,
-              message: "请输入配音标题",
-              trigger: ["blur", "change"],
-            },
-          ],
-          dubbing_type: [
-            {
-              required: true,
-              message: "请输入配音类型",
-              trigger: ["blur", "change"],
-            },
-          ],
-          ori_sound: [
-            {
-              required: true,
-              message: "请上传原声配音",
-              trigger: ["blur", "change"],
-            },
-          ],
-          dubbing_content: [
-            {
-              required: true,
-              message: "请填写配音内容",
-              trigger: ["blur", "change"],
-            },
-          ],
-          dubbing_answer: [
-            {
-              required: true,
-              message: "请填写配音答案",
-              trigger: ["blur", "change"],
-            },
-          ],
-          dubbing_content_tran: [
-            {
-              required: true,
-              message: "请填写配音描述详情",
-              trigger: ["blur", "change"],
-            },
-          ],
-        },
-        multiple: false,
-        isShowOpen: false,
-      };
-    },
-    methods: {
-      async uploadFile(e, type, index) {
-        let res = await upload(e.file);
-        if (type == 1) {
-          this.model.material_url = res.url;
-        } else if (type == 2) {
-          this.model.ori_sound = res.url;
-        }
-        // if (type == "retry_voice") {
-        //   this.form.retry_voice = res.url;
-        // } else if (type == "evaluate_voice") {
-        //   this.form.evaluate_voice.splice(index, 1, res.url);
-        // }
+export default {
+  name: "Exercises",
+  mixins: [commonMessage, menuRole],
+  components: { ScoreDialog },
+  data() {
+    return {
+      searchObj: {
+        title: "",
+        total: 0,
+        pageIndex: 1,
+        pageSize: 5,
       },
-      save(formName) {
-        this.$refs[formName].$children[0].validate(async (valid) => {
-          if (valid) {
-            let d = "";
-            if (this.state == 0) {
-              d = await this.addQuestion();
-            } else {
-              d = await this.editQuestion();
-            }
-            if (typeof d !== "number") {
-              this.close();
-              this.search();
-            }
+      model: {
+        title: "",
+        material_type: "",
+        material_url: "",
+        ori_sound: "",
+        dubbing_type: "",
+        dubbing_content: "<p class='red'>1234</p>",
+        dubbing_answer: "123",
+      },
+      cols: [
+        { name: "编号", prop: "code" },
+        { name: "配音标题", prop: "title" },
+        { name: "素材类型", prop: "material_typeV" },
+        { name: "配音类型", prop: "dubbing_typeV" },
+      ],
+      cols1: [
+        { name: "配音内容", prop: "ori_sound" },
+        { name: "配音答案", prop: "" },
+      ],
+      list: [],
+      state: 0,
+      rules: {
+        title: [
+          {
+            required: true,
+            message: "请输入配音标题",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_type: [
+          {
+            required: true,
+            message: "请输入配音类型",
+            trigger: ["blur", "change"],
+          },
+        ],
+        ori_sound: [
+          {
+            required: true,
+            message: "请上传原声配音",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_content: [
+          {
+            required: true,
+            message: "请填写配音内容",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_answer: [
+          {
+            required: true,
+            message: "请填写配音答案",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_content_tran: [
+          {
+            required: true,
+            message: "请填写配音描述详情",
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
+      multiple: false,
+      isShowOpen: false,
+    };
+  },
+  methods: {
+    async uploadFile(e, type, index) {
+      let res = await upload(e.file);
+      if (type == 1) {
+        this.model.material_url = res.url;
+      } else if (type == 2) {
+        this.model.ori_sound = res.url;
+      }
+      // if (type == "retry_voice") {
+      //   this.form.retry_voice = res.url;
+      // } else if (type == "evaluate_voice") {
+      //   this.form.evaluate_voice.splice(index, 1, res.url);
+      // }
+    },
+    save(formName) {
+      this.$refs[formName].$children[0].validate(async (valid) => {
+        if (valid) {
+          let d = "";
+          if (this.state == 0) {
+            d = await this.addQuestion();
           } else {
-            console.log("error submit!!");
-            return false;
+            d = await this.editQuestion();
+          }
+          if (typeof d !== "number") {
+            this.close();
+            this.search();
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    openMedia() {
+      window.open(this.model.ori_sound, "_blank");
+    },
+    openMediaBy({ ori_sound }) {
+      window.open(ori_sound, "_blank");
+    },
+    async handleAvatarSuccess(res, file) {},
+    async addQuestion() {
+      return await this.ApiCourse.postVoiceQuestions(this.model);
+    },
+    async editQuestion() {
+      return await this.ApiCourse.putVoiceQuestions(this.model);
+    },
+    async getQuestion() {
+      const QuestionMaterialTypeEnum = this.dictoryObj.QuestionMaterialTypeEnum;
+      const DubbingTypeEnum = this.dictoryObj.DubbingTypeEnum;
+      let d = await this.ApiCourse.getVoiceQuestions(this.searchObj);
+      d.items.forEach((o) => {
+        QuestionMaterialTypeEnum.forEach((i) => {
+          if (o.material_type == i.key) {
+            o.material_typeV = i.value;
           }
         });
-      },
-      openMedia() {
-        window.open(this.model.ori_sound, "_blank");
-      },
-      openMediaBy({ori_sound}) {
-        window.open(ori_sound, "_blank");
-      },
-      async handleAvatarSuccess(res, file) {
-      },
-      async addQuestion() {
-        return await this.ApiCourse.postVoiceQuestions(this.model);
-      },
-      async editQuestion() {
-        return await this.ApiCourse.putVoiceQuestions(this.model);
-      },
-      async getQuestion() {
-        const QuestionMaterialTypeEnum = this.dictoryObj.QuestionMaterialTypeEnum;
-        const DubbingTypeEnum = this.dictoryObj.DubbingTypeEnum;
-        let d = await this.ApiCourse.getVoiceQuestions(this.searchObj);
-        d.items.forEach((o) => {
-          QuestionMaterialTypeEnum.forEach((i) => {
-            if (o.material_type == i.key) {
-              o.material_typeV = i.value;
-            }
-          });
-          DubbingTypeEnum.forEach((i) => {
-            if (o.dubbing_type == i.key) {
-              o.dubbing_typeV = i.value;
-            }
-          });
+        DubbingTypeEnum.forEach((i) => {
+          if (o.dubbing_type == i.key) {
+            o.dubbing_typeV = i.value;
+          }
         });
-        this.list = d.items;
+      });
+      this.list = d.items;
 
-        this.searchObj.total = d.total;
-      },
-      handleAdd() {
-        this.state = 0;
-        this.resetData();
-        this.open();
-      },
-      resetData() {
-        this.model = {
-          title: "",
-          material_type: "",
-          material_url: "",
-          ori_sound: "",
-          dubbing_type: "",
-          dubbing_content: "<p class='red'>1234</p>",
-          dubbing_answer: "123",
-          dubbing_content_tran: "123", //配音详情中文描述
-        };
-      },
-      search() {
-        this.searchObj.title = "";
-        this.searchObj.pageIndex = 1;
-        this.getQuestion();
-      },
-      pageCurrentChange(index) {
-        this.searchObj.index = index;
-        this.getQuestion();
-      },
-      handleEdit(row) {
-        Object.assign(this.model, row);
-        this.open();
-        this.state = 1;
-      },
-      async delQuestion(id) {
-        return await this.ApiCourse.delVoiceQuestions(id);
-      },
-      handleDelete(id) {
-        this.$confirm("确定要删除该问题吗", "删除", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }).then(async () => {
-          let d = await this.delQuestion(id);
-          console.log(d);
-        });
-      },
+      this.searchObj.total = d.total;
     },
-
-    mounted() {
+    handleAdd() {
+      this.state = 0;
+      this.resetData();
+      this.open();
+    },
+    resetData() {
+      this.model = {
+        title: "",
+        material_type: "",
+        material_url: "",
+        ori_sound: "",
+        dubbing_type: "",
+        dubbing_content: "<p class='red'>1234</p>",
+        dubbing_answer: "123",
+        dubbing_content_tran: "123", //配音详情中文描述
+      };
+    },
+    search() {
+      this.searchObj.title = "";
+      this.searchObj.pageIndex = 1;
       this.getQuestion();
     },
-  };
+    pageCurrentChange(index) {
+      this.searchObj.index = index;
+      this.getQuestion();
+    },
+    handleEdit(row) {
+      Object.assign(this.model, row);
+      this.open();
+      this.state = 1;
+    },
+    async delQuestion(id) {
+      return await this.ApiCourse.delVoiceQuestions(id);
+    },
+    handleDelete(id) {
+      this.$confirm("确定要删除该问题吗", "删除", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(async () => {
+        let d = await this.delQuestion(id);
+        console.log(d);
+      });
+    },
+  },
+
+  mounted() {
+    this.getQuestion();
+  },
+};
 </script>
 
 <style lang="scss">
-  .titleFlex {
-    display: flex;
-    align-items: center;
-    .title {
-      width: 100px;
-    }
+.titleFlex {
+  display: flex;
+  align-items: center;
+  .title {
+    width: 100px;
   }
+}
 
-  .exercises {
-    .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409eff;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width: 178px;
-      height: 178px;
-      display: block;
-    }
-    .imageWrap {
-      display: flex;
-    }
-    .upload-demo {
-      display: inline-block;
-      margin-right: 10px;
-    }
+.exercises {
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .imageWrap {
+    display: flex;
+  }
+  .upload-demo {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
 </style>

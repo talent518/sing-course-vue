@@ -7,7 +7,8 @@
       :max="Number(max)"
       :maxlength="Number(maxlength)"
       :value="value && value[0]"
-      @input="handleStartInput">
+      @input="handleStartInput"
+    >
     </el-input>
 
     <div class="range-gutter">~</div>
@@ -21,95 +22,94 @@
       :max="Number(max)"
       :maxlength="Number(maxlength)"
       :value="value && value[1]"
-      @input="handleEndInput">
+      @input="handleEndInput"
+    >
     </el-input>
   </div>
 </template>
 
 <script>
+export default {
+  name: "CcNumberRange", // 数字区间输入框
 
-  export default {
-    name: "CcNumberRange", // 数字区间输入框
+  props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
 
-    props: {
-      value: {
-        type: Array,
-        default: () => []
-      },
+    min: {
+      type: [Number, String],
+      default: NaN,
+    },
 
-      min: {
-        type: [Number, String],
-        default: NaN
-      },
+    max: {
+      type: [Number, String],
+      default: NaN,
+    },
 
-      max: {
-        type: [Number, String],
-        default: NaN
-      },
+    maxlength: {
+      type: [Number, String],
+      default: NaN,
+    },
 
-      maxlength: {
-        type: [Number, String],
-        default: NaN
-      },
+    clearable: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-      clearable: {
-        type: Boolean,
-        default: false
+  data() {
+    return {};
+  },
+
+  methods: {
+    handleStartInput(value) {
+      let _value = value,
+        _val = JSON.parse(JSON.stringify(this.value));
+
+      if (Array.isArray(_val)) {
+        _val[0] = _value;
+      } else {
+        _val = [_value, ""];
       }
+
+      this.$emit("input", _val);
     },
 
-    data() {
-      return {}
+    handleEndInput(value) {
+      let _value = value,
+        _val = JSON.parse(JSON.stringify(this.value));
+
+      if (Array.isArray(_val)) {
+        _val[1] = _value;
+      } else {
+        _val = ["", _value];
+      }
+
+      this.$emit("input", _val);
     },
-
-    methods: {
-      handleStartInput(value) {
-        let _value = value,
-          _val = JSON.parse(JSON.stringify(this.value));
-
-        if (Array.isArray(_val)) {
-          _val[0] = _value
-        } else {
-          _val = [_value, '']
-        }
-
-        this.$emit('input', _val)
-      },
-
-      handleEndInput(value) {
-        let _value = value,
-          _val = JSON.parse(JSON.stringify(this.value));
-
-        if (Array.isArray(_val)) {
-          _val[1] = _value
-        } else {
-          _val = ['', _value]
-        }
-
-        this.$emit('input', _val)
-      },
-    }
-  }
-
+  },
+};
 </script>
 
 <style lang="scss">
-  .cc-number-range {
-    display: flex;
+.cc-number-range {
+  display: flex;
 
-    .el-input {
-      width: calc((100% - 30px) / 2);
+  .el-input {
+    width: calc((100% - 30px) / 2);
 
-      .el-input__inner {
-        padding-right: 15px;
-      }
-    }
-
-    .range-gutter {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
+    .el-input__inner {
+      padding-right: 15px;
     }
   }
+
+  .range-gutter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+  }
+}
 </style>

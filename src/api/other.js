@@ -22,19 +22,19 @@ const url = {
 import ajax from "./ajax";
 
 const prefix = process.env["VUE_APP_URI"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Other {
   getLogStatus() {
     return get(`${url.getLogStatus}`);
   }
 
-  getLog({method, api, ymd, curPage, uid}) {
-    return get(`${url.getLog}`, {method, api, ymd, curPage, uid});
+  getLog({ method, api, ymd, curPage, uid }) {
+    return get(`${url.getLog}`, { method, api, ymd, curPage, uid });
   }
 
   getDDCLassGenerate(id) {
-    return get(`${url.getDDCLassGenerate}`, {id});
+    return get(`${url.getDDCLassGenerate}`, { id });
   }
 
   getDataTypes() {
@@ -42,10 +42,10 @@ class Other {
   }
 
   getDdProperty(id) {
-    return get(`${url.getDdProperty}`, {id});
+    return get(`${url.getDdProperty}`, { id });
   }
 
-  addDdProperty({id, propValue, propName, t, translate, comment = ""}) {
+  addDdProperty({ id, propValue, propName, t, translate, comment = "" }) {
     return post(`${url.getDdProperty}`, {
       id,
       propValue,
@@ -56,7 +56,7 @@ class Other {
     });
   }
 
-  putDdProperty({id, propValue, propName, t, translate, comment = ""}) {
+  putDdProperty({ id, propValue, propName, t, translate, comment = "" }) {
     return put(`${url.getDdProperty}/${id}`, {
       propValue,
       propName,
@@ -75,14 +75,14 @@ class Other {
   }
 
   postDClass({
-               fromId,
-               dataType,
-               pattern,
-               isUnique,
-               className,
-               classTitle,
-               comment,
-             }) {
+    fromId,
+    dataType,
+    pattern,
+    isUnique,
+    className,
+    classTitle,
+    comment,
+  }) {
     return post(`${url.getDClass}`, {
       fromId,
       dataType,
@@ -99,14 +99,14 @@ class Other {
   }
 
   putDClass({
-              classId,
-              dataType,
-              pattern,
-              isUnique,
-              className,
-              classTitle,
-              comment,
-            }) {
+    classId,
+    dataType,
+    pattern,
+    isUnique,
+    className,
+    classTitle,
+    comment,
+  }) {
     return put(`${url.getDClass}/${classId}`, {
       dataType,
       pattern,
@@ -118,11 +118,11 @@ class Other {
   }
 
   getOrgs() {
-    return get(`${url.getOrgs}`, {isView: 1});
+    return get(`${url.getOrgs}`, { isView: 1 });
   }
 
   getOrgsArgus(isView = 0) {
-    return get(`${url.getOrgs}`, {isView});
+    return get(`${url.getOrgs}`, { isView });
   }
 
   dataAuth() {
@@ -138,19 +138,19 @@ class Other {
     return get(`${url.dictProvince}`);
   }
 
-  getAllProvince({province = "", city = ""}) {
-    return get(`${url.apiProvince}`, {province, city});
+  getAllProvince({ province = "", city = "" }) {
+    return get(`${url.apiProvince}`, { province, city });
   }
 
   delProvince(provId) {
     return del(`${url.apiProvince}/${provId}`);
   }
 
-  postProvince({parentId, provName}) {
-    return post(`${url.apiProvince}`, {parentId, provName});
+  postProvince({ parentId, provName }) {
+    return post(`${url.apiProvince}`, { parentId, provName });
   }
 
-  putProvince({provId, provName}) {
+  putProvince({ provId, provName }) {
     return put(`${url.apiProvince}/${provId}`);
   }
 
@@ -162,7 +162,7 @@ class Other {
     return get(`${url.editAuth}`);
   }
 
-  getIdentityAuth({id, identitys, viewAuth, editAuth}) {
+  getIdentityAuth({ id, identitys, viewAuth, editAuth }) {
     return patch(`${url.identityAuth}/${id}/auth`, {
       identitys,
       viewAuth,
@@ -171,37 +171,37 @@ class Other {
   }
 
   getIdentity(name = "") {
-    return get(`${url.identity}`, {name});
+    return get(`${url.identity}`, { name });
   }
 
-  postIdentity({enabled, name, remark, roles}) {
-    return post(`${url.identity}`, {enabled, name, remark, roles});
+  postIdentity({ enabled, name, remark, roles }) {
+    return post(`${url.identity}`, { enabled, name, remark, roles });
   }
 
   delIdentity(id) {
     return del(`${url.identity}/${id}`);
   }
 
-  putIdentity({id, enabled, name, remark, roles}) {
-    return put(`${url.identity}/${id}`, {enabled, name, remark, roles});
+  putIdentity({ id, enabled, name, remark, roles }) {
+    return put(`${url.identity}/${id}`, { enabled, name, remark, roles });
   }
 
   qrCode() {
     return get(`${url.qrCode}`);
   }
 
-  getOrg({orgName = "", province = "", city = ""}) {
+  getOrg({ orgName = "", province = "", city = "" }) {
     if (city == 0) {
       city = "";
     }
-    return get(`${url.getOrg}`, {orgName, province, city});
+    return get(`${url.getOrg}`, { orgName, province, city });
   }
 
   delOrg(orgId) {
     return del(`${url.getOrg}/${orgId}`);
   }
 
-  postOrg({orgName, parentId, province, city = "", orgSort, enabled}) {
+  postOrg({ orgName, parentId, province, city = "", orgSort, enabled }) {
     if (city == 0) {
       city = "";
     }
@@ -215,7 +215,7 @@ class Other {
     });
   }
 
-  putOrg({orgName, orgId, parentId, province, city = "", orgSort, enabled}) {
+  putOrg({ orgName, orgId, parentId, province, city = "", orgSort, enabled }) {
     if (city == 0) {
       city = "";
     }
@@ -237,7 +237,7 @@ class Other {
     return get(`${url.getProvince}`);
   }
 
-  postProvince({parentId, provName, provSort}) {
+  postProvince({ parentId, provName, provSort }) {
     return post(`${url.getProvince}`, {
       parentId,
       provName,
@@ -245,7 +245,7 @@ class Other {
     });
   }
 
-  putProvince({provId, provName, provSort}) {
+  putProvince({ provId, provName, provSort }) {
     return put(`${url.getProvince}/${provId}`, {
       provName,
       provSort,

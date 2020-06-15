@@ -9,7 +9,7 @@ const menuState = {
 };
 
 const actions = {
-  async getMenu({commit}) {
+  async getMenu({ commit }) {
     let data = await user.getUserMenu();
     const menuslist = getMenus(data, true);
     const buttons = getButtons(data);
@@ -22,7 +22,7 @@ const actions = {
     commit("set_permission", true);
     return [router];
   },
-  async getAllMenu({commit}) {
+  async getAllMenu({ commit }) {
     let data = await menu.getMenu();
     data = data.map((item) => {
       item.isShow = true;
@@ -38,22 +38,26 @@ const actions = {
     commit("set_all_buttons", buttons);
     return [router];
   },
-  async getAllMenu1({commit}) {
-  },
+  async getAllMenu1({ commit }) {},
 };
 const formatList = (authRoutes, auths) => {
   let _authRoutes = [];
 
-  authRoutes.forEach(val1 => {
-    if (val1.meta && val1.meta.skipAuth && val1.children && val1.children.length) {
-      val1.children.forEach(val2 => {
+  authRoutes.forEach((val1) => {
+    if (
+      val1.meta &&
+      val1.meta.skipAuth &&
+      val1.children &&
+      val1.children.length
+    ) {
+      val1.children.forEach((val2) => {
         val2.noAuth = true;
-        _authRoutes.push(val2)
-      })
+        _authRoutes.push(val2);
+      });
     } else {
-      _authRoutes.push(val1)
+      _authRoutes.push(val1);
     }
-  })
+  });
 
   return _authRoutes.filter((route) => {
     if (route.noAuth) {
@@ -102,7 +106,7 @@ const getTreeList = (menuList, parentId = 0, menu = []) => {
   })*/
 
   if (!parentId) {
-    routerSkipAuth(router.children, menu)
+    routerSkipAuth(router.children, menu);
   }
 
   // console.log('menu', menu);
@@ -110,23 +114,22 @@ const getTreeList = (menuList, parentId = 0, menu = []) => {
 };
 
 const routerSkipAuth = (list, menu) => {
-  list.forEach(val => {
+  list.forEach((val) => {
     if (val.meta && val.meta.skipAuth) {
-
       if (val.children && val.children.length) {
-        routerSkipAuth(val.children)
+        routerSkipAuth(val.children);
       } else {
-        val.children = []
+        val.children = [];
       }
 
       val.menuKey = val.name;
       val.menuName = val.title;
 
       if (menu) {
-        menu.push(val)
+        menu.push(val);
       }
     }
-  })
-}
+  });
+};
 
 export default actions;

@@ -9,100 +9,116 @@ const authRouter = {
   component: () => import("@/views/main"),
   children: [
     {
-      title: '基础配置',
+      title: "基础配置",
       path: "/basic",
       name: "Basic",
       meta: {
-        skipAuth: true
+        skipAuth: true,
       },
       children: [
         {
-          title: '环节模板',
+          title: "环节模板",
           path: "/templateSegment",
           name: "TemplateSegment",
-          component: () => import('@/views/basic/segment/Segment'),
+          component: () => import("@/views/basic/segment/Segment"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
         {
-          title: '教材模板',
+          title: "教材模板",
           path: "/templateResource",
           name: "TemplateResource",
-          component: () => import('@/views/basic/resource/Resource'),
+          component: () => import("@/views/basic/resource/Resource"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
         {
-          title: '习题列表',
+          title: "习题列表",
           path: "/exercises",
           name: "Exercises",
-          component: () => import('@/views/basic/exercises/Exercises'),
+          component: () => import("@/views/basic/exercises/Exercises"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
         {
-          title: '评分标准',
+          title: "评分标准",
           path: "/score",
           name: "Score",
-          component: () => import('@/views/basic/score/Score'),
+          component: () => import("@/views/basic/score/Score"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
-        }
-      ]
+        },
+      ],
     },
 
     {
-      title: '教材管理',
+      title: "教材管理",
       path: "/resource",
       name: "Resource",
       meta: {
-        skipAuth: true
+        skipAuth: true,
       },
       children: [
         {
-          title: '教材列表',
+          title: "教材列表",
           path: "/resource",
           name: "Resource",
-          component: () => import('@/views/resource/Resource'),
+          component: () => import("@/views/resource/Resource"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
-      ]
-    },
-
-    /*{
-      title: '产品管理',
-      path: "/product",
-      name: "Product",
-      meta: {
-        skipAuth: true
-      },
-      children: [
         {
-          title: '教材管理1',
+          title: "教材管理1",
           path: "/resource1",
           name: "Resource1",
-          component: () => import('@/views/resource/Resource1'),
+          component: () => import("@/views/resource/Resource1"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
         },
         {
-          title: '教材管理2',
+          title: "教材管理2",
           path: "/resource2",
           name: "Resource2",
-          component: () => import('@/views/resource/Resource2'),
+          component: () => import("@/views/resource/Resource2"),
           meta: {
-            skipAuth: true
+            skipAuth: true,
           },
-        }
-      ]
-    },*/
+        },
+        {
+          title: "课程管理",
+          path: "/course",
+          name: "Course",
+          component: () => import("@/views/teach/course/CourseManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+        {
+          title: "主題管理",
+          path: "/theme",
+          name: "Theme",
+          component: () => import("@/views/teach/theme/ThemeManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+        {
+          title: "产品管理",
+          path: "/product",
+          name: "Product",
+          component: () => import("@/views/teach/product/ProductManagement"),
+          meta: {
+            skipAuth: true,
+          },
+        },
+      ],
+    },
 
     {
       path: "/index",

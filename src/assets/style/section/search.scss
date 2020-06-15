@@ -21,7 +21,8 @@ $gutterSize: 16px;
     }
   }
 
-  .el-form, &.el-form {
+  .el-form,
+  &.el-form {
     font-size: 0;
 
     .el-button {
@@ -29,7 +30,8 @@ $gutterSize: 16px;
     }
   }
 
-  .el-form--inline, &.el-form--inline {
+  .el-form--inline,
+  &.el-form--inline {
     .el-form-item {
       margin-right: $gutterSize;
       margin-bottom: $gutterSize;
