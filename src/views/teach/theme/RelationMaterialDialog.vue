@@ -52,9 +52,9 @@
         border
       >
         <el-table-column type="selection" width="40"></el-table-column>
-        <el-table-column prop="" label="教材编号"></el-table-column>
-        <el-table-column prop="" label="教材标题"></el-table-column>
-        <el-table-column prop="" label="封面" width="">
+        <el-table-column prop="code" label="教材编号"></el-table-column>
+        <el-table-column prop="title" label="教材标题"></el-table-column>
+        <el-table-column prop="cover" label="封面" width="">
           <template slot-scope="scope">
             <img src="" alt="" />
           </template>
@@ -76,7 +76,9 @@
 </template>
 
 <script>
+import Teach from "@/views/common/teach";
 export default {
+  mixins: [Teach],
   name: "RelationMaterialDialog",
   props: ["dialogObj"],
   data() {
@@ -100,16 +102,26 @@ export default {
   mounted() {},
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let json = {
+        theme_id: this.dialogObj.id,
+      };
+      let arr = [];
+      this.selected.forEach((val) => {
+        arr.push(val.id);
+      });
+      json.element_id = arr.join(",");
+      console.log(json);
+    },
 
     async init() {
-      // let json = {
-      //   pageIndex: this.page.now,
-      //   pageSize: this.page.limit,
-      //   title: this.search.title,
-      // };
-      // let data = await this.ApiTeach.getCourseList(json);
-      // this.classList = data.items;
+      let json = {
+        scene: "all",
+        title: this.search.title,
+        code: this.search.code,
+      };
+      let data = await this.ApiTeach.getTextbookListApi(json);
+      this.list = data.items;
       // this.page.total = data.total;
     },
 
@@ -127,22 +139,11 @@ export default {
     },
   },
   watch: {
-    // "dialogObj.show"() {
-    //   this.$nextTick(() => {
-    //     this.form.title = "";
-    //     this.form.sub_title = [];
-    //     this.form.cover = "";
-    //     this.form.status = 1;
-    //     if (this.dialogObj.type == 2) {
-    //       this.form = {
-    //         title: this.dialogObj.title,
-    //         sub_title: this.dialogObj.sub_title,
-    //         cover: this.dialogObj.cover,
-    //         status: this.dialogObj.status,
-    //       };
-    //     }
-    //   });
-    // },
+    "dialogObj.show"(value) {
+      if (value) {
+        this.init();
+      }
+    },
   },
 };
 </script>

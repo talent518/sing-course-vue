@@ -22,23 +22,35 @@
         <el-form-item label="课程副标题">
           <el-input
             placeholder="请输入"
-            v-model="form.title"
+            v-model="form.sub_title"
             clearable
           ></el-input>
         </el-form-item>
 
         <el-form-item label="课程封面">
           <el-upload
-            class="product-avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            class="upload-item"
+            action="/api/public/upload"
+            accept="image/*"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple
           >
-            <img v-if="form.cover" :src="form.cover" class="product-avatar" />
-            <i v-else class="el-icon-plus product-avatar-uploader-icon"></i>
+            <el-image
+              style="width: 100%; height: 100%;"
+              fit="contain"
+              v-if="form.cover"
+              :src="form.cover"
+            >
+            </el-image>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
+
+        <!--<el-form-item label="产品说明">-->
+        <!--  <editor-detail :lookData="form.desc" />-->
+        <!--</el-form-item>-->
 
         <el-form-item label="状态">
           <el-switch
@@ -62,8 +74,13 @@
 </template>
 
 <script>
+import { upload } from "@api/upload";
+import Teach from "@/views/common/teach";
+import editorDetail from "@/components/editorDetail/editorDetail";
 export default {
+  mixins: [Teach],
   name: "ProductDialog",
+  components: { editorDetail },
   props: ["dialogObj"],
   data() {
     return {
@@ -72,7 +89,11 @@ export default {
         sub_title: "", //课程副标题
         cover: "", //课程封面
         status: 1, //状态
+        desc: {
+          detail: "",
+        },
       },
+
       // watchList: [
       //   { id: 5, title: 5 },
       //   { id: 6, title: 6 },
@@ -84,40 +105,60 @@ export default {
   },
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let api,
+        form = this.form,
+        json = {
+          title: form.title,
+          sub_title: form.sub_title,
+          status: form.status,
+          cover: form.cover,
+          content: form.desc.detail,
+        };
 
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      if (this.dialogObj.type == 2) {
+        json.id = this.dialogObj.id;
+        api = this.ApiTeach.putProductAPi;
+      } else {
+        api = this.ApiTeach.postProductApi;
+      }
+
+      api(json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+        this.$emit("reflash");
+        this.dialogObj.show = false;
+      });
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg" || "image/jpg" || "image/png";
-      const isLt100k = file.size / 1024 / 1024 < 0.1;
 
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt100k) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    uploadFile(e) {
+      upload(e.file).then((res) => {
+        this.form.cover = res.url;
+      });
     },
   },
   watch: {
-    "dialogObj.show"() {
-      this.$nextTick(() => {
-        this.form.title = "";
-        this.form.sub_title = [];
-        this.form.cover = "";
-        this.form.status = 1;
-        if (this.dialogObj.type == 2) {
-          this.form = {
-            title: this.dialogObj.title,
-            sub_title: this.dialogObj.sub_title,
-            cover: this.dialogObj.cover,
-            status: this.dialogObj.status,
-          };
-        }
-      });
+    "dialogObj.show"(value) {
+      if (value) {
+        this.$nextTick(() => {
+          this.form.title = "";
+          this.form.sub_title = [];
+          this.form.cover = "";
+          this.form.status = 1;
+          this.form.desc.detail = "";
+          if (this.dialogObj.type == 2) {
+            this.form = {
+              title: this.dialogObj.title,
+              sub_title: this.dialogObj.sub_title,
+              cover: this.dialogObj.cover,
+              status: this.dialogObj.status,
+            };
+            this.form.desc.detail = this.dialogObj.content;
+          }
+        });
+      }
     },
   },
 };

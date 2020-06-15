@@ -28,15 +28,15 @@
           :key="index"
         >
           <div class="title">
-            {{ item.textbook.course_title }}
+            {{ item.course.sub_title }}
           </div>
           <div class="img-box">
-            <img :src="item.textbook.cover" alt="" />
+            <img :src="item.course.cover" alt="" />
 
             <template>
               <el-popconfirm
                 title="确定要移除吗？"
-                @onConfirm="deleteClass(item.textbook.id)"
+                @onConfirm="deleteClass(item.course.id)"
               >
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>
@@ -45,7 +45,7 @@
         </div>
       </div>
     </el-dialog>
-    <relation-course-dialog :dialogObj="relationCourseObj" />
+    <relation-course-dialog :dialogObj="relationCourseObj" @reflash="init" />
   </div>
 </template>
 
@@ -146,8 +146,10 @@ export default {
     }
     .img-box {
       img {
+        margin: 0 auto;
         width: 180px;
         height: 140px;
+        display: block;
       }
       i {
         display: block;

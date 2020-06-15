@@ -22,7 +22,15 @@
         <el-form-item label="课程副标题">
           <el-input
             placeholder="请输入"
-            v-model="form.title"
+            v-model="form.sub_title"
+            clearable
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item label="教材数">
+          <el-input
+            placeholder="请输入"
+            v-model="form.textbook_number"
             clearable
           ></el-input>
         </el-form-item>
@@ -83,6 +91,7 @@ export default {
         sub_title: "", //课程副标题
         cover: "", //课程封面
         status: 1, //状态
+        textbook_number: "", //教材数
       },
       // watchList: [
       //   { id: 5, title: 5 },
@@ -95,47 +104,59 @@ export default {
   },
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let api,
+        form = this.form,
+        json = {
+          title: form.title,
+          sub_title: form.sub_title,
+          status: form.status,
+          cover: form.cover,
+          textbook_number: form.textbook_number,
+        };
+
+      if (this.dialogObj.type == 2) {
+        json.id = this.dialogObj.id;
+        api = this.ApiTeach.putCourseAPi;
+      } else {
+        api = this.ApiTeach.postCourseApi;
+      }
+
+      api(json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+        this.$emit("reflash");
+        this.dialogObj.show = false;
+      });
+    },
 
     uploadFile(e) {
       upload(e.file).then((res) => {
-        console.log(res.url);
         this.form.cover = res.url;
       });
     },
-
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg" || "image/jpg" || "image/png";
-      const isLt100k = file.size / 1024 / 1024 < 0.1;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt100k) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-    },
   },
   watch: {
-    "dialogObj.show"() {
-      this.$nextTick(() => {
-        this.form.title = "";
-        this.form.sub_title = [];
-        this.form.cover = "";
-        this.form.status = 1;
-        if (this.dialogObj.type == 2) {
-          this.form = {
-            title: this.dialogObj.title,
-            sub_title: this.dialogObj.sub_title,
-            cover: this.dialogObj.cover,
-            status: this.dialogObj.status,
-          };
-        }
-      });
+    "dialogObj.show"(value) {
+      if (value) {
+        this.$nextTick(() => {
+          this.form.title = "";
+          this.form.sub_title = [];
+          this.form.cover = "";
+          this.form.status = 1;
+          if (this.dialogObj.type == 2) {
+            this.form = {
+              title: this.dialogObj.title,
+              sub_title: this.dialogObj.sub_title,
+              cover: this.dialogObj.cover,
+              status: this.dialogObj.status,
+              textbook_number: this.dialogObj.textbook_number,
+            };
+          }
+        });
+      }
     },
   },
 };

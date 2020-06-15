@@ -226,6 +226,7 @@ export default {
         sub_title: val.sub_title,
         status: val.status,
         cover: val.cover,
+        id: val.id,
       };
     },
 

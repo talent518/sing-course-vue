@@ -58,8 +58,11 @@
         </div>
       </div>
     </el-dialog>
-    <relation-material-dialog :dialogObj="relationMaterialObj" />
-    <relation-theme-dialog :dialogObj="relationThemeObj" />
+    <relation-material-dialog
+      :dialogObj="relationMaterialObj"
+      @reflash="init"
+    />
+    <relation-theme-dialog :dialogObj="relationThemeObj" @reflash="init" />
   </div>
 </template>
 
@@ -178,6 +181,7 @@ export default {
     }
     .img-box {
       img {
+        margin: 0 auto;
         width: 180px;
         height: 140px;
         display: block;

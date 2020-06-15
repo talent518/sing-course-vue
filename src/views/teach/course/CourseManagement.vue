@@ -221,6 +221,8 @@ export default {
         sub_title: val.sub_title,
         status: val.status,
         cover: val.cover,
+        id: val.id,
+        textbook_number: val.textbook_number,
       };
     },
     relationClass(val) {

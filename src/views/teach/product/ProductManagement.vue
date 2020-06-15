@@ -62,7 +62,13 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
-            <el-link @click="" plain type="primary" size="mini">编辑</el-link>
+            <el-link
+              @click="editProduct(scope.row)"
+              plain
+              type="primary"
+              size="mini"
+              >编辑</el-link
+            >
             <el-link
               @click="relationCourse(scope.row.id)"
               plain
@@ -201,7 +207,7 @@ export default {
       };
     },
 
-    editTheme(val) {
+    editProduct(val) {
       this.dialogObj = {
         type: 2,
         show: true,
@@ -210,6 +216,8 @@ export default {
         sub_title: val.sub_title,
         status: val.status,
         cover: val.cover,
+        id: val.id,
+        content: val.content,
       };
     },
 

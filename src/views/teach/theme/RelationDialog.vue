@@ -45,7 +45,10 @@
         </div>
       </div>
     </el-dialog>
-    <relation-material-dialog :dialogObj="relationMaterialObj" />
+    <relation-material-dialog
+      :dialogObj="relationMaterialObj"
+      @reflash="init"
+    />
   </div>
 </template>
 
@@ -87,11 +90,7 @@ export default {
     relationMaterial() {
       this.relationMaterialObj = {
         show: true,
-      };
-    },
-    relationTheme() {
-      this.relationThemeObj = {
-        show: true,
+        id: this.id,
       };
     },
     //删除单个
@@ -154,6 +153,7 @@ export default {
         width: 180px;
         height: 140px;
         display: block;
+        margin: 0 auto;
       }
       i {
         display: block;

@@ -116,7 +116,7 @@ export default (baseURL) => {
         if (item === "get") {
           return service[item](url, { params: { ...params } });
         } else {
-          debugger;
+          // debugger;
           return service[item](url, params);
         }
       };
