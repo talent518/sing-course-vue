@@ -89,7 +89,10 @@
 
                 <el-divider></el-divider>
 
-                <el-button @click="segementLink(segement)" type="default" style="width: 100%;">关联内容</el-button>
+                <el-button @click="segementLink(segement)" type="default" style="width: 100%;">
+                  
+                  关联内容
+                </el-button>
 
               </el-card>
 
