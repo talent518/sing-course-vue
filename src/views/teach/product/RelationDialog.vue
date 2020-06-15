@@ -87,6 +87,7 @@ export default {
     relationCourse() {
       this.relationCourseObj = {
         show: true,
+        id: this.id,
       };
     },
     //删除单个

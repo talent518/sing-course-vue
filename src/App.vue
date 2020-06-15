@@ -79,6 +79,7 @@ export default {
           "QuestionMaterialTypeEnum",
           "SegmentLeadTypeEnum",
           "SegmentTypeEnum",
+          "CourseTypeEnum",
         ],
       };
       let o = {};

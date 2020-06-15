@@ -144,7 +144,7 @@ export default {
       if (value) {
         this.$nextTick(() => {
           this.form.title = "";
-          this.form.sub_title = [];
+          this.form.sub_title = "";
           this.form.cover = "";
           this.form.status = 1;
           this.form.desc.detail = "";
@@ -158,6 +158,7 @@ export default {
             this.form.desc.detail = this.dialogObj.content;
           }
         });
+        console.log(this.dictoryObj.CourseTypeEnum);
       }
     },
   },
