@@ -96,7 +96,25 @@ export default {
   mounted() {},
   methods: {
     //提交表单内容
-    sub() {},
+    sub() {
+      let json = {
+        product_id: this.dialogObj.id,
+      };
+      let arr = [];
+      this.selected.forEach((val) => {
+        arr.push(val.id);
+      });
+      json.element_id = arr.join(",");
+      console.log(json);
+      this.ApiTeach.postProductDetailApi(json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+        this.$emit("reflash");
+        this.dialogObj.show = false;
+      });
+    },
 
     async init() {
       let json = {
@@ -125,6 +143,7 @@ export default {
     "dialogObj.show"(value) {
       if (value) {
         this.init();
+        console.log(this.dialogObj);
       }
     },
   },

@@ -27,6 +27,23 @@
           ></el-input>
         </el-form-item>
 
+        <el-form-item label="布局类型">
+          <el-select
+            v-model="form.layout"
+            filterable
+            clearable
+            placeholder="请选择"
+            style="width: 200px;"
+          >
+            <el-option
+              v-for="(data, index) in dictoryObj.CourseTypeEnum"
+              :key="index"
+              :label="data.value"
+              :value="data.key"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="课程封面">
           <el-upload
             class="upload-item"
@@ -77,9 +94,11 @@
 import { upload } from "@api/upload";
 import Teach from "@/views/common/teach";
 import editorDetail from "@/components/editorDetail/editorDetail";
+import commonMessage from "@/views/common/commonMessage";
+import menuRole from "@/views/common/menuRole";
 
 export default {
-  mixins: [Teach],
+  mixins: [Teach, commonMessage, menuRole],
   name: "ProductDialog",
   components: { editorDetail },
   props: ["dialogObj"],
@@ -114,6 +133,7 @@ export default {
           sub_title: form.sub_title,
           status: form.status,
           cover: form.cover,
+          layout: form.layout,
           content: form.desc.detail,
         };
 
@@ -147,16 +167,20 @@ export default {
           this.form.title = "";
           this.form.sub_title = "";
           this.form.cover = "";
+          this.form.layout = "";
           this.form.status = 1;
-          this.form.desc.detail = "";
+          this.form.desc = { datail: "" };
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
               sub_title: this.dialogObj.sub_title,
               cover: this.dialogObj.cover,
               status: this.dialogObj.status,
+              layout: this.dialogObj.layout,
             };
-            this.form.desc.detail = this.dialogObj.content;
+            this.form.desc = {
+              detail: this.dialogObj.content,
+            };
           }
         });
         console.log(this.dictoryObj.CourseTypeEnum);

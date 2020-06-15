@@ -227,9 +227,10 @@ export default {
       };
     },
 
-    relationCourse() {
+    relationCourse(id) {
       this.relationObj = {
         show: true,
+        id: id,
       };
     },
 
