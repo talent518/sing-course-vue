@@ -12,8 +12,9 @@ export const getStorage = (key) => {
   let _storage = String(localStorage.getItem(key));
   // todo 优化判断方式
   if (
-    _storage[0] === '[' || _storage[0] === '{' &&
-    _storage[_storage.length] === ']' || _storage[_storage.length] === '}'
+    _storage[0] === "[" ||
+    (_storage[0] === "{" && _storage[_storage.length] === "]") ||
+    _storage[_storage.length] === "}"
   ) {
     return JSON.parse(localStorage.getItem(key));
   } else {
