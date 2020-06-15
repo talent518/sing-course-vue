@@ -47,8 +47,8 @@
       <el-table-column label="原生录音" prop="ori_sound">
         <template slot-scope="{ row }">
           <el-button type="primary" @click="openMediaBy(row)"
-            >播放录音</el-button
-          >
+            >播放录音
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column prop="dubbing_content" label="配音内容">
@@ -163,8 +163,8 @@
             v-if="model.ori_sound"
             type="success"
             @click="openMedia"
-            >播放音频</el-button
-          >
+            >播放音频
+          </el-button>
         </el-form-item>
         <el-form-item label="配音类型：" prop="dubbing_type">
           <el-select
@@ -180,8 +180,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="配音内容：" prop="dubbing_content"> </el-form-item>
-        <el-form-item label="配音答案：" prop="dubbing_answer"> </el-form-item>
+        <el-form-item label="配音内容：" prop="dubbing_content"></el-form-item>
+        <el-form-item label="配音答案：" prop="dubbing_answer"></el-form-item>
         <el-form-item label="配音描述详情：" prop="dubbing_content_tran">
         </el-form-item>
         <el-button type="success" @click="save('myForm')">保存</el-button>
@@ -195,6 +195,7 @@ import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import ScoreDialog from "@/views/basic/score/ScoreDialog";
 import { upload } from "@api/upload";
+
 export default {
   name: "Exercises",
   mixins: [commonMessage, menuRole],
@@ -402,6 +403,7 @@ export default {
     width: 100px;
   }
 }
+
 .exercises {
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    class="template-resource-dialog"
+    class="resource-dialog"
     top="5vh"
     width="1200px"
     :title="title"
@@ -10,11 +10,39 @@
   >
     <div>
       <el-form :model="form" label-width="100px" size="small">
-        <el-form-item label="名称：">
+        <el-form-item label="课节标题：">
           <el-input
             v-model="form.template_data.title"
             placeholder="请输入"
           ></el-input>
+        </el-form-item>
+
+        <el-form-item label="课节副标题：">
+          <el-input
+            v-model="form.template_data.title"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item label="封面：">
+          <el-upload
+            class="upload-item"
+            action="/api/public/upload"
+            accept="image/*"
+            :show-file-list="false"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple
+          >
+            <el-image
+              style="width: 100%; height: 100%;"
+              fit="contain"
+              v-if="form.cover"
+              :src="form.cover"
+            >
+            </el-image>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
 
         <el-form-item label="状态：">
@@ -25,19 +53,6 @@
             active-color="#13ce66"
           >
           </el-switch>
-        </el-form-item>
-
-        <el-form-item label="模板：">
-          <el-select v-model="form.template_data.layout" placeholder="请选择">
-            <el-option label="横向大卡片" :value="1"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="过渡环节：">
-          <el-radio-group v-model="form.template_data.is_excessive">
-            <el-radio :label="1" border style="margin-right: 0;">是</el-radio>
-            <el-radio :label="0" border>否</el-radio>
-          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="关联环节：">
@@ -110,11 +125,7 @@
 
                 <el-divider></el-divider>
 
-                <el-select
-                  v-model="segement.lead_type"
-                  placeholder="关联引导"
-                  clearable
-                >
+                <el-select v-model="segement.lead_type" placeholder="关联引导">
                   <el-option
                     v-for="item in dictoryObj.SegmentLeadTypeEnum"
                     :key="item.key"
@@ -140,7 +151,6 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import { upload } from "@api/upload";
-// import {getEnum} from "@util/storage"
 
 const FORM_DEFAULT = {
   template_data: {
@@ -190,7 +200,7 @@ const SEGMENT_ITEM = {
     }*/
 
 export default {
-  name: "TemplateResourceDialog",
+  name: "ResourceDialog",
 
   mixins: [commonMessage, menuRole],
 
@@ -229,19 +239,17 @@ export default {
     init() {
       console.log(this.dictoryObj);
 
-      this.getSegmentAll();
+      // this.getSegmentAll();
+      this.getTemplateResourceAll();
 
       if (this.dialogData.type == "add") {
-        this.title = "新增教材模板";
+        this.title = "新增教材";
         this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
       } else if (this.dialogData.type == "edit") {
-        this.title = "编辑教材模板";
-        this.form = {
-          template_data: this.dialogData.param,
-          template_data_details: this.dialogData.param.template_data_details,
-        };
+        this.title = "编辑教材";
+        this.form = this.dialogData.param;
       } else if (this.dialogData.type == "view") {
-        this.title = "查看教材模板";
+        this.title = "查看教材";
         this.form = this.dialogData.param;
       }
     },
@@ -249,6 +257,11 @@ export default {
     async getSegmentAll() {
       let res = await this.ApiBasic.getSegment({ scene: "all" });
       this.listSegment = res.items;
+    },
+
+    async getTemplateResourceAll() {
+      let res = await this.ApiBasic.getResource({ scene: "all" });
+      this.listTemplateResource = res.items;
     },
 
     segmentAdd(index) {
@@ -295,7 +308,7 @@ export default {
 
       if (this.dialogData.param.id) {
         json.id = this.dialogData.param.id;
-        api = this.ApiBasic.putResource;
+        api = this.ApiBasic.putSegment;
       } else {
         api = this.ApiBasic.postResource;
       }
@@ -314,7 +327,7 @@ export default {
 </script>
 
 <style lang="scss">
-.template-resource-dialog {
+.resource-dialog {
   .segment-card {
     display: flex;
     margin: 0 -6px;

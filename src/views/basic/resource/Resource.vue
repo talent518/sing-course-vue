@@ -66,21 +66,23 @@
       :current-page.sync="page.index"
     ></el-pagination>
 
-    <resource-dialog :dialog-data="dialogData"></resource-dialog>
+    <template-resource-dialog
+      :dialog-data="dialogData"
+    ></template-resource-dialog>
   </div>
 </template>
 
 <script>
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
-import ResourceDialog from "@/views/basic/resource/ResourceDialog";
+import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
 
 export default {
   name: "TemplateResource",
 
   mixins: [commonMessage, menuRole],
 
-  components: { ResourceDialog },
+  components: { TemplateResourceDialog },
 
   data() {
     return {
@@ -136,7 +138,7 @@ export default {
             status: _target,
           };
 
-          this.ApiBasic.putResource(param)
+          this.ApiBasic.postResourceStatus(param)
             .then((res) => {
               this.$message.success("修改成功");
               this.getData();
