@@ -50,7 +50,7 @@
         </el-form-item>
 
         <el-form-item label="教材模板：">
-          <el-radio-group v-model="form.template_data.textbook_template_id">
+          <el-radio-group v-model="form.template_data.textbook_template_id" @change="templateResourceChange">
             <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -60,30 +60,6 @@
             <div
               v-for="(segement, index) in form.template_data_details"
               class="card-item">
-              <div class="card-item-header">
-                <el-select
-                  v-model="segement.segment_template_id"
-                  placeholder="选择环节">
-                  <el-option
-                    v-for="item in listSegment"
-                    :key="item.id"
-                    :label="item.title"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
-
-                <el-button-group>
-                  <el-button
-                    type="default"
-                    icon="el-icon-minus"
-                    @click="segmentDel(index)"
-                    :disabled="form.template_data_details.length < 2"></el-button>
-                  <el-button
-                    type="default"
-                    icon="el-icon-plus"
-                    @click="segmentAdd(index)"></el-button>
-                </el-button-group>
-              </div>
 
               <el-card shadow="hover" :body-style="{ padding: '12px' }">
                 <div class="header">
@@ -113,15 +89,10 @@
 
                 <el-divider></el-divider>
 
-                <el-select v-model="segement.lead_type" placeholder="关联引导">
-                  <el-option
-                    v-for="item in dictoryObj.SegmentLeadTypeEnum"
-                    :key="item.key"
-                    :label="item.value"
-                    :value="item.key">
-                  </el-option>
-                </el-select>
+                <el-button @click="segementLink(segement)" type="default" style="width: 100%;">关联内容</el-button>
+
               </el-card>
+
             </div>
           </div>
         </el-form-item>
@@ -131,6 +102,9 @@
       <el-button @click="dialogToggle">取 消</el-button>
       <el-button type="primary" @click="dialogSave">确 定</el-button>
     </div>
+
+    <resource-dialog-segment :dialog-data="dialogSegmentData"></resource-dialog-segment>
+
   </el-dialog>
 </template>
 
@@ -138,6 +112,7 @@
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
+  import ResourceDialogSegment from "@/views/resource/ResourceDialogSegment"
 
   const FORM_DEFAULT = {
     template_data: {
@@ -177,7 +152,7 @@
 
   export default {
     name: "ResourceDialog",
-
+    components: {ResourceDialogSegment},
     mixins: [commonMessage, menuRole],
 
     props: {
@@ -204,6 +179,11 @@
         SEGMENT_ITEM: SEGMENT_ITEM,
 
         form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+
+        dialogSegmentData: {
+          show: false,
+
+        }
       };
     },
 
@@ -217,7 +197,6 @@
       init() {
         console.log(this.dictoryObj);
 
-        // this.getSegmentAll();
         this.getTemplateResourceAll();
 
         if (this.dialogData.type == "add") {
@@ -232,26 +211,43 @@
         }
       },
 
-      async getSegmentAll() {
-        let res = await this.ApiBasic.getSegment({scene: "all"});
-        this.listSegment = res.items;
-      },
-
       async getTemplateResourceAll() {
         let res = await this.ApiBasic.getResource({scene: "all"});
         this.listTemplateResource = res.items;
         // 新增默认选中第一个
         if (this.dialogData.type == 'add') {
-          this.form.template_data.textbook_template_id = res.items[0].id
+          this.form.template_data.textbook_template_id = res.items[0].id;
+          this.templateResourceChange(res.items[0].id)
         }
       },
 
-      segmentAdd(index) {
-        this.form.template_data_details.splice(index + 1, 0, JSON.parse(JSON.stringify(SEGMENT_ITEM)));
+      /**
+       * 教材模板变化
+       */
+      templateResourceChange(label) {
+        let _idx = this.listTemplateResource.findIndex(i => {
+            return i.id == label
+          }),
+          _listSegment = this.listTemplateResource[_idx].template_data_details;
+        if (_listSegment && _listSegment.length) {
+          this.form.template_data_details = _listSegment
+        } else {
+          this.form.template_data_details = JSON.parse(JSON.stringify(FORM_DEFAULT.template_data_details))
+        }
+
       },
 
-      segmentDel(index) {
-        this.form.template_data_details.splice(index, 1);
+      segementLink(item) {
+        let type = this.dictoryObj.SegmentTypeEnum.find(i => {
+          // return true to find single item if it is in the collection
+          return i.key == item.lead_type
+        }).value;
+        // todo 优化
+        this.dialogSegmentData = {
+          show: true,
+          type: type,
+
+        }
       },
 
       async uploadFile(e, index) {

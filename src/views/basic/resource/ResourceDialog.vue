@@ -22,8 +22,7 @@
             v-model="form.template_data.status"
             :active-value="1"
             :inactive-value="0"
-            active-color="#13ce66"
-          >
+            active-color="#13ce66">
           </el-switch>
         </el-form-item>
 
@@ -44,19 +43,16 @@
           <div class="segment-card">
             <div
               v-for="(segement, index) in form.template_data_details"
-              class="card-item"
-            >
+              class="card-item">
               <div class="card-item-header">
                 <el-select
                   v-model="segement.segment_template_id"
-                  placeholder="选择环节"
-                >
+                  placeholder="选择环节">
                   <el-option
                     v-for="item in listSegment"
                     :key="item.id"
                     :label="item.title"
-                    :value="item.id"
-                  >
+                    :value="item.id">
                   </el-option>
                 </el-select>
 
@@ -65,22 +61,20 @@
                     type="default"
                     icon="el-icon-minus"
                     @click="segmentDel(index)"
-                    :disabled="form.template_data_details.length < 2"
-                  ></el-button>
+                    :disabled="form.template_data_details.length < 2"></el-button>
                   <el-button
                     type="default"
                     icon="el-icon-plus"
-                    @click="segmentAdd(index)"
-                  ></el-button>
+                    @click="segmentAdd(index)"></el-button>
                 </el-button-group>
               </div>
 
               <el-card shadow="hover" :body-style="{ padding: '12px' }">
                 <div class="header">
                   <el-input
+                    disabled
                     v-model="segement.title"
-                    placeholder="标题"
-                  ></el-input>
+                    placeholder="标题"></el-input>
                 </div>
 
                 <el-divider></el-divider>
@@ -89,21 +83,16 @@
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
+                  disabled
                   :show-file-list="false"
-                  :http-request="
-                    (file) => {
-                      return uploadFile(file, index);
-                    }
-                  "
+                  :http-request="(file) => {return uploadFile(file, index);}"
                   list-type="picture-card"
-                  multiple
-                >
+                  multiple>
                   <el-image
                     style="width: 100%; height: 100%;"
                     fit="cover"
                     v-if="segement.cover"
-                    :src="segement.cover"
-                  >
+                    :src="segement.cover">
                   </el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -113,14 +102,12 @@
                 <el-select
                   v-model="segement.lead_type"
                   placeholder="关联引导"
-                  clearable
-                >
+                  clearable>
                   <el-option
                     v-for="item in dictoryObj.SegmentLeadTypeEnum"
                     :key="item.key"
                     :label="item.value"
-                    :value="item.key"
-                  >
+                    :value="item.key">
                   </el-option>
                 </el-select>
               </el-card>
@@ -133,6 +120,7 @@
       <el-button @click="dialogToggle">取 消</el-button>
       <el-button type="primary" @click="dialogSave">确 定</el-button>
     </div>
+
   </el-dialog>
 </template>
 
@@ -140,7 +128,6 @@
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
-  // import {getEnum} from "@util/storage"
 
   const FORM_DEFAULT = {
     template_data: {
@@ -351,6 +338,7 @@
         }
 
         .upload-item {
+          pointer-events: none;
           display: flex;
           justify-content: center;
           .el-upload--picture-card {
