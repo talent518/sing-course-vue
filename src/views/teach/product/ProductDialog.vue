@@ -66,7 +66,7 @@
         </el-form-item>
 
         <el-form-item label="产品说明">
-          <editor-detail :lookData="form.desc" />
+          <editor-detail v-if="dialogObj.show" :lookData="form.desc" />
         </el-form-item>
 
         <el-form-item label="状态">
@@ -205,7 +205,7 @@ export default {
           this.form.cover = "";
           this.form.layout = "";
           this.form.status = 1;
-          this.form.desc = { datail: "" };
+          this.form.desc = { detail: "" };
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
@@ -214,15 +214,12 @@ export default {
               status: this.dialogObj.status,
               layout: this.dialogObj.layout,
             };
-            let richText = JSON.parse(JSON.stringify(this.dialogObj.content))
+            let richText = {... this.dialogObj}.content
             this.form.desc = {
               detail: richText,
             };
-            console.log(this.form.desc)
           }
         });
-      }else{
-        this.form.desc = {}
       }
 
     },
