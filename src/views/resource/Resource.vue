@@ -2,9 +2,7 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialog('add')"
-          >新增教材</el-button
-        >
+        <el-button type="success" plain @click="handleDialog('add')">新增教材</el-button>
       </el-form-item>
     </el-form>
 
@@ -52,7 +50,7 @@
             size="small"
             type="primary"
             @click="handleDialog('add', scope.row)"
-            >预览
+          >预览
           </el-button>
 
           <el-button
@@ -60,7 +58,7 @@
             size="small"
             type="warning"
             @click="handleDialog('edit', scope.row)"
-            >编辑
+          >编辑
           </el-button>
         </template>
       </el-table-column>
@@ -81,64 +79,64 @@
 </template>
 
 <script>
-import commonMessage from "@/views/common/commonMessage";
-import menuRole from "@/views/common/menuRole";
-import ResourceDialog from "@/views/resource/ResourceDialog";
+  import commonMessage from "@/views/common/commonMessage";
+  import menuRole from "@/views/common/menuRole";
+  import ResourceDialog from "@/views/resource/ResourceDialog";
 
-export default {
-  name: "Resource",
+  export default {
+    name: "Resource",
 
-  mixins: [commonMessage, menuRole],
+    mixins: [commonMessage, menuRole],
 
-  components: { ResourceDialog },
+    components: {ResourceDialog},
 
-  data() {
-    return {
-      loading: true,
-      dialogData: {
-        show: false,
-      },
+    data() {
+      return {
+        loading: true,
+        dialogData: {
+          show: false,
+        },
 
-      list: [],
+        list: [],
 
-      page: {
-        total: 0,
-        index: 1,
-        size: 10,
-      },
-    };
-  },
-
-  mounted() {
-    this.getData();
-  },
-
-  methods: {
-    handleDialog(type, row) {
-      this.dialogData = {
-        show: true,
-        type: type,
-        param: row ? row : { id: 0 },
+        page: {
+          total: 0,
+          index: 1,
+          size: 10,
+        },
       };
     },
 
-    async getData() {
-      let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
-      };
-      let res = await this.ApiResource.getResource(param);
-      this.loading = false;
-      this.list = res.items;
-      this.page.total = res.total;
-    },
-
-    pageCurrentChange(index) {
-      this.page.index = index;
+    mounted() {
       this.getData();
     },
-  },
-};
+
+    methods: {
+      handleDialog(type, row) {
+        this.dialogData = {
+          show: true,
+          type: type,
+          param: row ? row : {id: 0},
+        };
+      },
+
+      async getData() {
+        let param = {
+          pageIndex: this.page.index,
+          pageSize: this.page.size,
+        };
+        let res = await this.ApiResource.getResource(param);
+        this.loading = false;
+        this.list = res.items;
+        this.page.total = res.total;
+      },
+
+      pageCurrentChange(index) {
+        this.page.index = index;
+        this.getData();
+      },
+    },
+  };
 </script>
 
 <style scoped></style>

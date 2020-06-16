@@ -234,7 +234,7 @@
       },
 
       async getSegmentAll() {
-        let res = await this.ApiBasic.getSegment({scene: "all"});
+        let res = await this.ApiBasic.getSegment({scene: "all", status: 1});
         this.listSegment = res.items;
       },
 

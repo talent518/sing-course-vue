@@ -3,7 +3,8 @@
     <el-form size="small" inline class="section-search">
       <el-form-item>
         <el-button type="success" plain @click="handleDialog('add')"
-          >新增教材模板</el-button
+        >新增教材模板
+        </el-button
         >
       </el-form-item>
     </el-form>
@@ -19,7 +20,8 @@
         <template slot-scope="scope">
           <template v-if="scope.row.template_data_details.length">
             <div v-for="item in scope.row.template_data_details">
-              {{ item.title }}
+              <!--{{ item.title }}-->
+              lead_type: {{ item.lead_type}}
             </div>
           </template>
           <template v-else>-</template>
@@ -42,7 +44,7 @@
             size="small"
             type="primary"
             @click="handleDialog('add', scope.row)"
-            >预览
+          >预览
           </el-button>
 
           <el-button
@@ -50,7 +52,7 @@
             size="small"
             type="warning"
             @click="handleDialog('edit', scope.row)"
-            >编辑
+          >编辑
           </el-button>
         </template>
       </el-table-column>
@@ -73,104 +75,104 @@
 </template>
 
 <script>
-import commonMessage from "@/views/common/commonMessage";
-import menuRole from "@/views/common/menuRole";
-import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
+  import commonMessage from "@/views/common/commonMessage";
+  import menuRole from "@/views/common/menuRole";
+  import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
 
-export default {
-  name: "TemplateResource",
+  export default {
+    name: "TemplateResource",
 
-  mixins: [commonMessage, menuRole],
+    mixins: [commonMessage, menuRole],
 
-  components: { TemplateResourceDialog },
+    components: {TemplateResourceDialog},
 
-  data() {
-    return {
-      loading: true,
-      dialogData: {
-        show: false,
-      },
+    data() {
+      return {
+        loading: true,
+        dialogData: {
+          show: false,
+        },
 
-      list: [],
+        list: [],
 
-      page: {
-        total: 0,
-        index: 1,
-        size: 10,
-      },
-    };
-  },
-
-  mounted() {
-    this.getData();
-  },
-
-  methods: {
-    handleDialog(type, row) {
-      this.dialogData = {
-        show: true,
-        type: type,
-        param: row ? row : { id: 0 },
+        page: {
+          total: 0,
+          index: 1,
+          size: 10,
+        },
       };
     },
 
-    handleSwitch(id, val) {
-      let _targetText = "",
-        _target; // 要到达的状态
-      if (val === 0) {
-        _target = "enable";
-        _targetText = "启用";
-      } else if (val === 1) {
-        _target = "disable";
-        _targetText = "停用";
-      }
-
-      this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.loading = true;
-
-          let param = {
-            id: id,
-            status: _target,
-          };
-
-          this.ApiBasic.postResourceStatus(param)
-            .then((res) => {
-              this.$message.success("修改成功");
-              this.getData();
-              this.loading = false;
-            })
-            .catch((err) => {
-              console.log(err);
-              this.loading = false;
-            });
-        })
-        .catch(() => {
-          this.$message.info("已取消");
-        });
-    },
-
-    async getData() {
-      let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
-      };
-      let res = await this.ApiBasic.getResource(param);
-      this.loading = false;
-      this.list = res.items;
-      this.page.total = res.total;
-    },
-
-    pageCurrentChange(index) {
-      this.page.index = index;
+    mounted() {
       this.getData();
     },
-  },
-};
+
+    methods: {
+      handleDialog(type, row) {
+        this.dialogData = {
+          show: true,
+          type: type,
+          param: row ? row : {id: 0},
+        };
+      },
+
+      handleSwitch(id, val) {
+        let _targetText = "",
+          _target; // 要到达的状态
+        if (val === 0) {
+          _target = "enable";
+          _targetText = "启用";
+        } else if (val === 1) {
+          _target = "disable";
+          _targetText = "停用";
+        }
+
+        this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            this.loading = true;
+
+            let param = {
+              id: id,
+              status: _target,
+            };
+
+            this.ApiBasic.postResourceStatus(param)
+              .then((res) => {
+                this.$message.success("修改成功");
+                this.getData();
+                this.loading = false;
+              })
+              .catch((err) => {
+                console.log(err);
+                this.loading = false;
+              });
+          })
+          .catch(() => {
+            this.$message.info("已取消");
+          });
+      },
+
+      async getData() {
+        let param = {
+          pageIndex: this.page.index,
+          pageSize: this.page.size,
+        };
+        let res = await this.ApiBasic.getResource(param);
+        this.loading = false;
+        this.list = res.items;
+        this.page.total = res.total;
+      },
+
+      pageCurrentChange(index) {
+        this.page.index = index;
+        this.getData();
+      },
+    },
+  };
 </script>
 
 <style scoped></style>
