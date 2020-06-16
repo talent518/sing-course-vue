@@ -2,9 +2,9 @@
   <div class="product-management">
     <el-form inline size="small">
       <div class="product-management-form">
-        <el-form-item label="课程标题：">
+        <el-form-item label="产品标题：">
           <el-input
-            placeholder="请输入课程标题"
+            placeholder="请输入产品标题"
             v-model="search.title"
             style="width: 200px;"
           ></el-input>

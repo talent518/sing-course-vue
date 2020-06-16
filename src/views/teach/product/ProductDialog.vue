@@ -66,7 +66,7 @@
         </el-form-item>
 
         <el-form-item label="产品说明">
-          <editor-detail :lookData="form.desc" />
+          <editor-detail v-if="dialogObj.show" :lookData="form.desc" />
         </el-form-item>
 
         <el-form-item label="状态">
@@ -144,13 +144,13 @@ export default {
         });
         return false;
       }
-      if (!form.sub_title) {
-        this.$message({
-          type: 'error',
-          message: '请输入副标题!'
-        });
-        return false;
-      }
+      // if (!form.sub_title) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请输入副标题!'
+      //   });
+      //   return false;
+      // }
       if (!form.cover) {
         this.$message({
           type: 'error',
@@ -165,13 +165,13 @@ export default {
         });
         return false;
       }
-      if (!form.desc.detail) {
-        this.$message({
-          type: 'error',
-          message: '请输入产品类型!'
-        });
-        return false;
-      }
+      // if (!form.desc.detail) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请输入产品类型!'
+      //   });
+      //   return false;
+      // }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
@@ -205,7 +205,7 @@ export default {
           this.form.cover = "";
           this.form.layout = "";
           this.form.status = 1;
-          this.form.desc = { datail: "" };
+          this.form.desc = { detail: "" };
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
@@ -214,12 +214,14 @@ export default {
               status: this.dialogObj.status,
               layout: this.dialogObj.layout,
             };
+            let richText = {... this.dialogObj}.content
             this.form.desc = {
-              detail: this.dialogObj.content,
+              detail: richText,
             };
           }
         });
       }
+
     },
   },
 };
