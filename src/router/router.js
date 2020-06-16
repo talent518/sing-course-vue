@@ -56,7 +56,7 @@ const authRouter = {
     },
 
     {
-      title: "教材管理",
+      title: "教研管理",
       path: "/resource",
       name: "Resource",
       meta: {
@@ -72,24 +72,24 @@ const authRouter = {
             skipAuth: true,
           },
         },
-        {
-          title: "教材管理1",
-          path: "/resource1",
-          name: "Resource1",
-          component: () => import("@/views/resource/Resource1"),
-          meta: {
-            skipAuth: true,
-          },
-        },
-        {
-          title: "教材管理2",
-          path: "/resource2",
-          name: "Resource2",
-          component: () => import("@/views/resource/Resource2"),
-          meta: {
-            skipAuth: true,
-          },
-        },
+        // {
+        //   title: "教材管理1",
+        //   path: "/resource1",
+        //   name: "Resource1",
+        //   component: () => import("@/views/resource/Resource1"),
+        //   meta: {
+        //     skipAuth: true,
+        //   },
+        // },
+        // {
+        //   title: "教材管理2",
+        //   path: "/resource2",
+        //   name: "Resource2",
+        //   component: () => import("@/views/resource/Resource2"),
+        //   meta: {
+        //     skipAuth: true,
+        //   },
+        // },
         {
           title: "课程管理",
           path: "/course",
