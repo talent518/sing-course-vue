@@ -214,12 +214,17 @@ export default {
               status: this.dialogObj.status,
               layout: this.dialogObj.layout,
             };
+            let richText = JSON.parse(JSON.stringify(this.dialogObj.content))
             this.form.desc = {
-              detail: this.dialogObj.content,
+              detail: richText,
             };
+            console.log(this.form.desc)
           }
         });
+      }else{
+        this.form.desc = {}
       }
+
     },
   },
 };
