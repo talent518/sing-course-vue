@@ -144,13 +144,13 @@ export default {
         });
         return false;
       }
-      if (!form.sub_title) {
-        this.$message({
-          type: 'error',
-          message: '请输入副标题!'
-        });
-        return false;
-      }
+      // if (!form.sub_title) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请输入副标题!'
+      //   });
+      //   return false;
+      // }
       if (!form.cover) {
         this.$message({
           type: 'error',
@@ -165,13 +165,13 @@ export default {
         });
         return false;
       }
-      if (!form.desc.detail) {
-        this.$message({
-          type: 'error',
-          message: '请输入产品类型!'
-        });
-        return false;
-      }
+      // if (!form.desc.detail) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请输入产品类型!'
+      //   });
+      //   return false;
+      // }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
