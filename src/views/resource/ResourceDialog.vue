@@ -17,7 +17,7 @@
 
         <el-form-item label="课节副标题：">
           <el-input
-            v-model="form.template_data.title"
+            v-model="form.template_data.sub_title"
             placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -27,14 +27,14 @@
             action="/api/public/upload"
             accept="image/*"
             :show-file-list="false"
-            :http-request="uploadFile"
+            :http-request="uploadFileCover"
             list-type="picture-card"
             multiple>
             <el-image
               style="width: 100%; height: 100%;"
               fit="contain"
-              v-if="form.cover"
-              :src="form.cover">
+              v-if="form.template_data.cover"
+              :src="form.template_data.cover">
             </el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -89,8 +89,8 @@
 
                 <el-divider></el-divider>
 
-                <el-button @click="segementLink(segement)" type="default" style="width: 100%;">
-                  
+                <el-button @click="segementLink(segement, index)" type="default" style="width: 100%;">
+
                   关联内容
                 </el-button>
 
@@ -240,17 +240,22 @@
 
       },
 
-      segementLink(item) {
+      segementLink(item, itemIndex) {
         let type = this.dictoryObj.SegmentTypeEnum.find(i => {
-          // return true to find single item if it is in the collection
           return i.key == item.lead_type
         }).value;
         // todo 优化
         this.dialogSegmentData = {
           show: true,
           type: type,
-
+          index: itemIndex,
+          param: item
         }
+      },
+
+      async uploadFileCover(e) {
+        let res = await upload(e.file);
+        this.form.template_data.cover = res.url;
       },
 
       async uploadFile(e, index) {
@@ -276,18 +281,19 @@
         let api,
           json = {
             template_data: JSON.stringify(this.form.template_data),
-            template_data_details: JSON.stringify(
-              this.form.template_data_details
-            ),
+            template_data_details: JSON.stringify(this.form.template_data_details),
+            textbook_segment_data_details: JSON.stringify(this.form.textbook_segment_data_details)
           };
 
         console.log(json);
 
+        debugger
+
         if (this.dialogData.param.id) {
           json.id = this.dialogData.param.id;
-          api = this.ApiBasic.putSegment;
+          api = this.ApiResource.putResource;
         } else {
-          api = this.ApiBasic.postResource;
+          api = this.ApiResource.postResource;
         }
 
         api(json).then((res) => {

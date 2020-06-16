@@ -2,7 +2,6 @@
   <el-dialog
     class="resource-dialog-segment"
     top="5vh"
-    width="1200px"
     :title="title"
     :visible.sync="dialogData.show"
     :close-on-click-modal="false"
@@ -109,6 +108,7 @@
         default: {
           show: false,
           type: "",
+          index: '',
           param: {
             id: 0,
           },
@@ -195,36 +195,20 @@
       },
 
       dialogSave() {
-        // 校验
-        /*if () {
 
-          }*/
+        let form = this.form;
 
-        let api,
-          json = {
-            template_data: JSON.stringify(this.form.template_data),
-            template_data_details: JSON.stringify(
-              this.form.template_data_details
-            ),
-          };
+        this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = {
+          segment_template_id: this.dialogData.param.id,
+          resources_content: {
+            auto_play: form.resources_content.auto_play,
+            urls: form.resources_content.urls
+          },
+          score_config_id: form.resources_content.score_config_id ? form.resources_content.score_config_id : ''
+        };
 
-        console.log(json);
+        this.dialogToggle();
 
-        if (this.dialogData.param.id) {
-          json.id = this.dialogData.param.id;
-          api = this.ApiBasic.putSegment;
-        } else {
-          api = this.ApiBasic.postResource;
-        }
-
-        api(json).then((res) => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.dialogToggle();
-          this.$parent.getData();
-        });
       },
     },
   };
