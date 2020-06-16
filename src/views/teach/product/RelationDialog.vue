@@ -36,7 +36,7 @@
             <template>
               <el-popconfirm
                 title="确定要移除吗？"
-                @onConfirm="deleteClass(item.course.id)"
+                @onConfirm="deleteClass(item.id)"
               >
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>

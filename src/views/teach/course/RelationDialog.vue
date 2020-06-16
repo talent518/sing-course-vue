@@ -49,7 +49,7 @@
             <template>
               <el-popconfirm
                 title="确定要移除吗？"
-                @onConfirm="deleteClass(item.element.id)"
+                @onConfirm="deleteClass(item.id)"
               >
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>
@@ -134,7 +134,8 @@ export default {
         course_id: this.id,
       };
       this.ApiTeach.delAllCourseDetailApi(json).then((res) => {
-        this.init();
+        // this.init();
+        this.list = [];
         this.element_type = 0;
       });
     },
