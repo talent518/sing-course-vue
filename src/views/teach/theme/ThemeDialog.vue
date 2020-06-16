@@ -112,13 +112,13 @@ export default {
         });
         return false;
       }
-      if (!form.sub_title) {
-        this.$message({
-          type: 'error',
-          message: '请输入副标题!'
-        });
-        return false;
-      }
+      // if (!form.sub_title) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '请输入副标题!'
+      //   });
+      //   return false;
+      // }
       if (!form.cover) {
         this.$message({
           type: 'error',
