@@ -20,8 +20,7 @@
         <template slot-scope="scope">
           <template v-if="scope.row.template_data_details.length">
             <div v-for="item in scope.row.template_data_details">
-              <!--{{ item.title }}-->
-              lead_type: {{ item.lead_type}}
+              {{filterEnum('SegmentTypeEnum', item.lead_type)}}
             </div>
           </template>
           <template v-else>-</template>
@@ -78,6 +77,7 @@
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
   import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
+  import globalFilter from "@util/filter"
 
   export default {
     name: "TemplateResource",

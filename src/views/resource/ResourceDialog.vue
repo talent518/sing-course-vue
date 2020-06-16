@@ -253,7 +253,8 @@
         // todo 优化
         this.dialogSegmentData = {
           show: true,
-          type: type,
+          type: this.dialogData.type,
+          segementType: type,
           index: itemIndex,
           param: item
         }
