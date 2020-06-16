@@ -109,7 +109,7 @@ export default {
       this.selected.forEach((val) => {
         arr.push(val.id);
       });
-      json.element_id = arr.join(",");
+      json.course_id = arr.join(",");
       this.ApiTeach.postProductDetailApi(json).then((res) => {
         this.$message({
           type: "success",
