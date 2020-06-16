@@ -56,7 +56,7 @@ const authRouter = {
     },
 
     {
-      title: "教材管理",
+      title: "教研管理",
       path: "/resource",
       name: "Resource",
       meta: {
