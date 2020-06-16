@@ -105,6 +105,28 @@ export default {
           cover: form.cover,
         };
 
+      if (!form.title) {
+        this.$message({
+          type: 'error',
+          message: '请输入标题!'
+        });
+        return false;
+      }
+      if (!form.sub_title) {
+        this.$message({
+          type: 'error',
+          message: '请输入副标题!'
+        });
+        return false;
+      }
+      if (!form.cover) {
+        this.$message({
+          type: 'error',
+          message: '请上传课程封面!'
+        });
+        return false;
+      }
+
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
         api = this.ApiTeach.putThemeAPi;

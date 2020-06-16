@@ -51,7 +51,7 @@
 
         <el-form-item label="教材模板：">
           <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="templateResourceChange">
-            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;">{{item.title}}</el-radio>
+            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;" :key="item.id">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
 

@@ -117,8 +117,8 @@ class Teach {
     return get(`${url.productDetail}`, json);
   }
   //获取教材列表
-  getTextbookListApi() {
-    return get(`${url.textbookList}`);
+  getTextbookListApi(json) {
+    return get(`${url.textbookList}`,json);
   }
 }
 
