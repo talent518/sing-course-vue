@@ -10,21 +10,26 @@
       <el-form inline size="small">
         <div class="course-management-form">
           <el-form-item label="教材编号：">
-            <el-select
+            <!--<el-select-->
+            <!--  v-model="search.code"-->
+            <!--  multiple-->
+            <!--  filterable-->
+            <!--  clearable-->
+            <!--  placeholder=""-->
+            <!--  style="width: 200px;"-->
+            <!--&gt;-->
+            <!--  <el-option-->
+            <!--    v-for="(data, index) in watchList"-->
+            <!--    :key="index"-->
+            <!--    :label="data.title"-->
+            <!--    :value="data.id"-->
+            <!--  ></el-option>-->
+            <!--</el-select>-->
+            <el-input
+              placeholder="请输入教材编号"
               v-model="search.code"
-              multiple
-              filterable
-              clearable
-              placeholder=""
               style="width: 200px;"
-            >
-              <el-option
-                v-for="(data, index) in watchList"
-                :key="index"
-                :label="data.title"
-                :value="data.id"
-              ></el-option>
-            </el-select>
+            ></el-input>
           </el-form-item>
 
           <el-form-item label="教材标题：">
@@ -89,13 +94,6 @@ export default {
         code: "",
       },
       list: [],
-      watchList: [
-        { id: 5, title: 5 },
-        { id: 6, title: 6 },
-        { id: 10, title: 10 },
-        { id: 12, title: 12 },
-        { id: 20, title: 20 },
-      ],
       selected: [], // 已选择
     };
   },
@@ -109,6 +107,15 @@ export default {
         course_id: this.dialogObj.id,
         element_type: 1,
       };
+
+      if (this.selected.length==0) {
+        this.$message({
+          type: 'error',
+          message: '请至少勾选一个!'
+        });
+        return false;
+      }
+
       let arr = [];
       this.selected.forEach((val) => {
         arr.push(val.id);
@@ -142,6 +149,8 @@ export default {
 
     clearSearch() {
       this.search.title = "";
+      this.search.code = "";
+      this.init();
     },
 
     handleSelectionChange(val) {
@@ -151,7 +160,7 @@ export default {
   watch: {
     "dialogObj.show"(value) {
       if (value) {
-        this.init();
+        this.clearSearch();
       }
     },
   },

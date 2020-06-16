@@ -42,7 +42,7 @@ class Teach {
   }
   //课程管理中全部移除
   delAllCourseDetailApi(json) {
-    return del(`${url.courseDetail}/${json.id}`, json);
+    return del(`${url.courseDetail}/${json.course_id}`, json);
   }
   //课程管理单个移除
   delCourseDetailApi(id) {
@@ -65,8 +65,8 @@ class Teach {
     return put(`${url.themeList}/${json.id}`, json);
   }
   //主题删除
-  delThemeApi(json) {
-    return del(`${url.themeList}/${json.id}`);
+  delThemeApi(id) {
+    return del(`${url.themeList}/${id}`);
   }
   //主题关联教材
   postThemeDetailApi(json) {
@@ -74,7 +74,7 @@ class Teach {
   }
   //主题管理中全部移除
   delAllThemeDetailApi(json) {
-    return del(`${url.themeDetail}/${json.id}`, json);
+    return del(`${url.themeDetail}/${json.theme_id}`, json);
   }
   //主题管理单个移除
   delThemeDetailApi(id) {
@@ -97,8 +97,8 @@ class Teach {
     return put(`${url.productList}/${json.id}`, json);
   }
   //产品删除
-  delProductApi(json) {
-    return del(`${url.productList}/${json.id}`);
+  delProductApi(id) {
+    return del(`${url.productList}/${id}`);
   }
   //产品关联教材
   postProductDetailApi(json) {
@@ -106,7 +106,7 @@ class Teach {
   }
   //产品管理中全部移除
   delAllProductDetailApi(json) {
-    return del(`${url.productDetail}/${json.id}`, json);
+    return del(`${url.productDetail}/${json.product_id}`, json);
   }
   //产品管理单个移除
   delProductDetailApi(id) {
@@ -117,8 +117,8 @@ class Teach {
     return get(`${url.productDetail}`, json);
   }
   //获取教材列表
-  getTextbookListApi() {
-    return get(`${url.textbookList}`);
+  getTextbookListApi(json) {
+    return get(`${url.textbookList}`,json);
   }
 }
 

@@ -83,7 +83,7 @@
             >
             <template>
               <el-popconfirm
-                title="确定要删除课程吗？"
+                title="确定要删除主题吗？"
                 @onConfirm="delTheme(scope.row.id)"
               >
                 <el-link plain type="primary" size="mini" slot="reference"

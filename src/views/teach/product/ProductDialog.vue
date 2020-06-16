@@ -11,7 +11,7 @@
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
-        <el-form-item label="课程标题">
+        <el-form-item label="产品标题">
           <el-input
             placeholder="请输入"
             v-model="form.title"
@@ -19,7 +19,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="课程副标题">
+        <el-form-item label="产品副标题">
           <el-input
             placeholder="请输入"
             v-model="form.sub_title"
@@ -44,7 +44,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="课程封面">
+        <el-form-item label="产品封面">
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -136,6 +136,42 @@ export default {
           layout: form.layout,
           content: form.desc.detail,
         };
+
+      if (!form.title) {
+        this.$message({
+          type: 'error',
+          message: '请输入标题!'
+        });
+        return false;
+      }
+      if (!form.sub_title) {
+        this.$message({
+          type: 'error',
+          message: '请输入副标题!'
+        });
+        return false;
+      }
+      if (!form.cover) {
+        this.$message({
+          type: 'error',
+          message: '请上传课程封面!'
+        });
+        return false;
+      }
+      if (!form.layout) {
+        this.$message({
+          type: 'error',
+          message: '请选择布局类型!'
+        });
+        return false;
+      }
+      if (!form.desc.detail) {
+        this.$message({
+          type: 'error',
+          message: '请输入产品类型!'
+        });
+        return false;
+      }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
