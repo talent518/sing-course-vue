@@ -11,13 +11,13 @@
       <el-form :model="form" label-width="100px" size="small">
         <el-form-item label="课节标题：">
           <el-input
-            v-model="form.template_data.title"
+            v-model="form.textbook_data.title"
             placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="课节副标题：">
           <el-input
-            v-model="form.template_data.sub_title"
+            v-model="form.textbook_data.sub_title"
             placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -33,8 +33,8 @@
             <el-image
               style="width: 100%; height: 100%;"
               fit="contain"
-              v-if="form.template_data.cover"
-              :src="form.template_data.cover">
+              v-if="form.textbook_data.cover"
+              :src="form.textbook_data.cover">
             </el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -42,7 +42,7 @@
 
         <el-form-item label="状态：">
           <el-switch
-            v-model="form.template_data.status"
+            v-model="form.textbook_data.status"
             :active-value="1"
             :inactive-value="0"
             active-color="#13ce66">
@@ -50,7 +50,7 @@
         </el-form-item>
 
         <el-form-item label="教材模板：">
-          <el-radio-group v-model="form.template_data.textbook_template_id" @change="templateResourceChange">
+          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="templateResourceChange">
             <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -118,7 +118,7 @@
   import ResourceDialogSegment from "@/views/resource/ResourceDialogSegment"
 
   const FORM_DEFAULT = {
-    template_data: {
+    textbook_data: {
       textbook_template_id: "",
       title: "",
       sub_title: "",
@@ -219,7 +219,7 @@
         this.listTemplateResource = res.items;
         // 新增默认选中第一个
         if (this.dialogData.type == 'add') {
-          this.form.template_data.textbook_template_id = res.items[0].id;
+          this.form.textbook_data.textbook_template_id = res.items[0].id;
           this.templateResourceChange(res.items[0].id)
         }
       },
@@ -255,7 +255,7 @@
 
       async uploadFileCover(e) {
         let res = await upload(e.file);
-        this.form.template_data.cover = res.url;
+        this.form.textbook_data.cover = res.url;
       },
 
       async uploadFile(e, index) {
@@ -280,14 +280,12 @@
 
         let api,
           json = {
-            template_data: JSON.stringify(this.form.template_data),
+            textbook_data: JSON.stringify(this.form.textbook_data),
             template_data_details: JSON.stringify(this.form.template_data_details),
             textbook_segment_data_details: JSON.stringify(this.form.textbook_segment_data_details)
           };
 
         console.log(json);
-
-        debugger
 
         if (this.dialogData.param.id) {
           json.id = this.dialogData.param.id;
@@ -313,6 +311,7 @@
   .resource-dialog {
     .segment-card {
       display: flex;
+      flex-wrap: wrap;
       margin: 0 -6px;
       /*width: 100%;*/
 
@@ -320,6 +319,7 @@
         box-sizing: border-box;
         flex-shrink: 0;
         flex-grow: 0;
+        margin-bottom: 12px;
         padding: 0 6px;
         width: 20%;
 

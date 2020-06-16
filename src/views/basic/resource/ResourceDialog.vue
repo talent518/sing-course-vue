@@ -304,6 +304,7 @@
   .template-resource-dialog {
     .segment-card {
       display: flex;
+      flex-wrap: wrap;
       margin: 0 -6px;
       /*width: 100%;*/
 
@@ -311,6 +312,7 @@
         box-sizing: border-box;
         flex-shrink: 0;
         flex-grow: 0;
+        margin-bottom: 12px;
         padding: 0 6px;
         width: 20%;
 
