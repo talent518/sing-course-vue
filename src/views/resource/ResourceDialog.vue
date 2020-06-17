@@ -208,7 +208,7 @@
           this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
         } else if (this.dialogData.type == "edit") {
           this.title = "编辑教材";
-          this.form = this.dialogData.param;
+          this.form.textbook_data = this.dialogData.param;
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";
           this.form = this.dialogData.param;
