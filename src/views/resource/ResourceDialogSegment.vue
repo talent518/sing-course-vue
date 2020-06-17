@@ -159,7 +159,9 @@
 
         listQuestion: [],
 
-        form: null,
+        form: {
+          resources_content:{}
+        },
       };
     },
 
@@ -187,11 +189,16 @@
           }
 
         } else if (this.dialogData.type == "edit") {
+          let arr = []
           this.title = "编辑教材";
-          this.form = this.dialogData.param;
+          this.form.resources_content = this.dialogData.param;
+          arr.push(this.dialogData.param.cover);
+          this.form.resources_content.urls = arr
+          console.log(this.dialogData.param.cover)
+          console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";
-          this.form = this.dialogData.param;
+          this.form.resources_content = this.dialogData.param;
         }
 
 
