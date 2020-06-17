@@ -90,7 +90,7 @@
       :current-page.sync="searchObj.pageIndex"
     ></el-pagination>
     <el-dialog
-      title="制作兑换码"
+      :title="title"
       v-if="dialogFormVisible"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="clickmodal"
@@ -207,6 +207,7 @@ export default {
   components: { ScoreDialog,editorDetail },
   data() {
     return {
+      title:'',
       searchObj: {
         title: "",
         total: 0,
@@ -357,6 +358,7 @@ export default {
       this.searchObj.total = d.total;
     },
     handleAdd() {
+      this.title = '添加习题'
       this.state = 0;
       this.resetData();
       this.open();
@@ -386,6 +388,7 @@ export default {
       this.getQuestion();
     },
     handleEdit(row) {
+      this.title = '编辑习题'
       Object.assign(this.model, row);
       let richText = {... this.model}.dubbing_content
       this.desc = {
@@ -398,7 +401,7 @@ export default {
       return await this.ApiCourse.delVoiceQuestions(id);
     },
     handleDelete(id) {
-      this.$confirm("确定要删除该问题吗", "删除", {
+      this.$confirm("确定要删除该习题吗", "删除", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

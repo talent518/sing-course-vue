@@ -49,7 +49,7 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialog('add', scope.row)"
+            @click="handleDialog('view', scope.row)"
           >预览
           </el-button>
 
@@ -118,6 +118,45 @@
           type: type,
           param: row ? row : {id: 0},
         };
+      },
+
+      handleSwitch(id, val) {
+
+        let _targetText = '', _target; // 要到达的状态
+        if (val === 0) {
+          _target = 'enable';
+          _targetText = '启用'
+        } else if (val === 1) {
+          _target = 'disable';
+          _targetText = '停用'
+        }
+
+        this.$confirm(`确定 ${_targetText} 教材？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          this.loading = true;
+
+          let param = {
+            id: id,
+            status: _target
+          }
+
+          this.ApiResource.postResourceStatus(param).then(res => {
+            this.$message({type: 'success', message: '修改成功!'});
+            this.getData();
+            this.loading = false
+          }).catch(err => {
+            console.log(err)
+            this.loading = false;
+          })
+
+        }).catch(() => {
+          this.$message({type: 'info', message: '已取消'});
+        });
+
       },
 
       async getData() {

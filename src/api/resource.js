@@ -7,6 +7,10 @@ class Resource {
     return get("course/textbooks", json);
   }
 
+  postResourceStatus(json) {
+    return post(`course/textbooks/${json.id}/${json.status}`);
+  }
+
   postResource(json) {
     return post("course/textbooks", json);
   }

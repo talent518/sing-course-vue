@@ -227,7 +227,10 @@
           };
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材模板";
-          this.form = this.dialogData.param;
+          this.form = {
+            template_data: this.dialogData.param,
+            template_data_details: this.dialogData.param.template_data_details.length ? this.dialogData.param.template_data_details : FORM_DEFAULT.template_data_details,
+          };
         }
       },
 

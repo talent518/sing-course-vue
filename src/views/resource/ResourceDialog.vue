@@ -214,7 +214,8 @@
             this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
           } else if (this.dialogData.type == "view") {
             this.title = "查看教材";
-            this.form = this.dialogData.param;
+            this.form.textbook_data = this.dialogData.param;
+            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
           }
           }
 

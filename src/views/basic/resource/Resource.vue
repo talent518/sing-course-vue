@@ -42,7 +42,7 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialog('add', scope.row)"
+            @click="handleDialog('view', scope.row)"
           >预览
           </el-button>
 
