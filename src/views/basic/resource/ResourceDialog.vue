@@ -338,7 +338,7 @@
         }
 
         .upload-item {
-          pointer-events: none;
+          /*pointer-events: none;*/
           display: flex;
           justify-content: center;
           .el-upload--picture-card {
