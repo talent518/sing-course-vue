@@ -180,10 +180,14 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="配音内容：" prop="dubbing_content"></el-form-item>
-        <el-form-item label="配音答案：" prop="dubbing_answer"></el-form-item>
-        <el-form-item label="配音描述详情：" prop="dubbing_content_tran">
+        <el-form-item label="配音内容：" prop="dubbing_content">
+          <editor-detail v-if="dialogFormVisible" :lookData="desc" />
         </el-form-item>
+        <el-form-item label="配音答案：" prop="dubbing_answer">
+          <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
+        </el-form-item>
+        <!--<el-form-item label="配音描述详情：" prop="dubbing_content_tran">-->
+        <!--</el-form-item>-->
         <el-button type="success" @click="save('myForm')">保存</el-button>
       </my-form>
     </el-dialog>
@@ -195,11 +199,12 @@ import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import ScoreDialog from "@/views/basic/score/ScoreDialog";
 import { upload } from "@api/upload";
+import editorDetail from "@/components/editorDetail/editorDetail";
 
 export default {
   name: "Exercises",
   mixins: [commonMessage, menuRole],
-  components: { ScoreDialog },
+  components: { ScoreDialog,editorDetail },
   data() {
     return {
       searchObj: {
@@ -214,8 +219,12 @@ export default {
         material_url: "",
         ori_sound: "",
         dubbing_type: "",
-        dubbing_content: "<p class='red'>1234</p>",
-        dubbing_answer: "123",
+        dubbing_content: "",
+        dubbing_answer: "",
+
+      },
+      desc: {
+        detail: "",
       },
       cols: [
         { name: "编号", prop: "code" },
@@ -265,13 +274,13 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        dubbing_content_tran: [
-          {
-            required: true,
-            message: "请填写配音描述详情",
-            trigger: ["blur", "change"],
-          },
-        ],
+        // dubbing_content_tran: [
+        //   {
+        //     required: true,
+        //     message: "请填写配音描述详情",
+        //     trigger: ["blur", "change"],
+        //   },
+        // ],
       },
       multiple: false,
       isShowOpen: false,
@@ -318,10 +327,14 @@ export default {
     },
     async handleAvatarSuccess(res, file) {},
     async addQuestion() {
-      return await this.ApiCourse.postVoiceQuestions(this.model);
+      let json = this.model
+      json.dubbing_content = this.desc.detail
+      return await this.ApiCourse.postVoiceQuestions(json);
     },
     async editQuestion() {
-      return await this.ApiCourse.putVoiceQuestions(this.model);
+      let json = this.model
+      json.dubbing_content = this.desc.detail
+      return await this.ApiCourse.putVoiceQuestions(json);
     },
     async getQuestion() {
       const QuestionMaterialTypeEnum = this.dictoryObj.QuestionMaterialTypeEnum;
@@ -355,10 +368,13 @@ export default {
         material_url: "",
         ori_sound: "",
         dubbing_type: "",
-        dubbing_content: "<p class='red'>1234</p>",
-        dubbing_answer: "123",
-        dubbing_content_tran: "123", //配音详情中文描述
+        dubbing_content: "",
+        dubbing_answer: "",
+        // dubbing_content_tran: "", //配音详情中文描述
       };
+      this.desc = {
+        detail:''
+      }
     },
     search() {
       this.searchObj.title = "";
@@ -371,6 +387,10 @@ export default {
     },
     handleEdit(row) {
       Object.assign(this.model, row);
+      let richText = {... this.model}.dubbing_content
+      this.desc = {
+        detail: richText,
+      };
       this.open();
       this.state = 1;
     },
