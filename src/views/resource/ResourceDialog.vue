@@ -65,12 +65,14 @@
                 <div class="header">
                   <el-input
                     v-model="segement.title"
+                    disabled
                     placeholder="标题"></el-input>
                 </div>
 
                 <el-divider></el-divider>
 
                 <el-upload
+                  disabled
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
@@ -201,18 +203,21 @@
       init() {
         console.log(this.dictoryObj);
 
-        this.getTemplateResourceAll();
+        this.getTemplateResourceAll().then(res=>{
+          if (this.dialogData.type == "add") {
+            this.title = "新增教材";
+            this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+          } else if (this.dialogData.type == "edit") {
+            this.title = "编辑教材";
+            this.form.textbook_data = this.dialogData.param;
+            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
+          } else if (this.dialogData.type == "view") {
+            this.title = "查看教材";
+            this.form = this.dialogData.param;
+          }
+          }
 
-        if (this.dialogData.type == "add") {
-          this.title = "新增教材";
-          this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-        } else if (this.dialogData.type == "edit") {
-          this.title = "编辑教材";
-          this.form.textbook_data = this.dialogData.param;
-        } else if (this.dialogData.type == "view") {
-          this.title = "查看教材";
-          this.form = this.dialogData.param;
-        }
+        );
       },
 
       /**

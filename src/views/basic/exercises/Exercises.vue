@@ -260,13 +260,13 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        dubbing_content: [
-          {
-            required: true,
-            message: "请填写配音内容",
-            trigger: ["blur", "change"],
-          },
-        ],
+        // dubbing_content: [
+        //   {
+        //     required: true,
+        //     message: "请填写配音内容",
+        //     trigger: ["blur", "change"],
+        //   },
+        // ],
         dubbing_answer: [
           {
             required: true,
