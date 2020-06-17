@@ -50,8 +50,8 @@
         </el-form-item>
 
         <el-form-item label="教材模板：">
-          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="templateResourceChange">
-            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 0;" :key="item.id">{{item.title}}</el-radio>
+          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="templateResourceChange" style="margin-bottom: -10px;">
+            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 10px; margin-left: 0; margin-bottom: 10px;" :key="item.id">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -132,16 +132,17 @@
         lead_type: "",
         title: "",
         cover: "",
+        id: '',
       },
     ],
     textbook_segment_data_details: [
       {
         segment_template_id: '',
+        score_config_id: "",
         resources_content: {
           auto_play: '',
-          urls: [""]
+          urls: []
         },
-        score_config_id: ""
       },
     ]
   };
@@ -214,11 +215,15 @@
         }
       },
 
+      /**
+       * 获取所有 教材模板
+       */
       async getTemplateResourceAll() {
-        let res = await this.ApiBasic.getResource({scene: "all"});
+        let res = await this.ApiBasic.getResource({scene: "all", status: 1});
         this.listTemplateResource = res.items;
         // 新增默认选中第一个
         if (this.dialogData.type == 'add') {
+          this.form.textbook_template_id = res.items[0].id;
           this.form.textbook_data.textbook_template_id = res.items[0].id;
           this.templateResourceChange(res.items[0].id)
         }
@@ -236,6 +241,7 @@
           this.form.template_data_details = _listSegment
         } else {
           this.form.template_data_details = JSON.parse(JSON.stringify(FORM_DEFAULT.template_data_details))
+          // this.form.template_data_details[0].id =
         }
 
       },
@@ -247,7 +253,8 @@
         // todo 优化
         this.dialogSegmentData = {
           show: true,
-          type: type,
+          type: this.dialogData.type,
+          segementType: type,
           index: itemIndex,
           param: item
         }
@@ -279,13 +286,19 @@
           }*/
 
         let api,
+          jsonOrg = {
+            textbook_data: this.form.textbook_data,
+            template_data_details: this.form.template_data_details,
+            textbook_segment_data_details: this.form.textbook_segment_data_details
+          },
           json = {
             textbook_data: JSON.stringify(this.form.textbook_data),
             template_data_details: JSON.stringify(this.form.template_data_details),
             textbook_segment_data_details: JSON.stringify(this.form.textbook_segment_data_details)
           };
 
-        console.log(json);
+
+        console.log(jsonOrg);
 
         if (this.dialogData.param.id) {
           json.id = this.dialogData.param.id;

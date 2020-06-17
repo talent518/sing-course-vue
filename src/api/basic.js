@@ -1,6 +1,6 @@
 import ajax from "./ajax";
 
-const { get, post, patch, put, delete: del } = ajax(process.env.VUE_APP_API)();
+const {get, post, patch, put, delete: del} = ajax(process.env.VUE_APP_API)();
 
 class Basic {
   getSegment(json) {
@@ -37,6 +37,10 @@ class Basic {
 
   getScore(json) {
     return get("config/score-configs", json);
+  }
+
+  getScoreAll(json) {
+    return get("config/score-config/all-list", json);
   }
 
   postScore(json) {

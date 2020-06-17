@@ -7,8 +7,40 @@
     :close-on-click-modal="false"
     append-to-body>
     <div>
-      <el-form :model="form" label-width="100px" size="small">
-        <el-form-item label="播放规则：">
+      <el-form :model="form" label-width="100px" size="small" v-if="form">
+
+        <template v-if="dialogData.segementType == '测评'">
+          <el-form-item label="评分规则：">
+
+            <el-select v-model="form.score_config_id" placeholder="请选择">
+              <el-option
+                v-for="item in listScore"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id">
+              </el-option>
+            </el-select>
+
+          </el-form-item>
+
+          <el-form-item label="练习题：">
+
+            <el-select
+              v-model="form.resources_content.question_ids"
+              multiple filterable
+              placeholder="请选择">
+              <el-option
+                v-for="item in listQuestion"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id">
+              </el-option>
+            </el-select>
+
+          </el-form-item>
+        </template>
+
+        <el-form-item label="播放规则：" v-else>
           <el-select v-model="form.resources_content.auto_play" placeholder="请选择">
             <el-option
               v-for="item in dictoryObj.EvaluationSwitchTypeEnum"
@@ -19,7 +51,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item v-if="dialogData.type == '视频'" label="视频：">
+        <el-form-item v-if="dialogData.segementType == '视频'" label="视频：">
 
           <div class="upload-wrapper">
             <template v-if="form.resources_content.urls.length">
@@ -43,7 +75,7 @@
 
         </el-form-item>
 
-        <el-form-item v-if="dialogData.type == '音频'" label="音频：">
+        <el-form-item v-if="dialogData.segementType == '音频'" label="音频：">
 
           <div class="upload-wrapper">
             <template v-if="form.resources_content.urls.length">
@@ -81,20 +113,23 @@
   import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
 
+  // 音、视频
   const FORM_DEFAULT = {
     segment_template_id: '',
     resources_content: {
       auto_play: 2,
       urls: []
     },
-    score_config_id: ""
   };
 
-  const SEGMENT_ITEM = {
-    segment_template_id: "",
-    lead_type: "",
-    title: "",
-    cover: "",
+  // 评测
+  const FORM_DEFAULT_EVA = {
+    segment_template_id: '',
+    score_config_id: "",
+    resources_content: {
+      switch_type: 1, // 写死
+      question_ids: []
+    },
   };
 
   export default {
@@ -120,13 +155,11 @@
       return {
         title: "",
 
-        listSegment: [],
+        listScore: [],
 
-        listTemplateResource: [],
+        listQuestion: [],
 
-        SEGMENT_ITEM: SEGMENT_ITEM,
-
-        form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+        form: null,
       };
     },
 
@@ -140,11 +173,19 @@
       init() {
         console.log(this.dictoryObj);
 
-        this.getTemplateResourceAll();
+        this.getQuestionAll();
+
+        this.getScoreAll();
 
         if (this.dialogData.type == "add") {
           this.title = "新增教材";
-          this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+
+          if (this.dialogData.segementType == '测评') {
+            this.form = JSON.parse(JSON.stringify(FORM_DEFAULT_EVA));
+          } else {
+            this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+          }
+
         } else if (this.dialogData.type == "edit") {
           this.title = "编辑教材";
           this.form = this.dialogData.param;
@@ -152,32 +193,27 @@
           this.title = "查看教材";
           this.form = this.dialogData.param;
         }
+
+
       },
 
-      async getTemplateResourceAll() {
-        let res = await this.ApiBasic.getResource({scene: "all"});
-        this.listTemplateResource = res.items;
+      async getQuestionAll() {
+        let res = await this.ApiBasic.getResource({scene: "all", status: 1});
+        this.listQuestion = res.items;
         // 新增默认选中第一个
-        if (this.dialogData.type == 'add') {
+        /*if (this.dialogData.type == 'add') {
           this.form.template_data.textbook_template_id = res.items[0].id;
           this.templateResourceChange(res.items[0].id)
-        }
+        }*/
       },
 
-      /**
-       * 教材模板变化
-       */
-      templateResourceChange(label) {
-        let _idx = this.listTemplateResource.findIndex(i => {
-            return i.id == label
-          }),
-          _listSegment = this.listTemplateResource[_idx].template_data_details;
-        if (_listSegment && _listSegment.length) {
-          this.form.template_data_details = _listSegment
-        } else {
-          this.form.template_data_details = JSON.parse(JSON.stringify(FORM_DEFAULT.template_data_details))
-        }
-
+      async getScoreAll() {
+        let res = await this.ApiBasic.getScoreAll();
+        this.listScore = res;
+        // 新增默认选中第一个
+        /*if (this.dialogData.type == 'add') {
+          this.form.score_config_id = res.items[0].id;
+        }*/
       },
 
       async uploadFile(e) {
@@ -198,14 +234,26 @@
 
         let form = this.form;
 
-        this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = {
-          segment_template_id: this.dialogData.param.id,
-          resources_content: {
+        let result = {
+          segment_template_id: this.dialogData.param.segment_template_id,
+          score_config_id: form.score_config_id ? form.score_config_id : '',
+          resources_content: {},
+        }
+
+        // todo 需要优化 直接格式化就行？
+        if (this.dialogData.segementType == '测评') {
+          result.resources_content = {
+            switch_type: 1, // 写死
+            question_ids: form.resources_content.question_ids
+          }
+        } else {
+          result.resources_content = {
             auto_play: form.resources_content.auto_play,
             urls: form.resources_content.urls
-          },
-          score_config_id: form.resources_content.score_config_id ? form.resources_content.score_config_id : ''
-        };
+          }
+        }
+
+        this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = result;
 
         this.dialogToggle();
 
