@@ -72,7 +72,6 @@
               <el-card shadow="hover" :body-style="{ padding: '12px' }">
                 <div class="header">
                   <el-input
-                    disabled
                     v-model="segement.title"
                     placeholder="标题"></el-input>
                 </div>
@@ -83,7 +82,6 @@
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
-                  disabled
                   :show-file-list="false"
                   :http-request="(file) => {return uploadFile(file, index);}"
                   list-type="picture-card"
