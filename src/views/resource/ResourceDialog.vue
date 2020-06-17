@@ -210,6 +210,7 @@
           } else if (this.dialogData.type == "edit") {
             this.title = "编辑教材";
             this.form.textbook_data = this.dialogData.param;
+            console.log(this.form.textbook_data)
             this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
           } else if (this.dialogData.type == "view") {
             this.title = "查看教材";
