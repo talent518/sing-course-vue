@@ -181,7 +181,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="配音内容：" prop="dubbing_content">
-          <editor-detail v-if="dialogFormVisible" :lookData="desc" />
+          <!--<editor-detail v-if="dialogFormVisible" :lookData="desc" />-->
+          <el-input type="textarea" v-model="model.dubbing_content"></el-input>
         </el-form-item>
         <el-form-item label="配音答案：" prop="dubbing_answer">
           <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
@@ -261,13 +262,13 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        // dubbing_content: [
-        //   {
-        //     required: true,
-        //     message: "请填写配音内容",
-        //     trigger: ["blur", "change"],
-        //   },
-        // ],
+        dubbing_content: [
+          {
+            required: true,
+            message: "请填写配音内容",
+            trigger: ["blur", "change"],
+          },
+        ],
         dubbing_answer: [
           {
             required: true,
@@ -329,12 +330,10 @@ export default {
     async handleAvatarSuccess(res, file) {},
     async addQuestion() {
       let json = this.model
-      json.dubbing_content = this.desc.detail
       return await this.ApiCourse.postVoiceQuestions(json);
     },
     async editQuestion() {
       let json = this.model
-      json.dubbing_content = this.desc.detail
       return await this.ApiCourse.putVoiceQuestions(json);
     },
     async getQuestion() {
@@ -407,7 +406,7 @@ export default {
         type: "warning",
       }).then(async () => {
         let d = await this.delQuestion(id);
-        console.log(d);
+        this.getQuestion();
       });
     },
   },

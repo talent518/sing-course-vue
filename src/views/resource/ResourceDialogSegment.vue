@@ -28,7 +28,6 @@
             <el-select
               v-model="form.resources_content.question_ids"
               multiple filterable
-              @change="cehnayng"
               placeholder="请选择">
               <el-option
                 v-for="item in listQuestion"
@@ -55,8 +54,6 @@
         <el-form-item v-if="dialogData.segementType == '视频'" label="视频：">
 
           <div class="upload-wrapper">
-
-
             <el-upload
               class="upload-item"
               action="/api/public/upload"
@@ -73,6 +70,15 @@
               </template>
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
+
+            <!--<el-upload-->
+            <!--  class="upload-demo"-->
+            <!--  action="/api/public/upload"-->
+            <!--  :http-request="uploadFile"-->
+            <!--  :file-list="form.resources_content.urls">-->
+            <!--  <el-button size="small" type="primary">点击上传</el-button>-->
+            <!--</el-upload>-->
+
           </div>
 
         </el-form-item>
@@ -98,7 +104,6 @@
               <i class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </div>
-
         </el-form-item>
 
       </el-form>
@@ -174,8 +179,9 @@
     },
 
     methods: {
-      cehnayng(val){
-        console.log(val)
+
+      videoDelete(){
+        this.form.resources_content.urls = []
       },
 
       init() {
