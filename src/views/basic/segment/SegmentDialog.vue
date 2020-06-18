@@ -8,8 +8,8 @@
     append-to-body
   >
     <div>
-      <el-form :model="form" label-width="80px" size="small">
-        <el-form-item label="名称">
+      <el-form :model="form" label-width="80px" size="small" :rules="rules">
+        <el-form-item label="名称" prop="title">
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -107,6 +107,15 @@ export default {
     return {
       title: "",
       form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+      rules: {
+        title: [
+          {
+            required: true,
+            message: "请输入环节名称",
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
     };
   },
 
@@ -149,9 +158,9 @@ export default {
 
     dialogSave() {
       // 校验
-      /*if () {
-
-        }*/
+      if (!this.form.title) {
+            return
+        }
 
       let api,
         form = this.form,
