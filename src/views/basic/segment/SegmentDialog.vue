@@ -23,7 +23,7 @@
           </el-switch>
         </el-form-item>
 
-        <el-form-item label="类别">
+        <el-form-item label="类别" prop="type">
           <el-select v-model="form.type" placeholder="请选择">
             <el-option
               v-for="item in dictoryObj.SegmentTypeEnum"
@@ -115,6 +115,9 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+        type: [
+          { required: true, message: '请选择类别', trigger: ["blur", "change"] }
+        ],
       },
     };
   },
@@ -158,7 +161,7 @@ export default {
 
     dialogSave() {
       // 校验
-      if (!this.form.title) {
+      if (!this.form.title || !this.form.type) {
             return
         }
 

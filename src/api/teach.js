@@ -52,6 +52,12 @@ class Teach {
   getCourseDetailRelationApi(json) {
     return get(`${url.courseDetail}`, json);
   }
+
+  //课程里的关联列表拖动排序
+  patchCourseDetailSortApi(id,json) {
+    return patch(`${url.courseList}/${id}/sort`, json);
+  }
+
   //获取主题列表
   getThemeListApi(json) {
     return get(`${url.themeList}`, json);
@@ -84,6 +90,12 @@ class Teach {
   getThemeDetailRelationApi(json) {
     return get(`${url.themeDetail}`, json);
   }
+
+  //主题里的关联列表拖动排序
+  patchThemeDetailSortApi(id,json) {
+    return patch(`${url.themeList}/${id}/sort`, json);
+  }
+
   //获取产品列表
   getProductListApi(json) {
     return get(`${url.productList}`, json);
@@ -116,6 +128,11 @@ class Teach {
   getProductDetailRelationApi(json) {
     return get(`${url.productDetail}`, json);
   }
+  //产品里的关联列表拖动排序
+  patchProductDetailSortApi(id,json) {
+    return patch(`${url.productList}/${id}/sort`, json);
+  }
+
   //获取教材列表
   getTextbookListApi(json) {
     return get(`${url.textbookList}`,json);

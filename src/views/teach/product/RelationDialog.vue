@@ -44,6 +44,9 @@
           </div>
         </div>
       </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" v-if="productSortBtn" @click="productSort">保存当前排序</el-button>
+      </span>
     </el-dialog>
     <relation-course-dialog :dialogObj="relationCourseObj" @reflash="init" />
   </div>
@@ -64,11 +67,14 @@ export default {
         show: false,
       },
       list: [],
+      productSortArr:[],
+      productSortBtn:false
     };
   },
   mounted() {
     this.$dragging.$on("dragged", ({ value }) => {
-      console.log(value.list);
+      this.productSortArr = value.list
+      this.productSortBtn = true
     });
     this.$dragging.$on("dragend", () => {});
   },
@@ -90,6 +96,14 @@ export default {
         id: this.id,
       };
     },
+    productSort(){
+      let json={ids:''},arr=[]
+      this.productSortArr.forEach(e=>{
+        arr.push(e.id)
+      })
+      json.ids = arr.join(',')
+      this.ApiTeach.patchProductDetailSortApi(this.id,json)
+    },
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delProductDetailApi(id).then((res) => {
@@ -110,6 +124,7 @@ export default {
   watch: {
     "dialogObj.show"(value) {
       if (value) {
+        this.productSortBtn = false
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
           this.init();

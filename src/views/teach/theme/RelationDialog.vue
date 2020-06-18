@@ -44,6 +44,9 @@
           </div>
         </div>
       </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" v-if="themeSortBtn" @click="themeSort">保存当前排序</el-button>
+      </span>
     </el-dialog>
     <relation-material-dialog
       :dialogObj="relationMaterialObj"
@@ -67,11 +70,14 @@ export default {
         show: false,
       },
       list: [],
+      themeSortArr:[],
+      themeSortBtn:false
     };
   },
   mounted() {
     this.$dragging.$on("dragged", ({ value }) => {
-      console.log(value.list);
+      this.themeSortArr = value.list
+      this.themeSortBtn = true
     });
     this.$dragging.$on("dragend", () => {});
   },
@@ -93,6 +99,15 @@ export default {
         id: this.id,
       };
     },
+    themeSort(){
+      let json={ids:''},arr=[]
+      this.themeSortArr.forEach(e=>{
+        arr.push(e.id)
+      })
+      json.ids = arr.join(',')
+      this.ApiTeach.patchThemeDetailSortApi(this.id,json)
+    },
+
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delThemeDetailApi(id).then((res) => {
@@ -113,6 +128,7 @@ export default {
   watch: {
     "dialogObj.show"(value) {
       if (value) {
+        this.themeSortBtn = false
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
           this.init();
