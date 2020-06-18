@@ -213,15 +213,29 @@ export default {
 
         }*/
 
-      let json = {
+      let api,
+        json = {
         title: this.form.title,
         rule: JSON.stringify(this.form.rule),
         evaluate_voice: JSON.stringify(this.form.evaluate_voice),
         retry_voice: this.form.retry_voice,
       };
 
-      this.ApiBasic.postScore(json).then((res) => {
-        this.$message.success("保存成功");
+      // this.ApiBasic.postScore(json).then((res) => {
+      //   this.$message.success("保存成功");
+      //   this.dialogToggle();
+      //   this.$parent.getData();
+      // });
+
+      if (!this.dialogData.param.id) {
+        json.id = this.dialogData.param.id;
+        api = this.ApiBasic.putScore;
+      } else {
+        api = this.ApiBasic.postScore;
+      }
+
+      api(json).then((res) => {
+        this.$message({type: "success", message: "保存成功",});
         this.dialogToggle();
         this.$parent.getData();
       });
