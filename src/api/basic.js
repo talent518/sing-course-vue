@@ -47,6 +47,10 @@ class Basic {
     return post("config/score-configs", json);
   }
 
+  putScore(json) {
+    return put("config/score-configs", json);
+  }
+
   delScore(id) {
     return post(`config/score-configs/${id}/disable`);
   }
