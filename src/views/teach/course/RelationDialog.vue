@@ -133,7 +133,12 @@ export default {
         arr.push(e.id)
       })
       json.ids = arr.join(',')
-      this.ApiTeach.patchCourseDetailSortApi(this.id,json)
+      this.ApiTeach.patchCourseDetailSortApi(this.id,json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+      })
     },
     //删除单个
     deleteClass(id) {

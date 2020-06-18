@@ -102,7 +102,12 @@ export default {
         arr.push(e.id)
       })
       json.ids = arr.join(',')
-      this.ApiTeach.patchProductDetailSortApi(this.id,json)
+      this.ApiTeach.patchProductDetailSortApi(this.id,json).then((res) => {
+        this.$message({
+          type: "success",
+          message: "保存成功",
+        });
+      })
     },
     //删除单个
     deleteClass(id) {
