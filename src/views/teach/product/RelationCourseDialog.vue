@@ -123,6 +123,7 @@ export default {
     async init() {
       let json = {
         scene: "all",
+        exclude: "yes",
         title: this.search.title,
         code: this.search.code,
       };
