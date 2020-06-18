@@ -1,34 +1,30 @@
 <template>
-  <el-submenu v-if="item.children.length" :index="item.menuKey">
-    <template slot="title">
-      <div class="menu-text">
-        <i class="iconfont menu-icon" :class="myFont(item)"></i>
-        {{ item.menuName }}
-      </div>
-    </template>
-    <template v-for="m in item.children">
-      <MenuItem :item="m" :key="m.menuKey"></MenuItem>
-    </template>
-  </el-submenu>
+  <div v-if="!item.hidden">
+    <el-submenu v-if="item.children &&item.children.length" :index="item.name">
+      <template slot="title">
+        <div class="menu-text">
+          <i class="iconfont menu-icon" :class="myFont(item)"></i>
+          {{ item.title }}
+        </div>
+      </template>
+      <template v-for="m in item.children">
+        <MenuItem :item="m" :key="m.name"></MenuItem>
+      </template>
+    </el-submenu>
 
-  <el-menu-item :index="item.menuKey" v-else>
-    <div
-      @click="goto(item.menuKey)"
-      class="menu-text"
-      v-if="item.parentId != 0"
-    >
-      {{ item.menuName }}
-    </div>
-    <div class="menu-text" v-else @click="goto(item.menuKey)">
-      <i class="iconfont menu-icon" :class="myFont(item)"></i>
-      {{ item.menuName }}
-    </div>
-  </el-menu-item>
+    <el-menu-item :index="item.name" v-else>
+      
+      <div class="menu-text" @click="goto(item.name)">
+        <i class="iconfont menu-icon" :class="myFont(item)"></i>
+        {{ item.title }}
+      </div>
+    </el-menu-item>
+  </div>
 </template>
 
 <script>
 const iconObj = {
-  SysManager: "icon-setting",
+  SysManager: "icon-setting",   
   PurchaseManager: "icon-YUAN",
   Report: "icon-dashboard",
   LogView: "icon-rizhi",

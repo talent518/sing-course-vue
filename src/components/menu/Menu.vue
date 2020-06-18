@@ -7,8 +7,8 @@
       <template v-for="item in menu">
         <MenuItem
           :item="item"
-          :key="item.menuKey"
-          :index="item.menuKey"></MenuItem>
+          :key="item.name"
+          :index="item.name"></MenuItem>
       </template>
     </el-menu>
   </div>
@@ -19,8 +19,8 @@
 
   export default {
     computed: {
-      ...mapGetters("menu", {
-        menu: "menu",
+      ...mapGetters("permission", {
+        menu: "routes",
       }),
       name() {
         return this.$route.name;
