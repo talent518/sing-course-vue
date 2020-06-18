@@ -41,7 +41,7 @@ export default {
   methods: {
     goOut() {
        this.$store.dispatch("user/logout").then(()=>{
-         window.location.reload();
+         window.location.replace('http://sso.test.changchangenglish.com/site/sso?isLogout=1');
        });
     },
   },

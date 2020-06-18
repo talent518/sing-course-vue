@@ -9,6 +9,7 @@ const actions = {
     return data;
   },
   async logout({ commit }) {
+    await user.userLogout();
     commit('set_token','');
     setStorage('token','');
   },

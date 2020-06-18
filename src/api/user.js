@@ -1,5 +1,6 @@
 const url = {
   userLogin: `user/login`,
+  userLogout: `user/logout`,
   userRetoken: "user/retoken",
   getuserView: `user/get-user-info`,
 };
@@ -17,6 +18,10 @@ class User {
 
   userLogin({ code }) {
     return post(`${url.userLogin}`, { code });
+  }
+
+  userLogout() {
+    return post(`${url.userLogout}`);
   }
 
   async userRetoken() {
