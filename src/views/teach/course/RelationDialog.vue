@@ -57,6 +57,9 @@
           </div>
         </div>
       </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" v-if="courseSortBtn" @click="courseSort">保存当前排序</el-button>
+      </span>
     </el-dialog>
     <relation-material-dialog
       :dialogObj="relationMaterialObj"
@@ -88,11 +91,14 @@ export default {
       id: "",
       element_type: "",
       list: [],
+      courseSortArr:[],
+      courseSortBtn:false
     };
   },
   mounted() {
     this.$dragging.$on("dragged", ({ value }) => {
-      console.log(value.list);
+      this.courseSortArr = value.list
+      this.courseSortBtn = true
     });
     this.$dragging.$on("dragend", () => {});
   },
@@ -121,6 +127,14 @@ export default {
         id: this.id,
       };
     },
+    courseSort(){
+      let json={ids:''},arr=[]
+      this.courseSortArr.forEach(e=>{
+        arr.push(e.id)
+      })
+      json.ids = arr.join(',')
+      this.ApiTeach.patchCourseDetailSortApi(this.id,json)
+    },
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delCourseDetailApi(id).then((res) => {
@@ -144,6 +158,7 @@ export default {
     "dialogObj.show"(value) {
       if (value) {
         this.list = [];
+        this.courseSortBtn = false
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
           this.element_type = this.dialogObj.element_type;

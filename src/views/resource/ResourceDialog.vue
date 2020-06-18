@@ -201,8 +201,6 @@
 
     methods: {
       init() {
-        console.log(this.dictoryObj);
-
         this.getTemplateResourceAll().then(res=>{
           if (this.dialogData.type == "add") {
             this.title = "新增教材";
@@ -210,7 +208,6 @@
           } else if (this.dialogData.type == "edit") {
             this.title = "编辑教材";
             this.form.textbook_data = this.dialogData.param;
-            console.log(this.form.textbook_data)
             this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
           } else if (this.dialogData.type == "view") {
             this.title = "查看教材";
@@ -288,9 +285,21 @@
 
       dialogSave() {
         // 校验
-        /*if () {
+        if (!this.form.textbook_data.title) {
+          this.$message({
+            type: 'error',
+            message: '请输入标题!'
+          });
+          return false;
+        }
 
-          }*/
+        if (!this.form.textbook_data.cover) {
+          this.$message({
+            type: 'error',
+            message: '请上传封面!'
+          });
+          return false;
+        }
 
         let api,
           jsonOrg = {

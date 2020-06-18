@@ -28,6 +28,7 @@
             <el-select
               v-model="form.resources_content.question_ids"
               multiple filterable
+              @change="cehnayng"
               placeholder="请选择">
               <el-option
                 v-for="item in listQuestion"
@@ -54,12 +55,7 @@
         <el-form-item v-if="dialogData.segementType == '视频'" label="视频：">
 
           <div class="upload-wrapper">
-            <template v-if="form.resources_content.urls.length">
-              <div class="video-wrapper" v-for="item in form.resources_content.urls">
-                <video
-                  :src="item" controls class="upload-video"></video>
-              </div>
-            </template>
+
 
             <el-upload
               class="upload-item"
@@ -69,7 +65,13 @@
               :http-request="uploadFile"
               list-type="picture-card"
               multiple>
-              <i class="el-icon-plus avatar-uploader-icon"></i>
+              <template v-if="form.resources_content.urls.length">
+                <div class="video-wrapper" v-for="item in form.resources_content.urls">
+                  <video
+                    :src="item" controls class="upload-video"></video>
+                </div>
+              </template>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </div>
 
@@ -172,8 +174,11 @@
     },
 
     methods: {
+      cehnayng(val){
+        console.log(val)
+      },
+
       init() {
-        console.log(this.dictoryObj);
 
         this.getQuestionAll();
 
@@ -189,14 +194,18 @@
           }
 
         } else if (this.dialogData.type == "edit") {
-          let arr = []
           this.title = "编辑教材";
           this.form.resources_content = this.dialogData.param;
-          arr.push(this.dialogData.param.cover);
-          this.form.resources_content.urls = arr
-          // this.form.resources_content.auto_play =
-          console.log(this.dialogData.param.cover)
-          console.log(this.form.resources_content.urls)
+
+          if (this.dialogData.segementType == '测评') {
+            this.form.score_config_id = this.dialogData.param.segment_template_detail.segment_detail.resources_content.switch_type
+            this.form.resources_content.question_ids = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.question_ids))
+          }else{
+            this.form.resources_content.urls = this.dialogData.param.segment_template_detail.segment_detail.resources_content.urls
+            this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play
+          }
+          console.log(this.dialogData.param.segment_template_detail.segment_detail.resources_content)
+          // console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";
           this.form.resources_content = this.dialogData.param;
@@ -247,7 +256,6 @@
           score_config_id: form.score_config_id ? form.score_config_id : '',
           resources_content: {},
         }
-
         // todo 需要优化 直接格式化就行？
         if (this.dialogData.segementType == '测评') {
           result.resources_content = {
@@ -255,6 +263,13 @@
             question_ids: form.resources_content.question_ids
           }
         } else {
+          if (!form.resources_content.auto_play) {
+            this.$message({
+              type: 'error',
+              message: '请选择播放规则!'
+            });
+            return false;
+          }
           result.resources_content = {
             auto_play: form.resources_content.auto_play,
             urls: form.resources_content.urls

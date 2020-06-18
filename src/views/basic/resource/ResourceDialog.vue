@@ -201,6 +201,7 @@
         SEGMENT_ITEM: SEGMENT_ITEM,
 
         form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
+
       };
     },
 
@@ -267,9 +268,13 @@
 
       dialogSave() {
         // 校验
-        /*if () {
-
-          }*/
+        if (!this.form.template_data.title) {
+          this.$message({
+            type: 'error',
+            message: '请输入名称!'
+          });
+          return false;
+        }
 
         let api,
           json = {
