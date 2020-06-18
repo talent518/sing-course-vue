@@ -8,7 +8,7 @@ const url = {
 };
 import ajax from "./ajax";
 
-const prefix = process.env["VUE_APP_URI"];
+const prefix = process.env["VUE_APP_API"];
 const { get, post, patch, put, delete: del } = ajax(prefix)();
 
 class Report {
