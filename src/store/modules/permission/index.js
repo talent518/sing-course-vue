@@ -3,15 +3,8 @@ import mutations from "./mutations";
 import getters from "./getters";
 
 const state = {
-  menu: {},
-  auths: [],
-  buttons: [],
-  name: "",
-  hasPermission: false,
-  operateMenu: {},
-  allMenu: [],
-  allAuths: [],
-  allButtons: [],
+  routes: [],
+  addRoutes: []
 };
 export default {
   namespaced: true,

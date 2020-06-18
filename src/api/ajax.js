@@ -48,7 +48,10 @@ export default (baseURL) => {
       o = {};
     service.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = getStorage("token");
+        let token=getStorage('token');
+        if (token) {
+          config.headers['WWW-Authorization'] =`Bearer ${token}`;
+        }
         return config;
       },
       (error) => {
@@ -107,6 +110,10 @@ export default (baseURL) => {
         }
       },
       (error) => {
+        const { response: { status, statusText }} = error
+        if(status===401){
+          window.location.replace('/login');
+        }
         return Promise.reject(error);
       }
     );

@@ -7,9 +7,9 @@
           {{ userInfo.nickname }}
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
-          <el-dropdown-item @click.native="goOut"
-            ><i class="iconfont icon-logout"></i> 退出登录</el-dropdown-item
-          >
+          <el-dropdown-item @click.native="goOut">
+            <i class="iconfont icon-logout"></i> 退出登录
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </header>
@@ -28,41 +28,22 @@ import { setStorage } from "@util/storage";
 
 export default {
   name: "AppMain",
-  watch: {
-    $route() {
-      //   if (this.$previewInstance) {
-      //     this.$previewInstance.destroy();
-      //   }
-    },
-  },
   data() {
     return {
       size: "large",
     };
   },
-  created() {
-    // this.getAllMenu();
-    this.getRole();
-    this.getUserInfo();
-  },
   computed: {
-    ...mapGetters("user", {
-      userInfo: "userInfo",
-    }),
+    userInfo(){
+      return this.$store.state.user.userInfo;
+    }
   },
   methods: {
     goOut() {
-      setStorage("token", "");
-      document.location.reload();
+       this.$store.dispatch("user/logout").then(()=>{
+         window.location.replace('http://sso.test.changchangenglish.com/site/sso?isLogout=1');
+       });
     },
-    ...mapActions("menu", {
-      getAllMenu: "getAllMenu",
-    }),
-    ...mapActions("user", {
-      getRole: "getRole",
-      user: "user",
-      getUserInfo: "getUserInfo",
-    }),
   },
 };
 </script>

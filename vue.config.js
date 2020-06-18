@@ -62,4 +62,7 @@ module.exports = {
     devtool: "source-map",
     plugins,
   },
+  devServer: {
+    port: 8083
+  }
 };

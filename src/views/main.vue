@@ -35,16 +35,13 @@
       Menu,
     },
     computed: {
-      ...mapGetters("menu", {
-        menu: "menu",
-      }),
     },
     methods: {
       handleOpen() {
       },
       handleClose() {
       },
-    },
+    }
   };
 </script>
 <style lang="scss" module>

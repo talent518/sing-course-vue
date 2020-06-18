@@ -8,6 +8,7 @@ import "@assets/style/index.scss"; // eslint-disable-line
 import "@/plugins";
 import "@util/filter";
 import "@util/directive";
+import "@/permission"
 import vueTime from "@util/time";
 import myTable from "@components/myTable";
 import myForm from "@components/myForm";
