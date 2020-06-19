@@ -24,7 +24,6 @@
           </el-form-item>
 
           <el-form-item label="练习题：">
-
             <el-select
               v-model="form.resources_content.question_ids"
               multiple filterable
@@ -63,21 +62,16 @@
               list-type="picture-card"
               multiple>
               <template v-if="form.resources_content.urls.length">
-                <div class="video-wrapper" v-for="item in form.resources_content.urls">
+                <div class="video-wrapper" v-for="(item,i) in form.resources_content.urls">
                   <video
                     :src="item" controls class="upload-video"></video>
+                  <el-button @click.stop="videoDelete(i)" style="position: absolute;top: 150px">删除</el-button>
                 </div>
               </template>
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
 
-            <!--<el-upload-->
-            <!--  class="upload-demo"-->
-            <!--  action="/api/public/upload"-->
-            <!--  :http-request="uploadFile"-->
-            <!--  :file-list="form.resources_content.urls">-->
-            <!--  <el-button size="small" type="primary">点击上传</el-button>-->
-            <!--</el-upload>-->
+
 
           </div>
 
@@ -167,7 +161,11 @@
         listQuestion: [],
 
         form: {
-          resources_content:{},
+          resources_content:{
+            question_ids:[],
+            urls:[]
+          },
+          score_config_id:'',
           id:''
 
         },
@@ -181,9 +179,10 @@
     },
 
     methods: {
-
-      videoDelete(){
-        this.form.resources_content.urls = []
+      videoDelete(i){
+        console.log(this.form.resources_content)
+        this.form.resources_content.urls.splice(i,1)
+        // console.log(this.form.resources_content)
       },
 
       init() {
@@ -204,10 +203,13 @@
         } else if (this.dialogData.type == "edit") {
           this.title = "编辑教材";
           this.form.resources_content = this.dialogData.param;
-
+          this.form.resources_content = {...this.dialogData.param,switch_type:'',question_ids:[],auto_play:'',urls:[]};
           if (this.dialogData.segementType == '测评') {
-            this.form.score_config_id = this.dialogData.param.segment_template_detail.segment_detail.resources_content.switch_type
-            this.form.resources_content.question_ids = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.question_ids))
+            let switch_type,question_ids
+            switch_type = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.switch_type))
+            question_ids = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.question_ids))
+            this.form.score_config_id = switch_type
+            this.form.resources_content.question_ids = question_ids
           }else{
             this.form.resources_content.urls = this.dialogData.param.segment_template_detail.segment_detail.resources_content.urls
             this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play

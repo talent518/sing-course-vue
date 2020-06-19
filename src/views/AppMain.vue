@@ -4,7 +4,7 @@
       <el-dropdown class="user-dropdown" trigger="click">
         <div class="user-dropdown-link">
           <img class="avatar" src="~@assets/image/avatar.png" />
-          {{ userInfo.nickname }}
+          <!--{{ userInfo.nickname }}-->
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
           <el-dropdown-item @click.native="goOut">
