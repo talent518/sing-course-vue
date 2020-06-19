@@ -53,7 +53,7 @@
     },
 
     mounted() {
-      // this.getEnum();
+      this.getEnum();
     },
 
     methods: {
