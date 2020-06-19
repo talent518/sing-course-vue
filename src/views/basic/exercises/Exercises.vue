@@ -184,6 +184,9 @@
           <!--<editor-detail v-if="dialogFormVisible" :lookData="desc" />-->
           <el-input type="textarea" v-model="model.dubbing_content"></el-input>
         </el-form-item>
+        <el-form-item label="配音内容翻译：" prop="dubbing_content_tran">
+          <el-input v-model="model.dubbing_content_tran" placeholder="请输入翻译"></el-input>
+        </el-form-item>
         <el-form-item label="配音答案：" prop="dubbing_answer">
           <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
         </el-form-item>
@@ -223,7 +226,7 @@ export default {
         dubbing_type: "",
         dubbing_content: "",
         dubbing_answer: "",
-
+        dubbing_content_tran:'',
       },
       desc: {
         detail: "",
@@ -371,6 +374,7 @@ export default {
         dubbing_type: "",
         dubbing_content: "",
         dubbing_answer: "",
+        dubbing_content_tran: "",
         // dubbing_content_tran: "", //配音详情中文描述
       };
       this.desc = {
