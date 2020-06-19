@@ -31,7 +31,7 @@
               }
             });
           } else {
-            window.location.href = 'http://sso.test.changchangenglish.com/site/sso?url=' + encodeURIComponent(window.location.href);
+            window.location.href = `${process.env.VUE_SSO_HOST}site/sso?url=` + encodeURIComponent(window.location.href);
           }
         },
         immediate: true
