@@ -4,7 +4,8 @@ import getters from "./getters";
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  permissions: undefined,
 };
 export default {
   namespaced: true,

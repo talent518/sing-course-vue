@@ -3,6 +3,7 @@ const url = {
   userLogout: `user/logout`,
   userRetoken: "user/retoken",
   getuserView: `user/get-user-info`,
+  getPermissions: `user/get-permissions`,
 };
 import ajax from "./ajax";
 
@@ -14,6 +15,10 @@ class User {
 
   getCurrentUser() {
     return get(`${url.getuserView}`);
+  }
+
+  getPermissions() {
+    return get(`${url.getPermissions}`);
   }
 
   userLogin({ code }) {
