@@ -1,5 +1,6 @@
-import axios from "axios";
 import * as qiniu from "qiniu-js";
+
+import base from "@api/base";
 
 const MAX_FILESIZE = 1024 * 1024 * 10;
 
@@ -25,61 +26,57 @@ export function upload(file) {
       _scene = "static";
     }
 
-    axios
-      .get(`${process.env.VUE_APP_API}config/qinius`, {
+    base.getQiniu({
+      file_name: file.name,
+      scene: _scene,
+    }).then((res) => {
+      let putExtra = {
+        fname: file.name,
         params: {
-          file_name: file.name,
-          scene: _scene,
+          "x:fullname": res.data.data.new_name,
         },
-      })
-      .then((res) => {
-        let putExtra = {
-          fname: file.name,
-          params: {
-            "x:fullname": res.data.data.new_name,
-          },
-          // mimeType: json.mimeType || null
-        };
-        let congif = {};
-        let observable = qiniu.upload(
-          file,
-          res.data.data.name,
-          res.data.data.token,
-          putExtra,
-          congif
-        );
-        let observer = {
-          next(res) {
-            /*let progress = Number(res.total.percent.toFixed(0));
-              if (json.obj) {
-                json.obj.file.percent = progress;
-                json.obj.onProgress(json.obj.file);
-              }
-              if (store.state.progressList.find(i => {
-                return i.id === json.file.uid
-              })) {
-                store.dispatch('setProgress', {type: 'change', id: json.file.uid, num: progress});
-              }*/
-          },
-          error(err) {
-            if (document.getElementsByClassName("el-message").length > 0) {
-            } else {
-              reject(err);
-              console.log("请求失败！请检查网络");
-              /*this.$message({
-                  type: 'error',
-                  message: '请求失败！请检查网络',
-                });*/
+        // mimeType: json.mimeType || null
+      };
+      let congif = {};
+      let observable = qiniu.upload(
+        file,
+        res.data.data.name,
+        res.data.data.token,
+        putExtra,
+        congif
+      );
+      let observer = {
+        next(res) {
+          /*let progress = Number(res.total.percent.toFixed(0));
+            if (json.obj) {
+              json.obj.file.percent = progress;
+              json.obj.onProgress(json.obj.file);
             }
-          },
-          complete(res) {
-            res.url = res.fullname;
-            res.name = file.name;
-            resolve(res);
-          },
-        };
-        let subscription = observable.subscribe(observer);
-      });
+            if (store.state.progressList.find(i => {
+              return i.id === json.file.uid
+            })) {
+              store.dispatch('setProgress', {type: 'change', id: json.file.uid, num: progress});
+            }*/
+        },
+        error(err) {
+          if (document.getElementsByClassName("el-message").length > 0) {
+          } else {
+            reject(err);
+            console.log("请求失败！请检查网络");
+            /*this.$message({
+                type: 'error',
+                message: '请求失败！请检查网络',
+              });*/
+          }
+        },
+        complete(res) {
+          res.url = res.fullname;
+          res.name = file.name;
+          resolve(res);
+        },
+      };
+      let subscription = observable.subscribe(observer);
+    });
 
     /*if (json.type === 'local') {
 
