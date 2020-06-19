@@ -30,6 +30,9 @@ export function upload(file) {
       file_name: file.name,
       scene: _scene,
     }).then((res) => {
+
+      console.log('7niu', res);
+
       let putExtra = {
         fname: file.name,
         params: {
