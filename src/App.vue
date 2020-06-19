@@ -80,6 +80,7 @@
             "SegmentLeadTypeEnum",
             "SegmentTypeEnum",
             "CourseTypeEnum",
+            "PlayStatusEnum",
           ],
         };
         let o = {};

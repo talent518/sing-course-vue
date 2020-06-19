@@ -45,9 +45,14 @@ class Teach {
     return post(`${url.courseDetail}`, json);
   }
 
-  //课程管理中全部移除
-  delAllCourseDetailApi(json) {
-    return del(`${url.courseDetail}/${json.course_id}`, json);
+  //课程关联教材全部清除
+  delAllCourseRelationTextbookApi(id) {
+    return post(`${url.courseList}/${id}/textbook`);
+  }
+
+  //课程关联主题全部清除
+  delAllCourseRelationThemeApi(id) {
+    return post(`${url.courseList}/${id}/theme`);
   }
 
   //课程管理单个移除
@@ -90,9 +95,9 @@ class Teach {
     return post(`${url.themeDetail}`, json);
   }
 
-  //主题管理中全部移除
-  delAllThemeDetailApi(json) {
-    return del(`${url.themeDetail}/${json.theme_id}`, json);
+  //课程关联主题全部清除
+  delAllThemeRelationTextbookApi(id) {
+    return post(`${url.themeList}/${id}/theme`);
   }
 
   //主题管理单个移除
@@ -135,9 +140,9 @@ class Teach {
     return post(`${url.productDetail}`, json);
   }
 
-  //产品管理中全部移除
-  delAllProductDetailApi(json) {
-    return del(`${url.productDetail}/${json.product_id}`, json);
+  //产品关联课程全部清除
+  delAllProductRelationCourseApi(id) {
+    return post(`${url.themeList}/${id}/product`);
   }
 
   //产品管理单个移除

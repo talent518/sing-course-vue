@@ -42,7 +42,7 @@
         <el-form-item label="播放规则：" v-else>
           <el-select v-model="form.resources_content.auto_play" placeholder="请选择">
             <el-option
-              v-for="item in dictoryObj.EvaluationSwitchTypeEnum"
+              v-for="item in dictoryObj.PlayStatusEnum"
               :key="item.key"
               :label="item.value"
               :value="item.key">

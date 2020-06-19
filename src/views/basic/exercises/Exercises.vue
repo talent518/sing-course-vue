@@ -9,18 +9,18 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
-        <div class="titleFlex">
-          <div>标签：</div>
-          <div>
-            <el-input
-              multiple
-              placeholder="请选择标签"
-              v-model="searchObj.title"
-            />
-          </div>
-        </div>
-      </el-col>
+      <!--<el-col :span="6">-->
+      <!--  <div class="titleFlex">-->
+      <!--    <div>标签：</div>-->
+      <!--    <div>-->
+      <!--      <el-input-->
+      <!--        multiple-->
+      <!--        placeholder="请选择标签"-->
+      <!--        v-model="searchObj.title"-->
+      <!--      />-->
+      <!--    </div>-->
+      <!--  </div>-->
+      <!--</el-col>-->
       <el-col :span="4">
         <el-button type="primary" @click="search">查询</el-button>
       </el-col>
@@ -378,7 +378,7 @@ export default {
       }
     },
     search() {
-      this.searchObj.title = "";
+      this.searchObj.title = this.searchObj.title;
       this.searchObj.pageIndex = 1;
       this.getQuestion();
     },
