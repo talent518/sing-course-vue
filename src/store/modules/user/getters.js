@@ -1,11 +1,8 @@
 const getters = {
-  getpPrmissions(state) {
-    return state.permissions;
-  },
   userInfo(state) {
     return state.userInfo;
   },
-  getToken(state){
+  token(state){
     return state.token;
   }
 };
