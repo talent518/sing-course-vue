@@ -50,7 +50,7 @@
         </el-form-item>
 
         <el-form-item label="教材模板：">
-          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="templateResourceChange" style="margin-bottom: -10px;">
+          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="(label) => {return templateResourceChange(label, true);}" style="margin-bottom: -10px;">
             <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 10px; margin-left: 0; margin-bottom: 10px;" :key="item.id">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -108,16 +108,16 @@
       <el-button type="primary" @click="dialogSave">确 定</el-button>
     </div>
 
-    <resource-dialog-segment :dialog-data="dialogSegmentData"></resource-dialog-segment>
+    <resource-edit-segment :dialog-data="dialogSegmentData"></resource-edit-segment>
 
   </el-dialog>
 </template>
 
 <script>
   import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
+  // import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
-  import ResourceDialogSegment from "@/views/resource/ResourceDialogSegment"
+  import ResourceEditSegment from "@/views/resource/ResourceEditSegment"
 
   const FORM_DEFAULT = {
     textbook_data: {
@@ -149,17 +149,10 @@
     ]
   };
 
-  const SEGMENT_ITEM = {
-    segment_template_id: "",
-    lead_type: "",
-    title: "",
-    cover: "",
-  };
-
   export default {
     name: "ResourceDialog",
-    components: {ResourceDialogSegment},
-    mixins: [commonMessage, menuRole],
+    components: {ResourceEditSegment},
+    mixins: [commonMessage],
 
     props: {
       dialogData: {
@@ -182,8 +175,6 @@
 
         listTemplateResource: [],
 
-        SEGMENT_ITEM: SEGMENT_ITEM,
-
         form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
 
         dialogSegmentData: {
@@ -201,47 +192,78 @@
 
     methods: {
       init() {
-        this.getTemplateResourceAll().then(res => {
-            if (this.dialogData.type == "add") {
-              this.title = "新增教材";
-              this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-            } else if (this.dialogData.type == "edit") {
-              this.title = "编辑教材";
-              this.form.textbook_data = this.dialogData.param;
-              this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
-            } else if (this.dialogData.type == "view") {
-              this.title = "查看教材";
-              this.form.textbook_data = this.dialogData.param;
-              this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
-            }
+        this.getTemplateResourceAll(res => {
+
+          if (this.dialogData.param.type == "add") {
+
+            this.title = "新增教材";
+            this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+
+            // 新增默认选中第一个
+            this.$nextTick(() => {
+              this.form.textbook_template_id = res.items[0].id;
+              this.form.textbook_data.textbook_template_id = res.items[0].id;
+              this.templateResourceChange(res.items[0].id)
+            })
+
+          } else if (this.dialogData.param.type == "edit") {
+
+            this.title = "编辑教材";
+            this.form.textbook_data = this.dialogData.param;
+            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
+
+          } else if (this.dialogData.param.type == "view") {
+
+            this.title = "查看教材";
+            this.form.textbook_data = this.dialogData.param;
+            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
+
           }
-        );
+
+        })
       },
 
       /**
        * 获取所有 教材模板
        */
-      async getTemplateResourceAll() {
-        let res = await this.ApiBasic.getResource({scene: "all", status: 1});
-        this.listTemplateResource = res.items;
-        // 新增默认选中第一个
-        if (this.dialogData.type == 'add') {
-          this.form.textbook_template_id = res.items[0].id;
-          this.form.textbook_data.textbook_template_id = res.items[0].id;
-          this.templateResourceChange(res.items[0].id)
-        }
+      async getTemplateResourceAll(callback) {
+        this.ApiBasic.getResource({scene: "all", status: 1}).then(res => {
+          this.listTemplateResource = res.items;
+          callback && callback(res)
+        });
       },
 
       /**
        * 教材模板变化
        */
-      templateResourceChange(label) {
+      templateResourceChange(label, manual) {
         let _idx = this.listTemplateResource.findIndex(i => {
             return i.id == label
           }),
           _listSegment = this.listTemplateResource[_idx].template_data_details;
         if (_listSegment && _listSegment.length) {
-          this.form.template_data_details = _listSegment
+          this.form.template_data_details = _listSegment;
+
+          if (!manual) {
+
+            this.form.textbook_segment_data_details =
+              JSON.parse(JSON.stringify(this.dialogData.param.textbook_segment_data_details))
+
+          } else {
+
+            let _textbook_segment_data_details = []
+            _listSegment.forEach((val, index) => {
+
+              _textbook_segment_data_details[index] =
+                JSON.parse(JSON.stringify(FORM_DEFAULT.textbook_segment_data_details[0]));
+
+              _textbook_segment_data_details[index].segment_template_id = val.segment_template_id;
+
+            })
+
+            this.form.textbook_segment_data_details = _textbook_segment_data_details
+          }
+
         } else {
           this.form.template_data_details = JSON.parse(JSON.stringify(FORM_DEFAULT.template_data_details))
           // this.form.template_data_details[0].id =
@@ -256,7 +278,7 @@
         // todo 优化
         this.dialogSegmentData = {
           show: true,
-          type: this.dialogData.type,
+          type: this.dialogData.param.type,
           segementType: type,
           index: itemIndex,
           param: item
@@ -307,6 +329,7 @@
             textbook_segment_data_details: this.form.textbook_segment_data_details
           },
           json = {
+            id: this.dialogData.param.id,
             textbook_data: JSON.stringify(this.form.textbook_data),
             template_data_details: JSON.stringify(this.form.template_data_details),
             textbook_segment_data_details: JSON.stringify(this.form.textbook_segment_data_details)
@@ -315,14 +338,7 @@
 
         console.log(jsonOrg);
 
-        if (this.dialogData.param.id) {
-          json.id = this.dialogData.param.id;
-          api = this.ApiResource.putResource;
-        } else {
-          api = this.ApiResource.postResource;
-        }
-
-        api(json).then((res) => {
+        this.ApiResource.putResource(json).then((res) => {
           this.$message({
             type: "success",
             message: "保存成功",

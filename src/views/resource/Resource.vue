@@ -49,16 +49,14 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialog('view', scope.row)"
-          >预览
+            @click="handleDialogEdit(scope.row)">预览
           </el-button>
 
           <el-button
             plain
             size="small"
             type="warning"
-            @click="handleDialog('edit', scope.row)"
-          >编辑
+            @click="handleDialogEdit(scope.row)">编辑
           </el-button>
         </template>
       </el-table-column>
@@ -73,25 +71,24 @@
       @current-change="pageCurrentChange"
       :current-page.sync="page.index"></el-pagination>
 
-    <resource-dialog-add :dialog-data="dialogAddData"></resource-dialog-add>
+    <resource-add :dialog-data="dialogAddData"></resource-add>
 
-    <resource-dialog-edit :dialog-data="dialogEditData"></resource-dialog-edit>
+    <resource-edit :dialog-data="dialogEditData"></resource-edit>
 
   </div>
 </template>
 
 <script>
   import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
-  import ResourceDialogAdd from "@/views/resource/ResourceDialogAdd";
-  import ResourceDialogEdit from "@/views/resource/ResourceDialogEdit";
+  import ResourceAdd from "@/views/resource/ResourceAdd";
+  import ResourceEdit from "@/views/resource/ResourceEdit";
 
   export default {
     name: "Resource",
 
-    mixins: [commonMessage, menuRole],
+    mixins: [commonMessage],
 
-    components: {ResourceDialogEdit, ResourceDialogAdd},
+    components: {ResourceEdit, ResourceAdd},
 
     data() {
       return {
@@ -119,17 +116,21 @@
     },
 
     methods: {
-      handleDialogAdd(row) {
+      handleDialogAdd() {
         this.dialogAddData = {
           show: true,
-          param: row ? row : {id: 0},
+          param: {
+            type: 'add',
+            id: 0
+          }
         };
       },
 
       handleDialogEdit(row) {
+        row.type = 'edit';
         this.dialogEditData = {
           show: true,
-          param: row ? row : {id: 0},
+          param: row
         };
       },
 
