@@ -31,20 +31,20 @@ export function upload(file) {
       scene: _scene,
     }).then((res) => {
 
-      console.log('7niu', res);
+      // console.log('7niu', res);
 
       let putExtra = {
         fname: file.name,
         params: {
-          "x:fullname": res.data.data.new_name,
+          "x:fullname": res.new_name,
         },
         // mimeType: json.mimeType || null
       };
       let congif = {};
       let observable = qiniu.upload(
         file,
-        res.data.data.name,
-        res.data.data.token,
+        res.name,
+        res.token,
         putExtra,
         congif
       );
