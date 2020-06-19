@@ -226,6 +226,11 @@
             template_data: this.dialogData.param,
             template_data_details: this.dialogData.param.template_data_details.length ? this.dialogData.param.template_data_details : FORM_DEFAULT.template_data_details,
           };
+          this.form.template_data_details.forEach(e=>{
+            if(e.lead_type == 0){
+              e.lead_type = ''
+            }
+          })
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材模板";
           this.form = {
@@ -294,10 +299,6 @@
         }
 
         api(json).then((res) => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
           this.dialogToggle();
           this.$parent.getData();
         });
