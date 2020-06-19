@@ -1,12 +1,14 @@
+import { setStorage } from "@util/storage";
+
 const mutations = {
-  set_token(state,token){
-    state.token=token;
+  set_token(state, token) {
+    state.token = token;
+    setStorage('token', token);
   },
   set_userInfo(state, userInfo) {
     state.userInfo = userInfo;
-  },
-  set_permissions(state, permissions) {
-    state.permissions = permissions;
+    setStorage('userInfo', userInfo);
+
   },
 };
 export default mutations;
