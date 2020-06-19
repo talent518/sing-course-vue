@@ -13,7 +13,7 @@
     </el-submenu>
 
     <el-menu-item :index="item.name" v-else>
-      
+
       <div class="menu-text" @click="goto(item.name)">
         <i class="iconfont menu-icon" :class="myFont(item)"></i>
         {{ item.title }}
@@ -23,36 +23,28 @@
 </template>
 
 <script>
-const iconObj = {
-  SysManager: "icon-setting",   
-  PurchaseManager: "icon-YUAN",
-  Report: "icon-dashboard",
-  LogView: "icon-rizhi",
-  Resource: "icon-file-copy",
-  Basic: "icon-build",
-  Product: "icon-appstore",
-};
-import { mapMutations } from "vuex";
+  const iconObj = {
+    Teaching: "icon-file-copy",
+    Basic: "icon-build",
+  };
+  import {mapMutations} from "vuex";
 
-export default {
-  name: "MenuItem",
-  props: {
-    item: {
-      type: Object,
-      default: () => {},
+  export default {
+    name: "MenuItem",
+    props: {
+      item: {
+        type: Object,
+        default: () => {
+        },
+      },
     },
-  },
-  methods: {
-    myFont(item) {
-      return iconObj[item.menuKey];
+    methods: {
+      myFont(item) {
+        return iconObj[item.menuKey];
+      },
+      goto(name) {
+        this.$router.push({name});
+      },
     },
-    ...mapMutations("menu", {
-      set_menu_name: "set_menu_name",
-    }),
-    goto(name) {
-      this.set_menu_name(name);
-      this.$router.push({ name });
-    },
-  },
-};
+  };
 </script>

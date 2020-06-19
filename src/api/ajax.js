@@ -1,7 +1,7 @@
 import axios from "axios";
 import Vue from "vue";
 import errcode from "@api/errcode";
-import { getStorage } from "@util/storage";
+import {getStorage} from "@util/storage";
 
 const configUrlNoTip = [
   "user/retoken",
@@ -16,7 +16,7 @@ const configUrlNoTip = [
 ];
 
 //特殊的url 特殊处理
-function special({ config }) {
+function special({config}) {
   if (config.url.includes("vip-batch") && config.method === "put") {
     return true;
   }
@@ -48,9 +48,9 @@ export default (baseURL) => {
       o = {};
     service.interceptors.request.use(
       (config) => {
-        let token=getStorage('token');
+        let token = getStorage('token');
         if (token) {
-          config.headers['WWW-Authorization'] =`Bearer ${token}`;
+          config.headers['WWW-Authorization'] = `Bearer ${token}`;
         }
         return config;
       },
@@ -63,6 +63,9 @@ export default (baseURL) => {
         let status = res.status;
         let data = res.data;
         let url = res.config.url;
+
+        // debugger
+
         if (!String(status).startsWith("5")) {
           if (!errcode[data.code]) {
             if (data.message === "OK" && typeof data.data != "object") {
@@ -78,6 +81,7 @@ export default (baseURL) => {
             }
             return data.data;
           } else {
+            // debugger
             if (data.code === 401) {
               if (!document.location.href.includes("login")) {
                 document.location.href = "/login";
@@ -110,8 +114,10 @@ export default (baseURL) => {
         }
       },
       (error) => {
-        const { response: { status, statusText }} = error
-        if(status===401){
+        // debugger
+        const {response: {status, statusText}} = error
+        if (status === 401) {
+          localStorage.clear();
           window.location.replace('/login');
         }
         return Promise.reject(error);
@@ -121,7 +127,7 @@ export default (baseURL) => {
     methods.forEach((item = {}) => {
       o[item] = (url, params = {}) => {
         if (item === "get") {
-          return service[item](url, { params: { ...params } });
+          return service[item](url, {params: {...params}});
         } else {
           // debugger;
           return service[item](url, params);

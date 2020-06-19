@@ -1,9 +1,9 @@
 import router from "@/router";
-import { getStorage } from "@util/storage";
+import {getStorage} from "@util/storage";
 import store from "@/store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
-NProgress.configure({ showSpinner: false });
+NProgress.configure({showSpinner: false});
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
@@ -12,7 +12,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.path == '/login') {
       next("/");
     } else {
-      if (!store.state || store.state.permission.addRoutes.length<=0) {
+      if (!store.state || store.state.permission.addRoutes.length <= 0) {
         let newRoutes = await store.dispatch("permission/generateRoutes");
         router.addRoutes([
           ...newRoutes,
@@ -21,7 +21,7 @@ router.beforeEach(async (to, from, next) => {
             redirect: "/index",
           },
         ]);
-        next({ ...to, replace: true });
+        next({...to, replace: true});
       } else {
         next();
       }
@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.path == '/login') {
       next();
     } else {
-      next("/login");
+      next(`/login?redirect=${to.path}`)
     }
   }
 });
