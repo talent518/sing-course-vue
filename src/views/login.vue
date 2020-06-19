@@ -21,7 +21,7 @@
           const query = route.query
           this.redirect = query.redirect;
           this.code = query.code;
-          debugger
+          // debugger
           if (this.code) {
             this.userLogin({code: this.code}).then(() => {
               if (this.redirect) {

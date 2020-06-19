@@ -31,10 +31,10 @@ export default {
   },
   methods: {
     filterEnum(type, key) {
-      // console.log(this.dictoryObj);
-      return this.dictoryObj[type].find(i => {
+      let result = this.dictoryObj[type].find(i => {
         return i.key == key
-      }).value
+      })
+      return (result && result.value) ? result.value : '-'
     },
 
     openLoading() {
