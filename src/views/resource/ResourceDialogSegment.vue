@@ -167,7 +167,9 @@
         listQuestion: [],
 
         form: {
-          resources_content:{}
+          resources_content:{},
+          id:''
+
         },
       };
     },
@@ -210,6 +212,7 @@
             this.form.resources_content.urls = this.dialogData.param.segment_template_detail.segment_detail.resources_content.urls
             this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play
           }
+          this.form.id = this.dialogData.param.segment_template_detail.segment_detail.id
           console.log(this.dialogData.param.segment_template_detail.segment_detail.resources_content)
           // console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
@@ -258,7 +261,6 @@
         let form = this.form;
 
         let result = {
-          segment_template_id: this.dialogData.param.segment_template_id,
           score_config_id: form.score_config_id ? form.score_config_id : '',
           resources_content: {},
         }
@@ -278,12 +280,11 @@
             return false;
           }
           result.resources_content = {
-            id:this.dialogData.param.segment_template_detail.segment_detail.id,
             auto_play: form.resources_content.auto_play,
             urls: form.resources_content.urls
           }
         }
-
+        result.id = this.form.id
         this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = result;
 
         this.dialogToggle();
