@@ -41,7 +41,7 @@
     methods: {
       goOut() {
         this.$store.dispatch("user/logout").then(() => {
-          window.location.replace(`${process.env.VUE_APP_SSO}site/sso?isLogout=1`);
+          window.location.replace(`${process.env.VUE_APP_SSO}site/sso?isLogout=1&url=${encodeURIComponent(window.location.href)}`);
         });
       },
     },
