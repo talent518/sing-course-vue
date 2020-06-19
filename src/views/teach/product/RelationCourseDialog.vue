@@ -85,7 +85,7 @@ export default {
       loading: false,
       search: {
         title: "",
-        label: "",
+        code: "",
       },
       list: [],
       selected: [], // 已选择

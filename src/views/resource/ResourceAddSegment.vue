@@ -53,6 +53,14 @@
         <el-form-item v-if="dialogData.segementType == '视频'" label="视频：">
 
           <div class="upload-wrapper">
+            <template v-if="form.resources_content.urls.length">
+              <div class="video-wrapper" v-for="(item,i) in form.resources_content.urls">
+                <video
+                  :src="item" controls class="upload-video"></video>
+                <el-button @click.stop="videoDelete(i)" style="position: absolute;top: 150px">删除</el-button>
+              </div>
+            </template>
+
             <el-upload
               class="upload-item"
               action="/api/public/upload"
@@ -61,17 +69,8 @@
               :http-request="uploadFile"
               list-type="picture-card"
               multiple>
-              <template v-if="form.resources_content.urls.length">
-                <div class="video-wrapper" v-for="(item,i) in form.resources_content.urls">
-                  <video
-                    :src="item" controls class="upload-video"></video>
-                  <el-button @click.stop="videoDelete(i)" style="position: absolute;top: 150px">删除</el-button>
-                </div>
-              </template>
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <i class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-
-
 
           </div>
 
@@ -161,12 +160,12 @@
         listQuestion: [],
 
         form: {
-          resources_content:{
-            question_ids:[],
-            urls:[]
+          resources_content: {
+            question_ids: [],
+            urls: []
           },
-          score_config_id:'',
-          id:''
+          score_config_id: '',
+          id: ''
 
         },
       };
@@ -179,9 +178,9 @@
     },
 
     methods: {
-      videoDelete(i){
+      videoDelete(i) {
         console.log(this.form.resources_content)
-        this.form.resources_content.urls.splice(i,1)
+        this.form.resources_content.urls.splice(i, 1)
         // console.log(this.form.resources_content)
       },
 
@@ -203,16 +202,30 @@
         } else if (this.dialogData.type == "edit") {
           this.title = "编辑教材";
           this.form.resources_content = this.dialogData.param;
-          this.form.resources_content = {...this.dialogData.param,switch_type:'',question_ids:[],auto_play:'',urls:[]};
+          this.form.resources_content = {
+            ...this.dialogData.param,
+            switch_type: '',
+            question_ids: [],
+            auto_play: '',
+            urls: []
+          };
+
           if (this.dialogData.segementType == '测评') {
-            let switch_type,question_ids
-            switch_type = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.switch_type))
-            question_ids = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.question_ids))
-            this.form.score_config_id = switch_type
-            this.form.resources_content.question_ids = question_ids
-          }else{
-            this.form.resources_content.urls = this.dialogData.param.segment_template_detail.segment_detail.resources_content.urls
-            this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play
+            let switch_type,
+              question_ids;
+
+            let _resource_content = this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].resources_content;
+
+            switch_type = JSON.parse(JSON.stringify(_resource_content.switch_type));
+            question_ids = JSON.parse(JSON.stringify(_resource_content.question_ids));
+            this.form.score_config_id = switch_type;
+            this.form.resources_content.question_ids = question_ids;
+          } else {
+
+            let _resource_content = this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].resources_content;
+
+            this.form.resources_content.urls = JSON.parse(JSON.stringify(_resources_content.urls));
+            this.form.resources_content.auto_play = JSON.parse(JSON.stringify(_resources_content.auto_play));
           }
           this.form.id = this.dialogData.param.segment_template_detail.segment_detail.id
           console.log(this.dialogData.param.segment_template_detail.segment_detail.id)
@@ -228,20 +241,11 @@
       async getQuestionAll() {
         let res = await this.ApiCourse.getVoiceQuestions({scene: "all", status: 1});
         this.listQuestion = res.items;
-        // 新增默认选中第一个
-        /*if (this.dialogData.type == 'add') {
-          this.form.template_data.textbook_template_id = res.items[0].id;
-          this.templateResourceChange(res.items[0].id)
-        }*/
       },
 
       async getScoreAll() {
         let res = await this.ApiBasic.getScoreAll();
         this.listScore = res;
-        // 新增默认选中第一个
-        /*if (this.dialogData.type == 'add') {
-          this.form.score_config_id = res.items[0].id;
-        }*/
       },
 
       async uploadFile(e) {
@@ -263,6 +267,7 @@
         let form = this.form;
 
         let result = {
+          segment_template_id: this.dialogData.param.segment_template_id,
           score_config_id: form.score_config_id ? form.score_config_id : '',
           resources_content: {},
         }
@@ -285,7 +290,6 @@
             urls: form.resources_content.urls
           }
         }
-        result.id = this.form.id
         this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = result;
 
         this.dialogToggle();

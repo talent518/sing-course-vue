@@ -31,9 +31,13 @@ export default {
   },
   methods: {
     filterEnum(type, key) {
+      console.log('123', this.dictoryObj[type])
       let result = this.dictoryObj[type].find(i => {
         return i.key == key
       })
+
+      console.log('filterEnum', result);
+
       return (result && result.value) ? result.value : '-'
     },
 

@@ -53,7 +53,7 @@
     },
 
     mounted() {
-      // this.getEnum();
+      this.getEnum();
     },
 
     methods: {
@@ -80,6 +80,7 @@
             "SegmentLeadTypeEnum",
             "SegmentTypeEnum",
             "CourseTypeEnum",
+            "PlayStatusEnum",
           ],
         };
         let o = {};

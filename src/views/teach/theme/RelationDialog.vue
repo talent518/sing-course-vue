@@ -82,7 +82,10 @@ export default {
     this.$dragging.$on("dragend", () => {});
   },
   methods: {
-    async init() {
+    async init(val) {
+      if(val){
+        this.$emit("reflash");
+      }
       let json = {
         theme_id: this.id,
         scene: "all",
@@ -116,16 +119,20 @@ export default {
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delThemeDetailApi(id).then((res) => {
-        this.init();
+        if(this.list.length==1){
+          this.list = []
+        }else{
+          this.init();
+        }
       });
     },
     //删除全部
     deleteAllClass() {
-      let json = {
-        is_all: "all",
-        theme_id: this.id,
-      };
-      this.ApiTeach.delAllThemeDetailApi(json).then((res) => {
+      if(this.list.length==0){
+        return
+      }
+      this.ApiTeach.delAllThemeRelationTextbookApi(this.id).then((res) => {
+        this.$emit("reflash");
         this.init();
       });
     },

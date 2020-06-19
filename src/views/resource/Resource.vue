@@ -2,7 +2,7 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialog('add')">新增教材</el-button>
+        <el-button type="success" plain @click="handleDialogAdd()">新增教材</el-button>
       </el-form-item>
     </el-form>
 
@@ -49,16 +49,14 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialog('view', scope.row)"
-          >预览
+            @click="handleDialogEdit(scope.row)">预览
           </el-button>
 
           <el-button
             plain
             size="small"
             type="warning"
-            @click="handleDialog('edit', scope.row)"
-          >编辑
+            @click="handleDialogEdit(scope.row)">编辑
           </el-button>
         </template>
       </el-table-column>
@@ -71,30 +69,36 @@
       :total="page.total"
       :page-size="page.size"
       @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :current-page.sync="page.index"></el-pagination>
 
-    <resource-dialog :dialog-data="dialogData"></resource-dialog>
+    <resource-add :dialog-data="dialogAddData"></resource-add>
+
+    <resource-edit :dialog-data="dialogEditData"></resource-edit>
+
   </div>
 </template>
 
 <script>
   import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
-  import ResourceDialog from "@/views/resource/ResourceDialog";
+  import ResourceAdd from "@/views/resource/ResourceAdd";
+  import ResourceEdit from "@/views/resource/ResourceEdit";
 
   export default {
     name: "Resource",
 
-    mixins: [commonMessage, menuRole],
+    mixins: [commonMessage],
 
-    components: {ResourceDialog},
+    components: {ResourceEdit, ResourceAdd},
 
     data() {
       return {
         loading: true,
-        dialogData: {
+        dialogAddData: {
           show: false,
+        },
+
+        dialogEditData: {
+          show: false
         },
 
         list: [],
@@ -112,11 +116,21 @@
     },
 
     methods: {
-      handleDialog(type, row) {
-        this.dialogData = {
+      handleDialogAdd() {
+        this.dialogAddData = {
           show: true,
-          type: type,
-          param: row ? row : {id: 0},
+          param: {
+            type: 'add',
+            id: 0
+          }
+        };
+      },
+
+      handleDialogEdit(row) {
+        row.type = 'edit';
+        this.dialogEditData = {
+          show: true,
+          param: row
         };
       },
 

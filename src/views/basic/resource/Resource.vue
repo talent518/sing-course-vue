@@ -75,14 +75,13 @@
 
 <script>
   import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
   import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
   import globalFilter from "@util/filter"
 
   export default {
     name: "TemplateResource",
 
-    mixins: [commonMessage, menuRole],
+    mixins: [commonMessage],
 
     components: {TemplateResourceDialog},
 
