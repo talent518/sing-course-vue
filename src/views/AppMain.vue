@@ -4,7 +4,7 @@
       <el-dropdown class="user-dropdown" trigger="click">
         <div class="user-dropdown-link">
           <img class="avatar" src="~@assets/image/avatar.png" />
-          {{ userInfo.nickname }}
+          {{ userInfo.name }}
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
           <el-dropdown-item @click.native="goOut">
@@ -24,7 +24,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { setStorage } from "@util/storage";
+import { getStorage } from "@util/storage";
 
 export default {
   name: "AppMain",
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     userInfo(){
-      return this.$store.state.user.userInfo;
+      return this.$store.getters['user/userInfo'];
     }
   },
   methods: {

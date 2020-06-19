@@ -1,11 +1,17 @@
+import { getStorage } from "@util/storage";
+
 const getters = {
-  getpPrmissions(state) {
-    return state.permissions;
-  },
   userInfo(state) {
+    if (!state.userInfo) {
+      state.userInfo = getStorage('userInfo');
+      if (state.userInfo)
+        state.userInfo = JSON.parse(state.userInfo);
+    }
     return state.userInfo;
   },
-  getToken(state){
+  token(state) {
+    if (!state.token)
+      state.token = getStorage('token');
     return state.token;
   }
 };

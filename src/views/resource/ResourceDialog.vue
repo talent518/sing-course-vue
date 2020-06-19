@@ -252,7 +252,7 @@
 
       segementLink(item, itemIndex) {
         let type = this.dictoryObj.SegmentTypeEnum.find(i => {
-          return i.key == item.lead_type
+          return i.key == item.segment_template_detail.type
         }).value;
         // todo 优化
         this.dialogSegmentData = {
