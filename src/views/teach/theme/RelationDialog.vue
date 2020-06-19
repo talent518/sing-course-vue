@@ -82,7 +82,10 @@ export default {
     this.$dragging.$on("dragend", () => {});
   },
   methods: {
-    async init() {
+    async init(val) {
+      if(val){
+        this.$emit("reflash");
+      }
       let json = {
         theme_id: this.id,
         scene: "all",
@@ -129,6 +132,7 @@ export default {
         return
       }
       this.ApiTeach.delAllThemeRelationTextbookApi(this.id).then((res) => {
+        this.$emit("reflash");
         this.init();
       });
     },
