@@ -2,7 +2,7 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialog('add')">新增教材</el-button>
+        <el-button type="success" plain @click="handleDialogAdd()">新增教材</el-button>
       </el-form-item>
     </el-form>
 
@@ -71,30 +71,37 @@
       :total="page.total"
       :page-size="page.size"
       @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :current-page.sync="page.index"></el-pagination>
 
-    <resource-dialog :dialog-data="dialogData"></resource-dialog>
+    <resource-dialog-add :dialog-data="dialogAddData"></resource-dialog-add>
+
+    <resource-dialog-edit :dialog-data="dialogEditData"></resource-dialog-edit>
+
   </div>
 </template>
 
 <script>
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
-  import ResourceDialog from "@/views/resource/ResourceDialog";
+  import ResourceDialogAdd from "@/views/resource/ResourceDialogAdd";
+  import ResourceDialogEdit from "@/views/resource/ResourceDialogEdit";
 
   export default {
     name: "Resource",
 
     mixins: [commonMessage, menuRole],
 
-    components: {ResourceDialog},
+    components: {ResourceDialogEdit, ResourceDialogAdd},
 
     data() {
       return {
         loading: true,
-        dialogData: {
+        dialogAddData: {
           show: false,
+        },
+
+        dialogEditData: {
+          show: false
         },
 
         list: [],
@@ -112,10 +119,16 @@
     },
 
     methods: {
-      handleDialog(type, row) {
-        this.dialogData = {
+      handleDialogAdd(row) {
+        this.dialogAddData = {
           show: true,
-          type: type,
+          param: row ? row : {id: 0},
+        };
+      },
+
+      handleDialogEdit(row) {
+        this.dialogEditData = {
+          show: true,
           param: row ? row : {id: 0},
         };
       },

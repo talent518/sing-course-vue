@@ -7,7 +7,8 @@ NProgress.configure({ showSpinner: false });
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
-  if (store.state.user.token) {
+  let token = store.getters['user/token'];
+  if (token) {
     if (to.path == '/login') {
       next("/");
     } else {
