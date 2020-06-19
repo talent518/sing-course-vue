@@ -10,21 +10,6 @@
       <el-form inline size="small">
         <div class="course-management-form">
           <el-form-item label="教材编号：">
-            <!--<el-select-->
-            <!--  v-model="search.label"-->
-            <!--  multiple-->
-            <!--  filterable-->
-            <!--  clearable-->
-            <!--  placeholder=""-->
-            <!--  style="width: 200px;"-->
-            <!--&gt;-->
-            <!--  <el-option-->
-            <!--    v-for="(data, index) in watchList"-->
-            <!--    :key="index"-->
-            <!--    :label="data.title"-->
-            <!--    :value="data.id"-->
-            <!--  ></el-option>-->
-            <!--</el-select>-->
             <el-input
               placeholder="请输入教材编号"
               v-model="search.code"
@@ -91,7 +76,7 @@ export default {
       loading: false,
       search: {
         title: "",
-        label: "",
+        code: "",
       },
       list: [],
       selected: [], // 已选择
