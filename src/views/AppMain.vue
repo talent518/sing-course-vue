@@ -24,7 +24,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { setStorage } from "@util/storage";
+import { getStorage } from "@util/storage";
 
 export default {
   name: "AppMain",
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     userInfo(){
-      return this.$store.state.user.userInfo;
+      return this.$store.getters['user/userInfo'];
     }
   },
   methods: {

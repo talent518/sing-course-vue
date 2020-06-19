@@ -5,7 +5,7 @@ const getters = {
   addRoutes(state) {
     return state.addRoutes;
   },
-  permissions(state) {
+  permissions(state){
     return state.permissions;
   }
 };
