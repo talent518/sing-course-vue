@@ -103,7 +103,11 @@ export default {
     this.$dragging.$on("dragend", () => {});
   },
   methods: {
-    async init() {
+    async init(val) {
+      if(val){
+        this.element_type = val
+        this.$emit("reflash");
+      }
       let json = {
         course_id: this.id,
         element_type: this.element_type,
@@ -143,19 +147,30 @@ export default {
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delCourseDetailApi(id).then((res) => {
-        this.init();
+        if(this.list.length==1){
+          this.list = []
+        }else{
+          this.init();
+        }
       });
     },
     //删除全部
     deleteAllClass() {
-      let json = {
-        is_all: "all",
-        course_id: this.id,
-      };
-      this.ApiTeach.delAllCourseDetailApi(json).then((res) => {
+      if(this.element_type == 0){
+        return
+      }
+      let api
+      if (this.element_type == 1) {
+        api = this.ApiTeach.delAllCourseRelationTextbookApi;
+      } else if(this.element_type == 2){
+        api = this.ApiTeach.delAllCourseRelationThemeApi;
+      }
+
+      api(this.id).then((res) => {
         // this.init();
         this.list = [];
         this.element_type = 0;
+        this.$emit("reflash");
       });
     },
   },

@@ -205,17 +205,19 @@
           this.form.resources_content = this.dialogData.param;
           this.form.resources_content = {...this.dialogData.param,switch_type:'',question_ids:[],auto_play:'',urls:[]};
           if (this.dialogData.segementType == '测评') {
+            console.log(this.dialogData.param.segment_template_detail.segment_detail.resources_content)
             let switch_type,question_ids
             switch_type = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.switch_type))
             question_ids = JSON.parse(JSON.stringify(this.dialogData.param.segment_template_detail.segment_detail.resources_content.question_ids))
             this.form.score_config_id = switch_type
             this.form.resources_content.question_ids = question_ids
           }else{
+            console.log(this.dialogData.param.segment_template_detail.segment_detail.resources_content)
             this.form.resources_content.urls = this.dialogData.param.segment_template_detail.segment_detail.resources_content.urls
             this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play
           }
           this.form.id = this.dialogData.param.segment_template_detail.segment_detail.id
-          console.log(this.dialogData.param.segment_template_detail.segment_detail.id)
+
           // console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";

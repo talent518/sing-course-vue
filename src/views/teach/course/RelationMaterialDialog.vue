@@ -126,7 +126,7 @@ export default {
           type: "success",
           message: "保存成功",
         });
-        this.$emit("reflash");
+        this.$emit("reflash",1);
         this.dialogObj.show = false;
       });
     },
