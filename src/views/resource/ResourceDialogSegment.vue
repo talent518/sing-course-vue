@@ -265,6 +265,7 @@
         // todo 需要优化 直接格式化就行？
         if (this.dialogData.segementType == '测评') {
           result.resources_content = {
+            id:this.dialogData.param.segment_template_detail.segment_detail.id,
             switch_type: 1, // 写死
             question_ids: form.resources_content.question_ids
           }
@@ -277,6 +278,7 @@
             return false;
           }
           result.resources_content = {
+            id:this.dialogData.param.segment_template_detail.segment_detail.id,
             auto_play: form.resources_content.auto_play,
             urls: form.resources_content.urls
           }
