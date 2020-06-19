@@ -213,7 +213,7 @@
             this.form.resources_content.auto_play = this.dialogData.param.segment_template_detail.segment_detail.resources_content.auto_play
           }
           this.form.id = this.dialogData.param.segment_template_detail.segment_detail.id
-          console.log(this.dialogData.param.segment_template_detail.segment_detail.resources_content)
+          console.log(this.dialogData.param.segment_template_detail.segment_detail.id)
           // console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";
@@ -267,7 +267,6 @@
         // todo 需要优化 直接格式化就行？
         if (this.dialogData.segementType == '测评') {
           result.resources_content = {
-            id:this.dialogData.param.segment_template_detail.segment_detail.id,
             switch_type: 1, // 写死
             question_ids: form.resources_content.question_ids
           }
