@@ -24,9 +24,7 @@ module.exports = {
     }),
     // 设置环境变量
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: "production",
-      },
+      "process.env": process.env,
     }),
     // manifest.json 描述动态链接库包含了哪些内容
     new webpack.DllPlugin({

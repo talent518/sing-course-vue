@@ -15,9 +15,9 @@ const url = {
   productDetail: `course/product-details`,
 };
 import ajax from "./ajax";
+import config from "@/config";
 
-const prefix = process.env["VUE_APP_API"];
-const {get, post, patch, put, delete: del} = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(config.apiUrl)();
 
 class Teach {
   //获取课程列表

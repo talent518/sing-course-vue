@@ -3,6 +3,10 @@ const webpack = require("webpack");
 let AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 const resolve = (dir) => path.join(__dirname, dir);
+
+const env = process.env.NODE_ENV || 'dev';
+process.env.VUE_APP_ENV = env;
+console.log(process.env.VUE_APP_ENV);
 let plugins = [];
 // if (process.env.NODE_ENV !== "production") {
 //   plugins = [
@@ -20,10 +24,7 @@ let plugins = [];
 //   ];
 // }
 function isHaveParallelUglifyPlugin() {
-  if (
-    process.env.NODE_ENV === "production" &&
-    process.env.VUE_APP_ENV === "production"
-  ) {
+  if (process.env.VUE_APP_ENV === "prod") {
     plugins.push(
       new ParallelUglifyPlugin({
         // 传递给 UglifyJS 的参数

@@ -4,9 +4,9 @@ const url = {
   menuMove: `menu/move`,
 };
 import ajax from "./ajax";
+import config from "@/config";
 
-const prefix = process.env["VUE_APP_API"];
-const { get, post, patch, put, delete: del } = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(config.apiUrl)();
 
 class Menu {
   dictMenus() {

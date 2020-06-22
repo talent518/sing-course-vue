@@ -22,9 +22,9 @@ const url = {
   getPriceType: `dict/price-type`,
 };
 import ajax from "./ajax";
+import config from "@/config";
 
-const prefix = process.env["VUE_APP_API"];
-const { get, post, patch, put, delete: del } = ajax(prefix)();
+const { get, post, patch, put, delete: del } = ajax(config.apiUrl)();
 
 class Production {
   getPriceType() {
