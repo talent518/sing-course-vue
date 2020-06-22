@@ -1,6 +1,7 @@
 <template></template>
 <script>
   import {mapActions} from "vuex";
+    import config from "@/config";
 
   export default {
     data() {
@@ -31,7 +32,7 @@
               }
             });
           } else {
-            let href = `${process.env.VUE_APP_SSO}site/sso?url=` + encodeURIComponent(window.location.href);
+            let href = `${config.ssoUrl}site/sso?url=` + encodeURIComponent(window.location.href);
             window.location.href = href;
           }
         },

@@ -1,6 +1,7 @@
 import ajax from "./ajax";
+import config from "@/config"
 
-const {get, post, patch, put, delete: del} = ajax(process.env.VUE_APP_API)();
+const { get, post, patch, put, delete: del } = ajax(config.apiUrl)();
 
 class Resource {
   getResource(json) {

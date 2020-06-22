@@ -29,15 +29,15 @@ export default (baseURL) => {
       baseURL,
       transformRequest: [
         function (data) {
-          let ret = "";
+          let tmp = [], result;
           for (let it in data) {
             if (data[it] == null) {
               data[it] = "";
             }
-            ret +=
-              encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+            tmp.push(encodeURIComponent(it) + "=" + encodeURIComponent(data[it]))
           }
-          return ret;
+          result = tmp.join('&');
+          return result;
         },
       ],
       headers: {
@@ -123,6 +123,7 @@ export default (baseURL) => {
         return Promise.reject(error);
       }
     );
+
     //actives
     methods.forEach((item = {}) => {
       o[item] = (url, params = {}) => {
