@@ -62,8 +62,9 @@
                 "
               >
                 <el-button
-                  ><i class="iconfont icon-cloud-upload"></i>
-                  上传音频</el-button
+                ><i class="iconfont icon-cloud-upload"></i>
+                  上传音频
+                </el-button
                 >
               </el-upload>
               <el-button
@@ -107,7 +108,8 @@
               "
             >
               <el-button
-                ><i class="iconfont icon-cloud-upload"></i> 上传音频</el-button
+              ><i class="iconfont icon-cloud-upload"></i> 上传音频
+              </el-button
               >
             </el-upload>
             <el-button
@@ -129,170 +131,170 @@
 </template>
 
 <script>
-import commonMessage from "@/views/common/commonMessage";
-import menuRole from "@/views/common/menuRole";
-import ScoreStar from "@/views/basic/score/ScoreStar";
-import { upload } from "@api/upload";
-import { getStorage, setStorage } from "@util/storage";
+  import commonMessage from "@/views/common/commonMessage";
+  import menuRole from "@/views/common/menuRole";
+  import ScoreStar from "@/views/basic/score/ScoreStar";
+  import {upload} from "@api/upload";
+  import {getStorage, setStorage} from "@util/storage";
 
-const FORM_DEFAULT = {
-  title: "",
-  rule: [
-    [0, 30],
-    [31, 80],
-    [80, 100],
-  ],
-  evaluate_voice: [0, 0, 0],
-  retry_voice: "",
-};
+  const FORM_DEFAULT = {
+    title: "",
+    rule: [
+      [0, 30],
+      [31, 80],
+      [80, 100],
+    ],
+    evaluate_voice: [0, 0, 0],
+    retry_voice: "",
+  };
 
-export default {
-  name: "ScoreDialog",
+  export default {
+    name: "ScoreDialog",
 
-  mixins: [commonMessage, menuRole],
+    mixins: [commonMessage, menuRole],
 
-  components: { ScoreStar },
+    components: {ScoreStar},
 
-  props: {
-    dialogData: {
-      type: Object,
-      default: {
-        show: false,
-        param: {
-          id: 0,
+    props: {
+      dialogData: {
+        type: Object,
+        default: {
+          show: false,
+          param: {
+            id: 0,
+          },
         },
       },
     },
-  },
 
-  data() {
-    return {
-      title: "",
+    data() {
+      return {
+        title: "",
 
-      form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
-    };
-  },
-
-  watch: {
-    "dialogData.show"(val) {
-      if (val) this.init();
-    },
-  },
-
-  methods: {
-    init() {
-      if (!this.dialogData.param.id) {
-        this.title = "新增";
-        this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-      } else {
-        this.title = "编辑";
-        this.form = this.dialogData.param;
-      }
-    },
-
-    async uploadFile(e, type, index) {
-      let res = await upload(e.file);
-      if (type == "retry_voice") {
-        this.form.retry_voice = res.url;
-      } else if (type == "evaluate_voice") {
-        this.form.evaluate_voice.splice(index, 1, res.url);
-      }
-    },
-
-    openMedia(url) {
-      window.open(url, "_blank");
-    },
-
-    dialogToggle() {
-      this.dialogData.show = !this.dialogData.show;
-    },
-
-    dialogSave() {
-      // 校验
-      /*if () {
-
-        }*/
-
-      let api,
-        json = {
-        title: this.form.title,
-        rule: JSON.stringify(this.form.rule),
-        evaluate_voice: JSON.stringify(this.form.evaluate_voice),
-        retry_voice: this.form.retry_voice,
+        form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
       };
-
-      // this.ApiBasic.postScore(json).then((res) => {
-      //   this.$message.success("保存成功");
-      //   this.dialogToggle();
-      //   this.$parent.getData();
-      // });
-
-      if (!this.dialogData.param.id) {
-        json.id = this.dialogData.param.id;
-        api = this.ApiBasic.putScore;
-      } else {
-        api = this.ApiBasic.postScore;
-      }
-
-      api(json).then((res) => {
-        this.$message({type: "success", message: "保存成功",});
-        this.dialogToggle();
-        this.$parent.getData();
-      });
     },
-  },
-};
+
+    watch: {
+      "dialogData.show"(val) {
+        if (val) this.init();
+      },
+    },
+
+    methods: {
+      init() {
+        if (!this.dialogData.param.id) {
+          this.title = "新增";
+          this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
+        } else {
+          this.title = "编辑";
+          this.form = this.dialogData.param;
+        }
+      },
+
+      async uploadFile(e, type, index) {
+        let res = await upload(e.file);
+        if (type == "retry_voice") {
+          this.form.retry_voice = res.url;
+        } else if (type == "evaluate_voice") {
+          this.form.evaluate_voice.splice(index, 1, res.url);
+        }
+      },
+
+      openMedia(url) {
+        window.open(url, "_blank");
+      },
+
+      dialogToggle() {
+        this.dialogData.show = !this.dialogData.show;
+      },
+
+      dialogSave() {
+        // 校验
+        /*if () {
+
+          }*/
+
+        let api,
+          json = {
+            title: this.form.title,
+            rule: JSON.stringify(this.form.rule),
+            evaluate_voice: JSON.stringify(this.form.evaluate_voice),
+            retry_voice: this.form.retry_voice,
+          };
+
+        // this.ApiBasic.postScore(json).then((res) => {
+        //   this.$message.success("保存成功");
+        //   this.dialogToggle();
+        //   this.$parent.getData();
+        // });
+
+        if (this.dialogData.param.id) {
+          json.id = this.dialogData.param.id;
+          api = this.ApiBasic.putScore;
+        } else {
+          api = this.ApiBasic.postScore;
+        }
+
+        api(json).then((res) => {
+          this.$message({type: "success", message: "保存成功",});
+          this.dialogToggle();
+          this.$parent.getData();
+        });
+      },
+    },
+  };
 </script>
 
 <style lang="scss">
-.score-dialog {
-  .score-item {
-    display: flex;
-    align-items: center;
-
-    & + .score-item {
-      margin-top: 12px;
-    }
-
-    .el-rate {
-      margin-right: 8px;
-    }
-
-    .cc-number-range {
-      width: 172px;
-    }
-  }
-
-  .audio-item {
-    display: flex;
-    .upload-item {
-      display: flex;
-      margin-right: 12px;
-    }
-  }
-
-  .radio-group-star {
-    display: flex;
-    align-items: center;
-    height: 32px;
-
-    .el-radio {
+  .score-dialog {
+    .score-item {
       display: flex;
       align-items: center;
-      margin-right: 0;
-      margin-left: 0;
-      padding-top: 0;
 
-      .el-radio__label {
-        /*display: flex;
-          align-items: center;*/
-        .el-rate {
-          .el-rate__item {
-            cursor: pointer !important;
+      & + .score-item {
+        margin-top: 12px;
+      }
+
+      .el-rate {
+        margin-right: 8px;
+      }
+
+      .cc-number-range {
+        width: 172px;
+      }
+    }
+
+    .audio-item {
+      display: flex;
+      .upload-item {
+        display: flex;
+        margin-right: 12px;
+      }
+    }
+
+    .radio-group-star {
+      display: flex;
+      align-items: center;
+      height: 32px;
+
+      .el-radio {
+        display: flex;
+        align-items: center;
+        margin-right: 0;
+        margin-left: 0;
+        padding-top: 0;
+
+        .el-radio__label {
+          /*display: flex;
+            align-items: center;*/
+          .el-rate {
+            .el-rate__item {
+              cursor: pointer !important;
+            }
           }
         }
       }
     }
   }
-}
 </style>
