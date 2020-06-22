@@ -4,7 +4,7 @@ const baseRouter = {
   name: "Teaching",
   component: () => import('@/views/main'),
   meta: {
-    skipAuth: true,
+    icon: 'icon-file-copy'
   },
   children: [
     {
@@ -12,36 +12,28 @@ const baseRouter = {
       path: "/resource",
       name: "Resource",
       component: () => import("@/views/resource/Resource"),
-      meta: {
-        skipAuth: true,
-      },
+      meta: {},
     },
     {
       title: "课程管理",
       path: "/course",
       name: "Course",
       component: () => import("@/views/teach/course/CourseManagement"),
-      meta: {
-        skipAuth: true,
-      },
+      meta: {},
     },
     {
       title: "主題管理",
       path: "/theme",
       name: "Theme",
       component: () => import("@/views/teach/theme/ThemeManagement"),
-      meta: {
-        skipAuth: true,
-      },
+      meta: {},
     },
     {
       title: "产品管理",
       path: "/product",
       name: "Product",
       component: () => import("@/views/teach/product/ProductManagement"),
-      meta: {
-        skipAuth: true,
-      },
+      meta: {},
     },
   ]
 };

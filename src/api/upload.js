@@ -1,5 +1,4 @@
 import * as qiniu from "qiniu-js";
-
 import base from "@api/base";
 
 const MAX_FILESIZE = 1024 * 1024 * 10;

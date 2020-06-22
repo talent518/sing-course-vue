@@ -22,16 +22,7 @@
   import Menu from "@/components/menu/Menu";
   import {mapActions, mapGetters} from "vuex";
   import base from "@api/base"
-  import user from "@api/user"
-  import other from "@api/other"
-  import production from "@api/production"
-  import menu from "@api/menu"
-  import order from "@api/order"
-  import report from "@api/report"
-  import basic from "@api/basic"
-  import resource from "@api/resource"
   import course from "@api/course"
-  import teach from "@api/teach"
   import {mapMutations} from "vuex";
 
   const sideBarWidth = "240px";

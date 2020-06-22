@@ -1,3 +1,4 @@
+/*
 export default {
   data() {
     return {
@@ -58,3 +59,4 @@ export default {
 };
 const getTargetObj = (menuList, provId) =>
   menuList.filter((menu) => menu.provId === provId);
+*/

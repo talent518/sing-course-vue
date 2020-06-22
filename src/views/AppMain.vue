@@ -73,7 +73,7 @@
       }
 
       .user-dropdown-link {
-        padding: 0 12px;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         height: 100%;

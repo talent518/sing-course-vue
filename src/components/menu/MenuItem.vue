@@ -3,7 +3,7 @@
     <el-submenu v-if="item.children &&item.children.length" :index="item.name">
       <template slot="title">
         <div class="menu-text">
-          <i class="iconfont menu-icon" :class="myFont(item)"></i>
+          <i class="iconfont menu-icon" :class="item.meta.icon ? item.meta.icon : ''"></i>
           {{ item.title }}
         </div>
       </template>
@@ -15,7 +15,7 @@
     <el-menu-item :index="item.name" v-else>
 
       <div class="menu-text" @click="goto(item.name)">
-        <i class="iconfont menu-icon" :class="myFont(item)"></i>
+        <i class="iconfont menu-icon" :class="item.meta.icon ? item.meta.icon : ''"></i>
         {{ item.title }}
       </div>
     </el-menu-item>
@@ -23,10 +23,6 @@
 </template>
 
 <script>
-  const iconObj = {
-    Teaching: "icon-file-copy",
-    Basic: "icon-build",
-  };
   import {mapMutations} from "vuex";
 
   export default {
@@ -39,9 +35,6 @@
       },
     },
     methods: {
-      myFont(item) {
-        return iconObj[item.menuKey];
-      },
       goto(name) {
         this.$router.push({name});
       },

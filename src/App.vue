@@ -7,11 +7,6 @@
   import Vue from "vue";
   import {mapActions, mapGetters, mapMutations} from "vuex";
   import user from "@api/user";
-  import other from "@api/other";
-  import production from "@api/production";
-  import menu from "@api/menu";
-  import order from "@api/order";
-  import report from "@api/report";
   import basic from "@api/basic";
   import base from "@api/base";
   import course from "@api/course";
@@ -36,11 +31,6 @@
       return {
         eventBus: this.eventBus,
         ApiUser: user,
-        ApiOther: other,
-        ApiProduction: production,
-        ApiMenu: menu,
-        ApiOrder: order,
-        ApiReport: report,
         ApiBasic: basic,
         ApiResource: resource,
         ApiBase: base,
