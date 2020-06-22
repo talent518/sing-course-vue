@@ -227,7 +227,7 @@ export default {
       //   this.$parent.getData();
       // });
 
-      if (!this.dialogData.param.id) {
+      if (this.dialogData.param.id) {
         json.id = this.dialogData.param.id;
         api = this.ApiBasic.putScore;
       } else {

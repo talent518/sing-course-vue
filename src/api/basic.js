@@ -49,7 +49,7 @@ class Basic {
   }
 
   putScore(json) {
-    return put("config/score-configs", json);
+    return put(`config/score-configs/${json.id}`, json);
   }
 
   delScore(id) {
