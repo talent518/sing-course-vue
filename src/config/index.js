@@ -10,7 +10,7 @@ if (env === 'test') {
   config = test;
 } else if (env === 'pre') {
   config = pre;
-} else if (env === 'prod') {
+} else if (env === 'production') {
   config = prod;
 }
 export default config;
