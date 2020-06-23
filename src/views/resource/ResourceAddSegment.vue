@@ -274,7 +274,7 @@
         // todo 需要优化 直接格式化就行？
         if (this.dialogData.segementType == '测评') {
           result.resources_content = {
-            switch_type: 1, // 写死
+            switch_type: form.score_config_id, // 写死
             question_ids: form.resources_content.question_ids
           }
         } else {
