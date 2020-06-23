@@ -293,7 +293,8 @@
 
         }
         result.id = this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].id;
-        result.score_config_id = this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].score_config_id;
+        //6月23日早上修改
+        result.score_config_id = form.score_config_id;
         result.segment_template_id = this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].segment_template_id;
         this.$parent.$parent.form.textbook_segment_data_details[this.dialogData.index] = result;
 
