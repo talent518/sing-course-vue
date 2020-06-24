@@ -1,11 +1,29 @@
 <template>
-  <div>
+  <div class="segment-management">
+    <el-form inline size="small">
+      <div class="segment-management-form">
+        <el-form-item label="环节模板标题：">
+          <el-input
+                  placeholder="请输入环节模板标题"
+                  v-model="search.title"
+                  style="width: 200px;"
+          ></el-input>
+        </el-form-item>
 
-    <el-form size="small" inline class="section-search">
-      <el-form-item>
-        <el-button type="success" plain @click="handleAdd">新增环节</el-button>
-      </el-form-item>
+        <el-button type="primary" plain size="small" @click="handleSearch">查询</el-button>
+        <el-button plain size="small" @click="clearSearch">清除</el-button>
+      </div>
     </el-form>
+
+    <el-divider></el-divider>
+
+    <el-button type="success" size="small" @click="handleAdd">新增</el-button>
+
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="全部" name="all"></el-tab-pane>
+      <el-tab-pane label="启用" name="enable"></el-tab-pane>
+      <el-tab-pane label="禁用" name="disable"></el-tab-pane>
+    </el-tabs>
 
     <my-table
       :data="list">
@@ -80,6 +98,10 @@
         loading: true,
         dialogData: {
           show: false,
+        },
+        activeName: "all",
+        search: {
+          title: "",
         },
 
         list: [],
@@ -167,12 +189,31 @@
         let param = {
           pageIndex: this.page.index,
           pageSize: this.page.size,
+          title: this.search.title,
+        }
+        if (this.activeName == "enable") {
+          param.status = 1;
+        } else if (this.activeName == "disable") {
+          param.status = 0;
         }
         let res = await this.ApiBasic.getSegment(param);
         this.loading = false;
 
         this.list = res.items;
         this.page.total = res.total;
+      },
+
+      handleSearch() {
+        this.page.now = 1;
+        this.getData();
+      },
+
+      clearSearch() {
+        this.search.title = "";
+      },
+
+      handleClick(tab) {
+        this.getData();
       },
 
       pageCurrentChange(index) {
@@ -183,6 +224,11 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .segment-management {
+    text-align: left;
+    .segment-management-form {
+      padding-top: 20px;
+    }
+  }
 </style>
