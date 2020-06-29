@@ -10,7 +10,7 @@ router.beforeEach(async (to, from, next) => {
   let token = store.getters['user/token'];
   if (token) {
     if (to.path == '/login') {
-      const query = route.query
+      const query = to.query;
       let code = query.code;
       if (code) {
         next();
