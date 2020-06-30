@@ -2,7 +2,7 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialogAdd()">新增教材</el-button>
+        <el-button type="success" v-permission="'ResourceCreate'" plain @click="handleDialogAdd()">新增教材</el-button>
       </el-form-item>
     </el-form>
 
@@ -46,6 +46,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+		  v-permission="'ResourcePreview'"
             plain
             size="small"
             type="primary"
@@ -53,6 +54,7 @@
           </el-button>
 
           <el-button
+		   v-permission="'ResourceUpdate'"
             plain
             size="small"
             type="warning"

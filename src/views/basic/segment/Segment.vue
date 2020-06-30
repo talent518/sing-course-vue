@@ -3,7 +3,7 @@
 
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleAdd">新增环节</el-button>
+        <el-button v-permission="'TemplateSegmentCreate'" type="success" plain @click="handleAdd">新增环节</el-button>
       </el-form-item>
     </el-form>
 
@@ -37,11 +37,13 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+		  v-permission="'TemplateResourcePreview'"
             plain size="small" type="primary"
             @click="handlePreview(scope.row)">预览
           </el-button>
 
           <el-button
+		  v-permission="'TemplateResourceUpdate'"
             plain size="small" type="warning"
             @click="handleEdit(scope.row)">编辑
           </el-button>

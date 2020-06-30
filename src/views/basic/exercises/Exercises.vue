@@ -22,12 +22,12 @@
       <!--  </div>-->
       <!--</el-col>-->
       <el-col :span="4">
-        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="search" v-permission="'ExercisesView'">查询</el-button>
       </el-col>
     </el-row>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleAdd">添加习题</el-button>
+        <el-button v-permission="'ExercisesCreate'" type="success" plain @click="handleAdd">添加习题</el-button>
       </el-form-item>
     </el-form>
 
@@ -64,6 +64,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+		  v-permission="'ExercisesUpdate'"
             plain
             size="small"
             type="warning"
@@ -71,6 +72,7 @@
             >编辑
           </el-button>
           <el-button
+		   v-permission="'ExercisesDel'"
             plain
             size="small"
             type="danger"
