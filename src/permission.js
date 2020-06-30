@@ -7,9 +7,9 @@ NProgress.configure({ showSpinner: false });
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
-  let token = store.getters['user/token'];
+  let token = store.getters["user/token"];
   if (token) {
-    if (to.path == '/login') {
+    if (to.path == "/login") {
       const query = to.query;
       let code = query.code;
       if (code) {
@@ -17,11 +17,15 @@ router.beforeEach(async (to, from, next) => {
       } else {
         next("/");
       }
-
     } else {
       if (!store.state || !store.state.permission.permissions) {
         let permissions = await store.dispatch("permission/getPermissions");
-        let newRoutes = await store.dispatch("permission/generateRoutes", permissions);
+        let newRoutes = await store.dispatch(
+          "permission/generateRoutes",
+          permissions
+        );
+		console.log("aaaaa")
+        console.log(newRoutes);
         router.addRoutes([
           ...newRoutes,
           {
@@ -35,10 +39,10 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (to.path == '/login') {
+    if (to.path == "/login") {
       next();
     } else {
-      next(`/login?redirect=${to.path}`)
+      next(`/login?redirect=${to.path}`);
     }
   }
 });
