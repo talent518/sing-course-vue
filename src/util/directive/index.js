@@ -16,7 +16,7 @@ function isAllowed(permission, user, permissions) {
 
 Vue.directive("permission", {
   inserted(el, binding, vnode) {
-    let buttons = vnode.context.$store.state.menu.buttons;
+    let buttons = vnode.context.$store.state.permission.permissions;
     let keys = buttons.map((button) => button.menuKey);
     if (!keys.includes(binding.value)) {
       el.parentNode && el.parentNode.removeChild(el);

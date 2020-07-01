@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleAdd">新增标准</el-button>
+        <el-button  v-permission="'ScoreCreate'" type="success" plain @click="handleAdd">新增标准</el-button>
       </el-form-item>
     </el-form>
 
@@ -14,6 +14,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+		  v-permission="'ScoreUpdate'"
             plain
             size="small"
             type="warning"
@@ -21,6 +22,7 @@
             >编辑
           </el-button>
           <el-button
+		  v-permission="'ScoreDel'"
             plain
             size="small"
             type="danger"

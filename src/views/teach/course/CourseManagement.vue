@@ -28,16 +28,16 @@
         <!--  </el-select>-->
         <!--</el-form-item>-->
 
-        <el-button type="primary" plain size="small" @click="handleSearch"
+        <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch"
           >查询</el-button
         >
-        <el-button plain size="small" @click="clearSearch">清除</el-button>
+        <el-button  plain size="small" @click="clearSearch">清除</el-button>
       </div>
     </el-form>
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="addClass">新增</el-button>
+    <el-button v-permission="'CourseCreate'" type="success" size="small" @click="addClass">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -70,6 +70,7 @@
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link
+			v-permission="'CourseUpdate'"
               @click="editCourse(scope.row)"
               plain
               type="primary"
@@ -77,6 +78,7 @@
               >编辑</el-link
             >
             <el-link
+			v-permission="'CourseCorrelation'"
               @click="relationClass(scope.row)"
               plain
               type="primary"
@@ -86,6 +88,7 @@
 
             <template>
               <el-popconfirm
+			  v-permission="'CourseDel'"
                 title="确定要删除课程吗？"
                 @onConfirm="delCourse(scope.row.id)"
               >
