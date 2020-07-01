@@ -28,7 +28,7 @@
         <!--  </el-select>-->
         <!--</el-form-item>-->
 
-        <el-button type="primary" plain size="small" @click="handleSearch"
+        <el-button v-permission="'ProductView'" type="primary" plain size="small" @click="handleSearch"
           >查询</el-button
         >
         <el-button plain size="small" @click="clearSearch">清除</el-button>
@@ -37,7 +37,7 @@
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="addClass">新增</el-button>
+    <el-button  v-permission="'ProductCreate'" type="success" size="small" @click="addClass">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -68,6 +68,7 @@
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link
+			v-permission="'ProductUpdate'"
               @click="editProduct(scope.row)"
               plain
               type="primary"
@@ -75,6 +76,7 @@
               >编辑</el-link
             >
             <el-link
+			v-permission="'ProductCorrelation'"
               @click="relationCourse(scope.row.id)"
               plain
               type="primary"
@@ -83,6 +85,7 @@
             >
             <template>
               <el-popconfirm
+			  v-permission="'ProductDel'"
                 title="确定要删除课程吗？"
                 @onConfirm="delProduct(scope.row.id)"
               >

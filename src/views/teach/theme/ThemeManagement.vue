@@ -26,7 +26,7 @@
       <!--  </el-select>-->
       <!--</el-form-item>-->
 
-      <el-button type="primary" plain size="small" @click="handleSearch"
+      <el-button v-permission="'ThemeView'" type="primary" plain size="small" @click="handleSearch"
       >查询
       </el-button
       >
@@ -35,7 +35,7 @@
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="addTheme">新增</el-button>
+    <el-button type="success" v-permission="'ThemeCreate'" size="small" @click="addTheme">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -66,6 +66,7 @@
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link
+			v-permission="'ThemeUpdate'"
               @click="editTheme(scope.row)"
               plain
               type="primary"
@@ -74,6 +75,7 @@
             </el-link
             >
             <el-link
+			v-permission="'ThemeCorrelation'"
               @click="relationMaterial(scope.row.id)"
               plain
               type="primary"
@@ -83,6 +85,7 @@
             >
             <template>
               <el-popconfirm
+			  v-permission="'ThemeDel'"
                 title="确定要删除主题吗？"
                 @onConfirm="delTheme(scope.row.id)"
               >
