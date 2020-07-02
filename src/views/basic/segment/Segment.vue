@@ -65,6 +65,7 @@
             >编辑
           </el-button>
           <el-button
+                  v-permission="'TemplateResourceDel'"
                   plain
                   size="small"
                   type="danger"

@@ -61,6 +61,7 @@
             @click="handleDialogEdit(scope.row)">编辑
           </el-button>
           <el-button
+                  v-permission="'ResourceDel'"
                   plain
                   size="small"
                   type="danger"

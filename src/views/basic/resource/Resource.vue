@@ -56,6 +56,7 @@
           >编辑
           </el-button>
           <el-button
+                  v-permission="'TemplateSegmentDel'"
                   plain
                   size="small"
                   type="danger"
