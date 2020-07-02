@@ -72,7 +72,7 @@
                 <el-divider></el-divider>
 
                 <el-upload
-                  
+
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
@@ -211,6 +211,7 @@
             this.title = "编辑教材";
             this.form.textbook_data = this.dialogData.param;
             this.form.template_data_details = this.dialogData.param.template_data_details;
+            this.form.textbook_segment_data_details = this.dialogData.param.textbook_segment_data_details
             // this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
 
           } else if (this.dialogData.param.type == "view") {
