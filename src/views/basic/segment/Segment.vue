@@ -10,7 +10,12 @@
           ></el-input>
         </el-form-item>
 
-        <el-button type="primary" plain size="small" @click="handleSearch"
+        <el-button
+          v-permission="'TemplateSegmentView'"
+          type="primary"
+          plain
+          size="small"
+          @click="handleSearch"
           >查询</el-button
         >
         <el-button plain size="small" @click="clearSearch">清除</el-button>
@@ -19,7 +24,13 @@
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="handleAdd">新增</el-button>
+    <el-button
+      type="success"
+      size="small"
+      @click="handleAdd"
+      v-permission="'TemplateSegmentCreate'"
+      >新增</el-button
+    >
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -48,7 +59,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
-            v-permission="'TemplateResourcePreview'"
+            v-permission="'TemplateSegmentPreview'"
             plain
             size="small"
             type="primary"
@@ -57,7 +68,7 @@
           </el-button>
 
           <el-button
-            v-permission="'TemplateResourceUpdate'"
+            v-permission="'TemplateSegmentUpdate'"
             plain
             size="small"
             type="warning"
