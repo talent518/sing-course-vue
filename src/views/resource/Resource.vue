@@ -60,6 +60,13 @@
             type="warning"
             @click="handleDialogEdit(scope.row)">编辑
           </el-button>
+          <el-button
+                  plain
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row.id)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </my-table>
@@ -173,6 +180,22 @@
           this.$message({type: 'info', message: '已取消'});
         });
 
+      },
+
+      async handleDelete(id) {
+        this.confirmDelMessage(
+                "确定要删除教材吗？",
+                async () => {
+                  return await this.ApiResource.delResource(id);
+                },
+                async () => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功",
+                  });
+                  this.getData();
+                }
+        );
       },
 
       async getData() {

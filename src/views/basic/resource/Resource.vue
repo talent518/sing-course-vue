@@ -55,6 +55,13 @@
             @click="handleDialog('edit', scope.row)"
           >编辑
           </el-button>
+          <el-button
+                  plain
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row.id)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </my-table>
@@ -127,7 +134,6 @@
           _target = "disable";
           _targetText = "停用";
         }
-
         this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -157,6 +163,21 @@
           });
       },
 
+      async handleDelete(id) {
+        this.confirmDelMessage(
+                "确定要删除教材模板吗？",
+                async () => {
+                  return await this.ApiBasic.delResource(id);
+                },
+                async () => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功",
+                  });
+                  this.getData();
+                }
+        );
+      },
       async getData() {
         let param = {
           pageIndex: this.page.index,
