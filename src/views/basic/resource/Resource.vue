@@ -137,7 +137,7 @@ export default {
         this.dialogData = {
           show: true,
           type: type,
-          param: row ? row : {id: 0},
+          param: row ? row : { id: 0 },
         };
       },
 
@@ -155,25 +155,24 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message.info("已取消");
         });
-    },
+      },
 
       async handleDelete(id) {
         this.confirmDelMessage(
-                "确定要删除教材模板吗？",
-                async () => {
-                  return await this.ApiBasic.delResource(id);
-                },
-                async () => {
-                  this.$message({
-                    type: "success",
-                    message: "删除成功",
-                  });
-                  this.getData();
-                }
+          "确定要删除教材模板吗？",
+          async () => {
+            return await this.ApiBasic.delResource(id);
+          },
+          async () => {
+            this.$message({
+              type: "success",
+              message: "删除成功",
+            });
+            this.getData();
+          }
         );
       },
       async getData() {
@@ -187,9 +186,10 @@ export default {
         this.page.total = res.total;
       },
 
-    pageCurrentChange(index) {
-      this.page.index = index;
-      this.getData();
+      pageCurrentChange(index) {
+        this.page.index = index;
+        this.getData();
+      },
     },
   },
 };
