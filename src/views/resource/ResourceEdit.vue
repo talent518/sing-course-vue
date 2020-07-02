@@ -51,7 +51,7 @@
 
         <el-form-item label="教材模板：">
           <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="(label) => {return templateResourceChange(label, true);}" style="margin-bottom: -10px;">
-            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 10px; margin-left: 0; margin-bottom: 10px;" :key="item.id">{{item.title}}</el-radio>
+            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 10px; margin-left: 0; margin-bottom: 10px;" :key="item.id" v-if="form.textbook_data.textbook_template_id == item.id">{{item.title}}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -65,14 +65,14 @@
                 <div class="header">
                   <el-input
                     v-model="segement.title"
-                    disabled
+
                     placeholder="标题"></el-input>
                 </div>
 
                 <el-divider></el-divider>
 
                 <el-upload
-                  disabled
+                  
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
@@ -210,7 +210,8 @@
 
             this.title = "编辑教材";
             this.form.textbook_data = this.dialogData.param;
-            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
+            this.form.template_data_details = this.dialogData.param.template_data_details;
+            // this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
 
           } else if (this.dialogData.param.type == "view") {
 
