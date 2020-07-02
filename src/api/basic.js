@@ -20,12 +20,20 @@ class Basic {
     return put(`course/segment-templates/${json.id}`, json);
   }
 
+  delSegment(id) {
+    return del(`course/segment-templates/${id}`);
+  }
+
   getResource(json) {
     return get(`course/textbook-templates`, json);
   }
 
   putResource(json) {
     return put(`course/textbook-templates/${json.id}`, json);
+  }
+
+  delResource(id) {
+    return del(`course/textbook-templates/${id}`);
   }
 
   postResourceStatus(json) {

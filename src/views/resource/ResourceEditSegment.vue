@@ -220,8 +220,8 @@
             this.form.resources_content.urls = JSON.parse(JSON.stringify(this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].resources_content.urls))
             this.form.resources_content.auto_play = JSON.parse(JSON.stringify(this.$parent.$parent.dialogData.param.textbook_segment_data_details[this.dialogData.index].resources_content.auto_play))
           }
-          this.form.id = this.dialogData.param.segment_template_detail.segment_detail.id
-          console.log(this.dialogData.param.segment_template_detail.segment_detail.id)
+          this.form.id = this.dialogData.param.segment_id
+          console.log(this.dialogData.param.segment_id)
           // console.log(this.form.resources_content.urls)
         } else if (this.dialogData.type == "view") {
           this.title = "查看教材";

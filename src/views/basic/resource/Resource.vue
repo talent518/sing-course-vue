@@ -58,6 +58,14 @@
             @click="handleDialog('edit', scope.row)"
             >编辑
           </el-button>
+          <el-button
+            v-permission="'TemplateResourceDel'"
+            plain
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.row.id)"
+            >删除
+          </el-button>
         </template>
       </el-table-column>
     </my-table>
@@ -120,56 +128,64 @@ export default {
       };
     },
 
-    handleSwitch(id, val) {
-      let _targetText = "",
-        _target; // 要到达的状态
-      if (val === 0) {
-        _target = "enable";
-        _targetText = "启用";
-      } else if (val === 1) {
-        _target = "disable";
-        _targetText = "停用";
-      }
+    mounted() {
+      this.getData();
+    },
 
-      this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.loading = true;
+    methods: {
+      handleDialog(type, row) {
+        this.dialogData = {
+          show: true,
+          type: type,
+          param: row ? row : {id: 0},
+        };
+      },
 
-          let param = {
-            id: id,
-            status: _target,
-          };
-
-          this.ApiBasic.postResourceStatus(param)
-            .then((res) => {
-              this.$message.success("修改成功");
-              this.getData();
-              this.loading = false;
-            })
-            .catch((err) => {
-              console.log(err);
-              this.loading = false;
-            });
+      handleSwitch(id, val) {
+        let _targetText = "",
+          _target; // 要到达的状态
+        if (val === 0) {
+          _target = "enable";
+          _targetText = "启用";
+        } else if (val === 1) {
+          _target = "disable";
+          _targetText = "停用";
+        }
+        this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         })
         .catch(() => {
           this.$message.info("已取消");
         });
     },
 
-    async getData() {
-      let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
-      };
-      let res = await this.ApiBasic.getResource(param);
-      this.loading = false;
-      this.list = res.items;
-      this.page.total = res.total;
-    },
+      async handleDelete(id) {
+        this.confirmDelMessage(
+                "确定要删除教材模板吗？",
+                async () => {
+                  return await this.ApiBasic.delResource(id);
+                },
+                async () => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功",
+                  });
+                  this.getData();
+                }
+        );
+      },
+      async getData() {
+        let param = {
+          pageIndex: this.page.index,
+          pageSize: this.page.size,
+        };
+        let res = await this.ApiBasic.getResource(param);
+        this.loading = false;
+        this.list = res.items;
+        this.page.total = res.total;
+      },
 
     pageCurrentChange(index) {
       this.page.index = index;

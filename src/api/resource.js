@@ -20,8 +20,8 @@ class Resource {
     return put(`course/textbooks/${json.id}`, json);
   }
 
-  delResource(json) {
-    return del(`course/textbooks/${json.id}`, json);
+  delResource(id) {
+    return del(`course/textbooks/${id}`);
   }
 }
 

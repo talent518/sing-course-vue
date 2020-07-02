@@ -75,6 +75,14 @@
             @click="handleEdit(scope.row)"
             >编辑
           </el-button>
+          <el-button
+                  v-permission="'TemplateResourceDel'"
+                  plain
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row.id)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </my-table>
@@ -156,7 +164,21 @@ export default {
         param: row,
       };
     },
-
+    async handleDelete(id) {
+      this.confirmDelMessage(
+              "确定要删除环节模板吗？",
+              async () => {
+                return await this.ApiBasic.delSegment(id);
+              },
+              async () => {
+                this.$message({
+                  type: "success",
+                  message: "删除成功",
+                });
+                this.getData();
+              }
+      );
+    },
     handleSwitch(id, val) {
       let _targetText = "",
         _target; // 要到达的状态
