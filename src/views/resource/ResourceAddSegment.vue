@@ -239,7 +239,7 @@
       },
 
       async getQuestionAll() {
-        let res = await this.ApiCourse.getVoiceQuestions({scene: "all", status: 1});
+        let res = await this.ApiCourse.getVoiceQuestionAll({scene: "all", status: 1});
         this.listQuestion = res.items;
       },
 
