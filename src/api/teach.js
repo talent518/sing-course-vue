@@ -40,6 +40,11 @@ class Teach {
     return del(`${url.courseList}/${id}`);
   }
 
+  //课程启用、禁用
+  postCourseStatusApi(json) {
+    return post(`${url.courseList}/${json.id}/${json.status}`, json);
+  }
+
   //课程关联教材/主题
   postCourseDetailApi(json) {
     return post(`${url.courseDetail}`, json);
@@ -90,6 +95,11 @@ class Teach {
     return del(`${url.themeList}/${id}`);
   }
 
+  //主题启用、禁用
+  postThemeStatusApi(json) {
+    return post(`${url.themeList}/${json.id}/${json.status}`, json);
+  }
+
   //主题关联教材
   postThemeDetailApi(json) {
     return post(`${url.themeDetail}`, json);
@@ -133,6 +143,11 @@ class Teach {
   //产品删除
   delProductApi(id) {
     return del(`${url.productList}/${id}`);
+  }
+
+  //产品启用、禁用
+  postProductStatusApi(json) {
+    return post(`${url.productList}/${json.id}/${json.status}`, json);
   }
 
   //产品关联教材

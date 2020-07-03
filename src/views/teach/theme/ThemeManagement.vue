@@ -57,11 +57,14 @@
         label="教材"
         width=""
       ></el-table-column>
-      <el-table-column
-        prop="status_text"
-        label="状态"
-        width=""
-      ></el-table-column>
+      <el-table-column prop="status_text" label="状态">
+        <template slot-scope="scope">
+          <cc-cell-switch
+                  :value="scope.row.status"
+                  @click="handleSwitch(scope.row.id, scope.row.status)"
+          ></cc-cell-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
@@ -208,6 +211,46 @@
         this.page.now = 1;
         this.page.limit = val;
         this.init();
+      },
+
+      handleSwitch(id, val) {
+        let _targetText = "",
+                _target; // 要到达的状态
+        if (val === 0) {
+          _target = "enable";
+          _targetText = "启用";
+        } else if (val === 1) {
+          _target = "disable";
+          _targetText = "停用";
+        }
+
+        this.$confirm(`确定 ${_targetText} 课程？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            this.loading = true;
+
+            let param = {
+              id: id,
+              status: _target,
+            };
+
+            this.ApiTeach.postThemeStatusApi(param)
+                    .then((res) => {
+                      this.$message.success("修改成功");
+                      this.init();
+                      this.loading = false;
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      this.loading = false;
+                    });
+          })
+          .catch(() => {
+            this.$message.info("已取消");
+          });
       },
 
       /**
