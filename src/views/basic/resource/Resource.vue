@@ -147,28 +147,28 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-              .then(() => {
-                this.loading = true;
+      .then(() => {
+        this.loading = true;
 
-                let param = {
-                  id: id,
-                  status: _target,
-                };
+        let param = {
+          id: id,
+          status: _target,
+        };
 
-                this.ApiBasic.postResourceStatus(param)
-                        .then((res) => {
-                          this.$message.success("修改成功");
-                          this.getData();
-                          this.loading = false;
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                          this.loading = false;
-                        });
-              })
-              .catch(() => {
-                this.$message.info("已取消");
-              });
+        this.ApiBasic.postResourceStatus(param)
+                .then((res) => {
+                  this.$message.success("修改成功");
+                  this.getData();
+                  this.loading = false;
+                })
+                .catch((err) => {
+                  console.log(err);
+                  this.loading = false;
+                });
+      })
+      .catch(() => {
+        this.$message.info("已取消");
+      });
     },
 
     async handleDelete(id) {
