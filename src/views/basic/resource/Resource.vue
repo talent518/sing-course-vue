@@ -133,7 +133,7 @@ export default {
 
     handleSwitch(id, val) {
       let _targetText = "",
-        _target; // 要到达的状态
+              _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
         _targetText = "启用";
@@ -141,13 +141,34 @@ export default {
         _target = "disable";
         _targetText = "停用";
       }
+
       this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).catch(() => {
-        this.$message.info("已取消");
-      });
+      })
+              .then(() => {
+                this.loading = true;
+
+                let param = {
+                  id: id,
+                  status: _target,
+                };
+
+                this.ApiBasic.postResourceStatus(param)
+                        .then((res) => {
+                          this.$message.success("修改成功");
+                          this.getData();
+                          this.loading = false;
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                          this.loading = false;
+                        });
+              })
+              .catch(() => {
+                this.$message.info("已取消");
+              });
     },
 
     async handleDelete(id) {
