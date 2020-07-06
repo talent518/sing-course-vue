@@ -10,6 +10,9 @@ class Course {
   getVoiceQuestions({ title, pageIndex, pageSize }) {
     return get(`${url.voiceQuestions}`, { title, pageIndex, pageSize });
   }
+  getVoiceQuestionAll({ scene, status }) {
+    return get(`${url.voiceQuestions}`, { scene, status });
+  }
 
   getVoiceQuestionAll({ scene, status }) {
     return get(`${url.voiceQuestions}`, { scene, status  });
