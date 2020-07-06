@@ -2,10 +2,13 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialog('add')"
-        >新增教材模板
-        </el-button
-        >
+        <el-button
+          v-permission="'TemplateResourceCreate'"
+          type="success"
+          plain
+          @click="handleDialog('add')"
+          >新增教材模板
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -20,7 +23,7 @@
         <template slot-scope="scope">
           <template v-if="scope.row.template_data_details.length">
             <div v-for="item in scope.row.template_data_details">
-              {{filterEnum('SegmentTypeEnum', item.lead_type)}}
+              {{ filterEnum("SegmentTypeEnum", item.lead_type) }}
             </div>
           </template>
           <template v-else>-</template>
@@ -39,19 +42,29 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+            v-permission="'TemplateResourcePreview'"
             plain
             size="small"
             type="primary"
             @click="handleDialog('view', scope.row)"
-          >预览
+            >预览
           </el-button>
 
           <el-button
+            v-permission="'TemplateResourceUpdate'"
             plain
             size="small"
             type="warning"
             @click="handleDialog('edit', scope.row)"
-          >编辑
+            >编辑
+          </el-button>
+          <el-button
+            v-permission="'TemplateResourceDel'"
+            plain
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.row.id)"
+            >删除
           </el-button>
         </template>
       </el-table-column>
@@ -74,104 +87,125 @@
 </template>
 
 <script>
-  import commonMessage from "@/views/common/commonMessage";
-  import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
-  import globalFilter from "@util/filter"
+import commonMessage from "@/views/common/commonMessage";
+import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
+import globalFilter from "@util/filter";
 
-  export default {
-    name: "TemplateResource",
+export default {
+  name: "TemplateResource",
 
-    mixins: [commonMessage],
+  mixins: [commonMessage],
 
-    components: {TemplateResourceDialog},
+  components: { TemplateResourceDialog },
 
-    data() {
-      return {
-        loading: true,
-        dialogData: {
-          show: false,
-        },
+  data() {
+    return {
+      loading: true,
+      dialogData: {
+        show: false,
+      },
 
-        list: [],
+      list: [],
 
-        page: {
-          total: 0,
-          index: 1,
-          size: 10,
-        },
+      page: {
+        total: 0,
+        index: 1,
+        size: 10,
+      },
+    };
+  },
+  methods: {
+    handleDialog(type, row) {
+      this.dialogData = {
+        show: true,
+        type: type,
+        param: row ? row : { id: 0 },
       };
     },
 
-    mounted() {
+    handleDialog(type, row) {
+      this.dialogData = {
+        show: true,
+        type: type,
+        param: row ? row : { id: 0 },
+      };
+    },
+
+    handleSwitch(id, val) {
+      let _targetText = "",
+              _target; // 要到达的状态
+      if (val === 0) {
+        _target = "enable";
+        _targetText = "启用";
+      } else if (val === 1) {
+        _target = "disable";
+        _targetText = "停用";
+      }
+
+      this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+      .then(() => {
+        this.loading = true;
+
+        let param = {
+          id: id,
+          status: _target,
+        };
+
+        this.ApiBasic.postResourceStatus(param)
+                .then((res) => {
+                  this.$message.success("修改成功");
+                  this.getData();
+                  this.loading = false;
+                })
+                .catch((err) => {
+                  console.log(err);
+                  this.loading = false;
+                });
+      })
+      .catch(() => {
+        this.$message.info("已取消");
+      });
+    },
+
+    async handleDelete(id) {
+      this.confirmDelMessage(
+        "确定要删除教材模板吗？",
+        async () => {
+          return await this.ApiBasic.delResource(id);
+        },
+        async () => {
+          this.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          this.getData();
+        }
+      );
+    },
+    async getData() {
+      let param = {
+        pageIndex: this.page.index,
+        pageSize: this.page.size,
+      };
+      let res = await this.ApiBasic.getResource(param);
+      this.loading = false;
+      this.list = res.items;
+      this.page.total = res.total;
+    },
+
+    pageCurrentChange(index) {
+      this.page.index = index;
       this.getData();
     },
-
-    methods: {
-      handleDialog(type, row) {
-        this.dialogData = {
-          show: true,
-          type: type,
-          param: row ? row : {id: 0},
-        };
-      },
-
-      handleSwitch(id, val) {
-        let _targetText = "",
-          _target; // 要到达的状态
-        if (val === 0) {
-          _target = "enable";
-          _targetText = "启用";
-        } else if (val === 1) {
-          _target = "disable";
-          _targetText = "停用";
-        }
-
-        this.$confirm(`确定 ${_targetText} 模板？`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(() => {
-            this.loading = true;
-
-            let param = {
-              id: id,
-              status: _target,
-            };
-
-            this.ApiBasic.postResourceStatus(param)
-              .then((res) => {
-                this.$message.success("修改成功");
-                this.getData();
-                this.loading = false;
-              })
-              .catch((err) => {
-                console.log(err);
-                this.loading = false;
-              });
-          })
-          .catch(() => {
-            this.$message.info("已取消");
-          });
-      },
-
-      async getData() {
-        let param = {
-          pageIndex: this.page.index,
-          pageSize: this.page.size,
-        };
-        let res = await this.ApiBasic.getResource(param);
-        this.loading = false;
-        this.list = res.items;
-        this.page.total = res.total;
-      },
-
-      pageCurrentChange(index) {
-        this.page.index = index;
-        this.getData();
-      },
-    },
-  };
+  },
+  mounted() {
+    this.getData();
+  },
+};
 </script>
 
 <style scoped></style>

@@ -26,7 +26,7 @@
       <!--  </el-select>-->
       <!--</el-form-item>-->
 
-      <el-button type="primary" plain size="small" @click="handleSearch"
+      <el-button v-permission="'ThemeView'" type="primary" plain size="small" @click="handleSearch"
       >查询
       </el-button
       >
@@ -35,7 +35,7 @@
 
     <el-divider></el-divider>
 
-    <el-button type="success" size="small" @click="addTheme">新增</el-button>
+    <el-button type="success" v-permission="'ThemeCreate'" size="small" @click="addTheme">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -57,15 +57,19 @@
         label="教材"
         width=""
       ></el-table-column>
-      <el-table-column
-        prop="status_text"
-        label="状态"
-        width=""
-      ></el-table-column>
+      <el-table-column prop="status_text" label="状态">
+        <template slot-scope="scope">
+          <cc-cell-switch
+                  :value="scope.row.status"
+                  @click="handleSwitch(scope.row.id, scope.row.status)"
+          ></cc-cell-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link
+			v-permission="'ThemeUpdate'"
               @click="editTheme(scope.row)"
               plain
               type="primary"
@@ -74,6 +78,7 @@
             </el-link
             >
             <el-link
+			v-permission="'ThemeCorrelation'"
               @click="relationMaterial(scope.row.id)"
               plain
               type="primary"
@@ -83,6 +88,7 @@
             >
             <template>
               <el-popconfirm
+			  v-permission="'ThemeDel'"
                 title="确定要删除主题吗？"
                 @onConfirm="delTheme(scope.row.id)"
               >
@@ -205,6 +211,46 @@
         this.page.now = 1;
         this.page.limit = val;
         this.init();
+      },
+
+      handleSwitch(id, val) {
+        let _targetText = "",
+                _target; // 要到达的状态
+        if (val === 0) {
+          _target = "enable";
+          _targetText = "启用";
+        } else if (val === 1) {
+          _target = "disable";
+          _targetText = "停用";
+        }
+
+        this.$confirm(`确定 ${_targetText} 课程？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            this.loading = true;
+
+            let param = {
+              id: id,
+              status: _target,
+            };
+
+            this.ApiTeach.postThemeStatusApi(param)
+                    .then((res) => {
+                      this.$message.success("修改成功");
+                      this.init();
+                      this.loading = false;
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      this.loading = false;
+                    });
+          })
+          .catch(() => {
+            this.$message.info("已取消");
+          });
       },
 
       /**

@@ -181,10 +181,12 @@ export default {
       }
 
       api(json).then((res) => {
-        this.$message({
-          type: "success",
-          message: "保存成功",
-        });
+        if(JSON.stringify(res) === '{}'){
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+        }
         this.$emit("reflash");
         this.dialogObj.show = false;
       });

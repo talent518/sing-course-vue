@@ -28,7 +28,7 @@
           :key="index"
         >
           <div class="title">
-            {{ item.course.sub_title }}
+            {{ item.course.title }}
           </div>
           <div class="img-box">
             <img :src="item.course.cover" alt="" />

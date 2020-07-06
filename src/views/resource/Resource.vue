@@ -2,7 +2,7 @@
   <div>
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button type="success" plain @click="handleDialogAdd()">新增教材</el-button>
+        <el-button type="success" v-permission="'ResourceCreate'" plain @click="handleDialogAdd()">新增教材</el-button>
       </el-form-item>
     </el-form>
 
@@ -46,6 +46,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+		  v-permission="'ResourcePreview'"
             plain
             size="small"
             type="primary"
@@ -53,10 +54,19 @@
           </el-button>
 
           <el-button
+		   v-permission="'ResourceUpdate'"
             plain
             size="small"
             type="warning"
             @click="handleDialogEdit(scope.row)">编辑
+          </el-button>
+          <el-button
+                  v-permission="'ResourceDel'"
+                  plain
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row.id)"
+          >删除
           </el-button>
         </template>
       </el-table-column>
@@ -171,6 +181,22 @@
           this.$message({type: 'info', message: '已取消'});
         });
 
+      },
+
+      async handleDelete(id) {
+        this.confirmDelMessage(
+                "确定要删除教材吗？",
+                async () => {
+                  return await this.ApiResource.delResource(id);
+                },
+                async () => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功",
+                  });
+                  this.getData();
+                }
+        );
       },
 
       async getData() {
