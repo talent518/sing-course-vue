@@ -89,6 +89,9 @@ export default {
       handler() {
         this.loading = true;
         this.form = this.payload;
+        this.form.payload.score_config_id = parseInt(
+          this.form.payload.score_config_id
+        );
         Promise.all([this.getScoreAll(), this.getQuestionAll()])
           .then(() => {
             this.loading = false;
