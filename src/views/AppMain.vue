@@ -52,6 +52,8 @@
 <style lang="scss">
 .app-main {
   padding: 16px;
+  height:calc(100% - 64px);
+  overflow: scroll;
 }
 
 .app-header {
@@ -95,9 +97,16 @@
 <style lang="scss" module>
 .container {
   flex: 1;
+    overflow: hidden;
+  max-height: 100%;
 }
 
 .link {
   margin-left: 10px;
 }
+</style>
+<style lang="scss">
+  .el-container{
+    height:100%;
+  }
 </style>
