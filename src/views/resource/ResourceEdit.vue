@@ -241,9 +241,9 @@ export default {
       let template = this.ApiBasic.getResourceById(value)
         .then((template) => {
           this.form.segments = [];
-          template.items.forEach((e) => {
+          template.items.forEach((e, index) => {
             this.form.segments.push({
-              id: 0,
+              id: index,
               cover: e.cover,
               lead_type: e.lead_type,
               segment_id: 0,
@@ -339,7 +339,7 @@ export default {
       let newValue = this.$refs.segmentView.getFormData();
       let segmentIndex = undefined;
       this.form.segments.forEach((value, index) => {
-        if (value.id === newValue.id || value.type === newValue.type) {
+        if (value.id === newValue.id && value.type === newValue.type) {
           segmentIndex = index;
           return false;
         }
