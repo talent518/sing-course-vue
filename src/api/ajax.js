@@ -1,7 +1,8 @@
 import axios from "axios";
 import Vue from "vue";
 import errcode from "@api/errcode";
-import {getStorage} from "@util/storage";
+import { getStorage } from "@util/storage";
+const qs = require('qs');
 
 const configUrlNoTip = [
   "user/retoken",
@@ -16,7 +17,7 @@ const configUrlNoTip = [
 ];
 
 //特殊的url 特殊处理
-function special({config}) {
+function special({ config }) {
   if (config.url.includes("vip-batch") && config.method === "put") {
     return true;
   }
@@ -29,15 +30,7 @@ export default (baseURL) => {
       baseURL,
       transformRequest: [
         function (data) {
-          let tmp = [], result;
-          for (let it in data) {
-            if (data[it] == null) {
-              data[it] = "";
-            }
-            tmp.push(encodeURIComponent(it) + "=" + encodeURIComponent(data[it]))
-          }
-          result = tmp.join('&');
-          return result;
+          return qs.stringify(data);
         },
       ],
       headers: {
@@ -115,7 +108,7 @@ export default (baseURL) => {
       },
       (error) => {
         // debugger
-        const {response: {status, statusText}} = error
+        const { response: { status, statusText } } = error
         if (status === 401) {
           localStorage.clear();
           window.location.replace('/login');
@@ -128,7 +121,7 @@ export default (baseURL) => {
     methods.forEach((item = {}) => {
       o[item] = (url, params = {}) => {
         if (item === "get") {
-          return service[item](url, {params: {...params}});
+          return service[item](url, { params: { ...params } });
         } else {
           // debugger;
           return service[item](url, params);

@@ -14,7 +14,7 @@
 
         <template>
           <el-popconfirm title="确定要移除所有吗？" @onConfirm="deleteAllClass">
-            <el-link @click="" plain type="primary" size="mini" slot="reference"
+            <el-link plain type="primary" size="mini" slot="reference"
               >全部清除</el-link
             >
           </el-popconfirm>
@@ -45,7 +45,13 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="primary" v-if="themeSortBtn" @click="themeSort">保存当前排序</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          v-if="themeSortBtn"
+          @click="themeSort"
+          >保存当前排序</el-button
+        >
       </span>
     </el-dialog>
     <relation-material-dialog
@@ -70,20 +76,20 @@ export default {
         show: false,
       },
       list: [],
-      themeSortArr:[],
-      themeSortBtn:false
+      themeSortArr: [],
+      themeSortBtn: false,
     };
   },
   mounted() {
     this.$dragging.$on("dragged", ({ value }) => {
-      this.themeSortArr = value.list
-      this.themeSortBtn = true
+      this.themeSortArr = value.list;
+      this.themeSortBtn = true;
     });
     this.$dragging.$on("dragend", () => {});
   },
   methods: {
     async init(val) {
-      if(val){
+      if (val) {
         this.$emit("reflash");
       }
       let json = {
@@ -102,34 +108,35 @@ export default {
         id: this.id,
       };
     },
-    themeSort(){
-      let json={ids:''},arr=[]
-      this.themeSortArr.forEach(e=>{
-        arr.push(e.id)
-      })
-      json.ids = arr.join(',')
-      this.ApiTeach.patchThemeDetailSortApi(this.id,json).then((res) => {
+    themeSort() {
+      let json = { ids: "" },
+        arr = [];
+      this.themeSortArr.forEach((e) => {
+        arr.push(e.id);
+      });
+      json.ids = arr.join(",");
+      this.ApiTeach.patchThemeDetailSortApi(this.id, json).then((res) => {
         this.$message({
           type: "success",
           message: "保存成功",
         });
-      })
+      });
     },
 
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delThemeDetailApi(id).then((res) => {
-        if(this.list.length==1){
-          this.list = []
-        }else{
+        if (this.list.length == 1) {
+          this.list = [];
+        } else {
           this.init();
         }
       });
     },
     //删除全部
     deleteAllClass() {
-      if(this.list.length==0){
-        return
+      if (this.list.length == 0) {
+        return;
       }
       this.ApiTeach.delAllThemeRelationTextbookApi(this.id).then((res) => {
         this.$emit("reflash");
@@ -140,7 +147,7 @@ export default {
   watch: {
     "dialogObj.show"(value) {
       if (value) {
-        this.themeSortBtn = false
+        this.themeSortBtn = false;
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
           this.init();

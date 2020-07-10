@@ -12,7 +12,7 @@
           <el-form-item label="教材编号：">
             <el-input
               placeholder="请输入教材编号"
-              v-model="search.code"
+              v-model="filter.code"
               style="width: 200px;"
             ></el-input>
           </el-form-item>
@@ -20,7 +20,7 @@
           <el-form-item label="教材标题：">
             <el-input
               placeholder="请输入教材标题"
-              v-model="search.title"
+              v-model="filter.title"
               style="width: 200px;"
             ></el-input>
           </el-form-item>
@@ -28,8 +28,6 @@
           <el-button type="primary" plain size="small" @click="handleSearch"
             >查询</el-button
           >
-
-          <el-button plain size="small" @click="clearSearch">清除</el-button>
         </div>
       </el-form>
       <el-divider></el-divider>
@@ -46,15 +44,26 @@
         <el-table-column prop="title" label="教材标题"></el-table-column>
         <el-table-column label="封面" width="">
           <template slot-scope="scope">
-            <img class="coverImg" :src="scope.row.cover" alt="" />
+            <img
+              style="height: 50px; width: 50px;"
+              class="coverImg"
+              :src="scope.row.cover"
+              alt=""
+            />
           </template>
         </el-table-column>
-        <!--<el-table-column-->
-        <!--  prop="class_user_num"-->
-        <!--  label="教材数"-->
-        <!--  width="115"-->
-        <!--&gt;</el-table-column>-->
       </el-table>
+
+      <el-pagination
+        class="m20"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="page.total"
+        :page-size="page.size"
+        @size-change="handleSizeChange"
+        @current-change="pageCurrentChange"
+        :current-page.sync="page.index"
+      ></el-pagination>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogObj.show = false"
           >取 消</el-button
@@ -74,12 +83,19 @@ export default {
   data() {
     return {
       loading: false,
-      search: {
+      filter: {
+        id: "",
         title: "",
-        code: "",
+        sub_title: "",
+        status: "",
       },
       list: [],
       selected: [], // 已选择
+      page: {
+        total: 0,
+        index: 1,
+        size: 10,
+      },
     };
   },
   mounted() {},
@@ -89,10 +105,10 @@ export default {
       let json = {
         theme_id: this.dialogObj.id,
       };
-      if (this.selected.length==0) {
+      if (this.selected.length == 0) {
         this.$message({
-          type: 'error',
-          message: '请至少勾选一个!'
+          type: "error",
+          message: "请至少勾选一个!",
         });
         return false;
       }
@@ -106,45 +122,45 @@ export default {
           type: "success",
           message: "保存成功",
         });
-        this.$emit("reflash",1);
+        this.$emit("reflash", 1);
         this.dialogObj.show = false;
       });
     },
-
-    async init() {
-      let json = {
-        scene: "all",
-        exclude: "yes",
-        bind_type:"theme",
-        id:this.dialogObj.id,
-        title: this.search.title,
-        code: this.search.code,
-      };
-      let data = await this.ApiTeach.getTextbookListApi(json);
-      this.list = data.items;
-      // this.page.total = data.total;
+    async getData() {
+      this.loading = true;
+      let param = Object.assign(
+        {
+          pageIndex: this.page.index,
+          pageSize: this.page.size,
+        },
+        this.filter
+      );
+      console.log(this);
+      this.ApiResource.getResource(param)
+        .then((res) => {
+          this.loading = false;
+          this.list = res.items;
+          this.page.total = res.total;
+        })
+        .catch((error) => {
+          this.loading = false;
+        });
     },
-
     handleSearch() {
-      // this.page.now = 1;
-      this.init();
-    },
-
-    clearSearch() {
-      this.search.title = "";
-      this.search.code = "";
-      this.init();
+      this.page.index = 1;
+      this.getData();
     },
 
     handleSelectionChange(val) {
       this.selected = val;
     },
-  },
-  watch: {
-    "dialogObj.show"(value) {
-      if (value) {
-        this.clearSearch();
-      }
+    pageCurrentChange(index) {
+      this.page.index = index;
+      this.getData();
+    },
+    handleSizeChange(size) {
+      this.page.size = size;
+      this.getData();
     },
   },
 };

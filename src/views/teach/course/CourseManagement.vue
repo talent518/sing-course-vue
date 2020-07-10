@@ -31,7 +31,6 @@
         <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch"
           >查询</el-button
         >
-        <el-button  plain size="small" @click="clearSearch">清除</el-button>
       </div>
     </el-form>
 

@@ -71,6 +71,7 @@
             "SegmentTypeEnum",
             "CourseTypeEnum",
             "PlayStatusEnum",
+            "BaseStatusEnum",
           ],
         };
         let o = {};
