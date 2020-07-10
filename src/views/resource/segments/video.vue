@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" label-width="120px">
+  <el-form ref="videoForm" :model="form" label-width="120px">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择">
         <el-option
@@ -80,8 +80,14 @@ export default {
       let res = await upload(e.file);
       this.form.payload.urls.push(res.url);
     },
+    videoDelete(i) {
+      this.form.payload.urls.splice(i, 1);
+    },
     getFormData(callback) {
       return this.form;
+    },
+    restForm() {
+      return this.$refs.videoForm.resetFields();
     },
   },
 };

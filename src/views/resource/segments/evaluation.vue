@@ -1,5 +1,10 @@
 <template>
-  <el-form :model="form" label-width="120px" :loading="loading">
+  <el-form
+    ref="evaluationForm"
+    :model="form"
+    label-width="120px"
+    :loading="loading"
+  >
     <el-form-item label="评分规则：">
       <el-select v-model="form.payload.score_config_id" placeholder="请选择">
         <el-option
@@ -74,6 +79,9 @@ export default {
         status: 1,
       });
       this.listQuestion = res.items;
+    },
+    restForm() {
+      return this.$refs.evaluationForm.resetFields();
     },
   },
   watch: {

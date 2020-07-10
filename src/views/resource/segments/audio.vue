@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" label-width="120px">
+  <el-form ref="audioForm" :model="form" label-width="120px">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择播放规则">
         <el-option
@@ -69,6 +69,9 @@ export default {
     },
     getFormData(callback) {
       return this.form;
+    },
+    restForm() {
+      return this.$refs.audioForm.resetFields();
     },
   },
   watch: {

@@ -143,7 +143,7 @@
         :payload="segmentData"
       ></component>
       <div slot="footer" v-if="dialogData.type !== 'view'">
-        <el-button @click="segmentDialogVisible = false">取 消</el-button>
+        <el-button @click="handleSegmentCancel">取 消</el-button>
         <el-button type="primary" @click="handleSegmentSave">确 定</el-button>
       </div>
     </el-dialog>
@@ -343,6 +343,11 @@ export default {
         }
       });
       this.form.segments[segmentIndex] = newValue;
+      this.$refs.segmentView.restForm();
+    },
+    handleSegmentCancel() {
+      this.segmentDialogVisible = false;
+      this.$refs.segmentView.restForm();
     },
   },
 };
