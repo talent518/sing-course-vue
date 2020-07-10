@@ -6,22 +6,28 @@
     :title="title"
     :visible.sync="dialogData.show"
     :close-on-click-modal="false"
-    append-to-body>
+    append-to-body
+  >
     <div>
-      <el-form :model="form" label-width="100px" size="small">
-        <el-form-item label="课节标题：">
-          <el-input
-            v-model="form.textbook_data.title"
-            placeholder="请输入"></el-input>
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="100px"
+        size="small"
+        :loading="loading"
+      >
+        <el-form-item prop="id">
+          <el-input v-model="form.id" style="display: none;"></el-input>
+        </el-form-item>
+        <el-form-item label="课节标题：" prop="title">
+          <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="课节副标题：">
-          <el-input
-            v-model="form.textbook_data.sub_title"
-            placeholder="请输入"></el-input>
+        <el-form-item label="课节副标题：" prop="sub_title">
+          <el-input v-model="form.sub_title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="封面：">
+        <el-form-item label="封面：" prop="cover">
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -29,391 +35,378 @@
             :show-file-list="false"
             :http-request="uploadFileCover"
             list-type="picture-card"
-            multiple>
+            multiple
+          >
             <el-image
               style="width: 100%; height: 100%;"
               fit="contain"
-              v-if="form.textbook_data.cover"
-              :src="form.textbook_data.cover">
+              v-if="form.cover"
+              :src="form.cover"
+            >
             </el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-
-        <el-form-item label="状态：">
-          <el-switch
-            v-model="form.textbook_data.status"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66">
-          </el-switch>
+        <el-form-item label="教材模板：" prop="textbook_template_id">
+          <el-select
+            v-if="form.id == 0"
+            v-model="form.textbook_template_id"
+            filterable
+            clearable
+            placeholder="请选择模版"
+            @change="handleTemplateChange"
+          >
+            <el-option
+              v-for="item in listTemplateResource"
+              :key="item.id"
+              :label="item.code + ' ' + item.title"
+              :value="item.id"
+            >
+              <span style="float: left;">{{ item.code }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px;">{{
+                item.title
+              }}</span>
+            </el-option>
+          </el-select>
+          <label v-else>{{
+            form.textbook_template_code + "" + form.textbook_template_name
+          }}</label>
         </el-form-item>
 
-        <el-form-item label="教材模板：">
-          <el-radio-group v-model="form.textbook_data.textbook_template_id" @change="(label) => {return templateResourceChange(label, true);}" style="margin-bottom: -10px;">
-            <el-radio v-for="item in listTemplateResource" :label="item.id" border style="margin-right: 10px; margin-left: 0; margin-bottom: 10px;" :key="item.id" v-if="form.textbook_data.textbook_template_id == item.id">{{item.title}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="关联环节：">
+        <el-form-item label="关联环节：" prop="segments">
           <div class="segment-card">
             <div
-              v-for="(segement, index) in form.template_data_details"
-              class="card-item">
-
+              v-for="(segement, index) in form.segments"
+              class="card-item"
+              :key="index"
+            >
               <el-card shadow="hover" :body-style="{ padding: '12px' }">
                 <div class="header">
                   <el-input
                     v-model="segement.title"
-
-                    placeholder="标题"></el-input>
+                    placeholder="标题"
+                  ></el-input>
                 </div>
 
                 <el-divider></el-divider>
 
                 <el-upload
-
                   class="upload-item"
                   action="/api/public/upload"
                   accept="image/*"
                   :show-file-list="false"
-                  :http-request="(file) => {return uploadFile(file, index);}"
+                  :http-request="
+                    (file) => {
+                      return uploadFile(file, index);
+                    }
+                  "
                   list-type="picture-card"
-                  multiple>
+                  multiple
+                >
                   <el-image
                     style="width: 100%; height: 100%;"
                     fit="cover"
                     v-if="segement.cover"
-                    :src="segement.cover">
+                    :src="segement.cover"
+                  >
                   </el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
 
                 <el-divider></el-divider>
 
-                <el-button @click="segementLink(segement, index)" type="default" style="width: 100%;">
-
+                <el-button
+                  @click="handleSegementLink(segement, index)"
+                  type="default"
+                  style="width: 100%;"
+                >
                   关联内容
                 </el-button>
-
               </el-card>
-
             </div>
           </div>
         </el-form-item>
       </el-form>
     </div>
     <div slot="footer" v-if="dialogData.type !== 'view'">
-      <el-button @click="dialogToggle">取 消</el-button>
-      <el-button type="primary" @click="dialogSave">确 定</el-button>
+      <el-button @click="handleCancel">取 消</el-button>
+      <el-button type="primary" @click="handleSave">确 定</el-button>
     </div>
-
-    <resource-edit-segment :dialog-data="dialogSegmentData"></resource-edit-segment>
-
+    <el-dialog
+      title="编辑环节"
+      :visible.sync="segmentDialogVisible"
+      :modal="false"
+    >
+      <component
+        ref="segmentView"
+        :is="segmentComponent"
+        :payload="segmentData"
+      ></component>
+      <div slot="footer" v-if="dialogData.type !== 'view'">
+        <el-button @click="segmentDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleSegmentSave">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-dialog>
 </template>
 
 <script>
-  import commonMessage from "@/views/common/commonMessage";
-  // import menuRole from "@/views/common/menuRole";
-  import {upload} from "@api/upload";
-  import ResourceEditSegment from "@/views/resource/ResourceEditSegment"
+import commonMessage from "@/views/common/commonMessage";
+import { upload } from "@api/upload";
+import ResourceEditSegment from "@/views/resource/ResourceEditSegment";
+import VideoSegment from "@/views/resource/segments/video";
+import AudioSegment from "@/views/resource/segments/audio";
+import EvaluationSegment from "@/views/resource/segments/evaluation";
 
-  const FORM_DEFAULT = {
-    textbook_data: {
-      textbook_template_id: "",
-      title: "",
-      sub_title: "",
-      cover: '',
-      status: 1,
+export default {
+  name: "ResourceDialog",
+  components: {
+    ResourceEditSegment,
+    VideoSegment,
+    AudioSegment,
+    EvaluationSegment,
+  },
+  mixins: [commonMessage],
+
+  props: {
+    dialogData: {
+      type: Object,
+      default: {
+        show: false,
+        type: "",
+        param: {
+          id: 0,
+        },
+      },
     },
-    template_data_details: [
-      {
-        textbook_template_id: '',
-        segment_template_id: "",
-        lead_type: "",
+  },
+
+  data() {
+    return {
+      form: {
+        id: 0,
         title: "",
+        sub_title: "",
         cover: "",
-        id: '',
+        textbook_template_id: "",
+        textbook_template_code: "",
+        textbook_template_name: "",
+        segments: [],
       },
-    ],
-    textbook_segment_data_details: [
-      {
-        segment_template_id: '',
-        score_config_id: "",
-        resources_content: {
-          auto_play: '',
-          urls: []
-        },
-      },
-    ]
-  };
+      title: "编辑教材",
+      listSegment: [],
+      listTemplateResource: [],
+      segmentComponent: "",
+      segmentDialogVisible: false,
+      segmentData: {},
+      loading: false,
+    };
+  },
 
-  export default {
-    name: "ResourceDialog",
-    components: {ResourceEditSegment},
-    mixins: [commonMessage],
-
-    props: {
-      dialogData: {
-        type: Object,
-        default: {
-          show: false,
-          type: "",
-          param: {
-            id: 0,
-          },
-        },
-      },
+  watch: {
+    "dialogData.show"(val) {
+      if (val) this.init();
     },
+  },
 
-    data() {
-      return {
-        title: "",
-
-        listSegment: [],
-
-        listTemplateResource: [],
-
-        form: JSON.parse(JSON.stringify(FORM_DEFAULT)),
-
-        dialogSegmentData: {
-          show: false,
-
-        }
-      };
+  methods: {
+    init() {
+      if (this.dialogData.param.id === 0) {
+        this.loading = true;
+        this.ApiBasic.getResource({ scene: "all", status: 1 })
+          .then((res) => {
+            this.listTemplateResource = res.items;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
+      } else {
+        this.loading = true;
+        this.ApiResource.getResourceById(this.dialogData.param.id)
+          .then((res) => {
+            this.form = res;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
+      }
     },
-
-    watch: {
-      "dialogData.show"(val) {
-        if (val) this.init();
-      },
-    },
-
-    methods: {
-      init() {
-        this.getTemplateResourceAll(res => {
-
-          if (this.dialogData.param.type == "add") {
-
-            this.title = "新增教材";
-            this.form = JSON.parse(JSON.stringify(FORM_DEFAULT));
-
-            // 新增默认选中第一个
-            this.$nextTick(() => {
-              this.form.textbook_template_id = res.items[0].id;
-              this.form.textbook_data.textbook_template_id = res.items[0].id;
-              this.templateResourceChange(res.items[0].id)
-            })
-
-          } else if (this.dialogData.param.type == "edit") {
-
-            this.title = "编辑教材";
-            this.form.textbook_data = this.dialogData.param;
-            this.form.template_data_details = this.dialogData.param.template_data_details;
-            this.form.textbook_segment_data_details = this.dialogData.param.textbook_segment_data_details
-            // this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
-
-          } else if (this.dialogData.param.type == "view") {
-
-            this.title = "查看教材";
-            this.form.textbook_data = this.dialogData.param;
-            this.templateResourceChange(this.form.textbook_data.textbook_template_detail.id)
-
-          }
-
+    handleTemplateChange(value) {
+      this.loading = true;
+      let template = this.ApiBasic.getResourceById(value)
+        .then((template) => {
+          this.form.segments = [];
+          template.items.forEach((e) => {
+            this.form.segments.push({
+              id: 0,
+              cover: e.cover,
+              lead_type: e.lead_type,
+              segment_id: 0,
+              segment_template_id: e.segment_template_id,
+              title: e.title,
+              type: e.segment_type,
+              payload: e.payload,
+            });
+          });
+          this.loading = false;
         })
-      },
-
-      /**
-       * 获取所有 教材模板
-       */
-      async getTemplateResourceAll(callback) {
-        this.ApiBasic.getResource({scene: "all", status: 1}).then(res => {
-          this.listTemplateResource = res.items;
-          callback && callback(res)
+        .catch(() => {
+          this.loading = false;
         });
-      },
+    },
 
-      /**
-       * 教材模板变化
-       */
-      templateResourceChange(label, manual) {
-        let _idx = this.listTemplateResource.findIndex(i => {
-            return i.id == label
-          }),
-          _listSegment = this.listTemplateResource[_idx].template_data_details;
-        if (_listSegment && _listSegment.length) {
-          this.form.template_data_details = _listSegment;
+    handleSegementLink(item, itemIndex) {
+      switch (item.type) {
+        case 1:
+          this.segmentComponent = VideoSegment;
+          break;
+        case 2:
+          this.segmentComponent = AudioSegment;
+          break;
+        case 3:
+          this.segmentComponent = EvaluationSegment;
+          break;
+      }
+      this.segmentData = item;
+      this.segmentDialogVisible = true;
+    },
 
-          if (!manual) {
+    async uploadFileCover(e) {
+      let res = await upload(e.file);
+      this.form.cover = res.url;
+    },
 
-            this.form.textbook_segment_data_details =
-              JSON.parse(JSON.stringify(this.dialogData.param.textbook_segment_data_details))
+    async uploadFile(e, index) {
+      let res = await upload(e.file);
+      this.form.segments[index].cover = res.url;
+    },
 
-          } else {
+    openMedia(url) {
+      window.open(url, "_blank");
+    },
 
-            let _textbook_segment_data_details = []
-            _listSegment.forEach((val, index) => {
+    handleSave() {
+      // 校验
+      if (!this.form.title) {
+        this.$message({
+          type: "error",
+          message: "请输入标题!",
+        });
+        return false;
+      }
 
-              _textbook_segment_data_details[index] =
-                JSON.parse(JSON.stringify(FORM_DEFAULT.textbook_segment_data_details[0]));
-
-              _textbook_segment_data_details[index].segment_template_id = val.segment_template_id;
-
-            })
-
-            this.form.textbook_segment_data_details = _textbook_segment_data_details
-          }
-
-        } else {
-          this.form.template_data_details = JSON.parse(JSON.stringify(FORM_DEFAULT.template_data_details))
-          // this.form.template_data_details[0].id =
-        }
-
-      },
-
-      segementLink(item, itemIndex) {
-        let type = this.dictoryObj.SegmentTypeEnum.find(i => {
-          return i.key == item.segment_template_detail.type
-        }).value;
-        // todo 优化
-        this.dialogSegmentData = {
-          show: true,
-          type: this.dialogData.param.type,
-          segementType: type,
-          index: itemIndex,
-          param: item
-        }
-      },
-
-      async uploadFileCover(e) {
-        let res = await upload(e.file);
-        this.form.textbook_data.cover = res.url;
-      },
-
-      async uploadFile(e, index) {
-        let res = await upload(e.file);
-        this.form.template_data_details[index].cover = res.url;
-      },
-
-      openMedia(url) {
-        console.log("media url", url);
-        window.open(url, "_blank");
-      },
-
-      dialogToggle() {
-        this.dialogData.show = !this.dialogData.show;
-      },
-
-      dialogSave() {
-        // 校验
-        if (!this.form.textbook_data.title) {
-          this.$message({
-            type: 'error',
-            message: '请输入标题!'
-          });
-          return false;
-        }
-
-        if (!this.form.textbook_data.cover) {
-          this.$message({
-            type: 'error',
-            message: '请上传封面!'
-          });
-          return false;
-        }
-
-        let api,
-          jsonOrg = {
-            textbook_data: this.form.textbook_data,
-            template_data_details: this.form.template_data_details,
-            textbook_segment_data_details: this.form.textbook_segment_data_details
-          },
-          json = {
-            id: this.dialogData.param.id,
-            textbook_data: JSON.stringify(this.form.textbook_data),
-            template_data_details: JSON.stringify(this.form.template_data_details),
-            textbook_segment_data_details: JSON.stringify(this.form.textbook_segment_data_details)
-          };
-
-
-        console.log(jsonOrg);
-
-        this.ApiResource.putResource(json).then((res) => {
-          if(JSON.stringify(res) === '{}'){
+      if (!this.form.cover) {
+        this.$message({
+          type: "error",
+          message: "请上传封面!",
+        });
+        return false;
+      }
+      if (this.form.id == 0) {
+        this.ApiResource.postResource(this.form).then((res) => {
+          if (JSON.stringify(res) === "{}") {
             this.$message({
               type: "success",
               message: "保存成功",
             });
           }
+          this.$refs.form.resetFields();
           this.dialogToggle();
           this.$parent.getData();
         });
-      },
+      } else {
+        this.ApiResource.putResource(this.form).then((res) => {
+          if (JSON.stringify(res) === "{}") {
+            this.$message({
+              type: "success",
+              message: "保存成功",
+            });
+          }
+          this.$refs.form.resetFields();
+          this.dialogData.show = false;
+          this.$parent.getData();
+        });
+      }
     },
-  };
+    handleCancel() {
+      this.$refs.form.resetFields();
+      this.dialogData.show = false;
+    },
+    handleSegmentSave() {
+      this.segmentDialogVisible = false;
+      let newValue = this.$refs.segmentView.getFormData();
+      let segmentIndex = undefined;
+      this.form.segments.forEach((value, index) => {
+        if (value.id === newValue.id || value.type === newValue.type) {
+          segmentIndex = index;
+          return false;
+        }
+      });
+      this.form.segments[segmentIndex] = newValue;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-  .resource-dialog {
-    .segment-card {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 0 -6px;
-      /*width: 100%;*/
+.resource-dialog {
+  .segment-card {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -6px;
+    /*width: 100%;*/
 
-      .card-item {
-        box-sizing: border-box;
-        flex-shrink: 0;
-        flex-grow: 0;
+    .card-item {
+      box-sizing: border-box;
+      flex-shrink: 0;
+      flex-grow: 0;
+      margin-bottom: 12px;
+      padding: 0 6px;
+      width: 20%;
+
+      .card-item-header {
+        display: flex;
         margin-bottom: 12px;
-        padding: 0 6px;
-        width: 20%;
-
-        .card-item-header {
-          display: flex;
-          margin-bottom: 12px;
-          .el-select {
-            flex-grow: 0;
-          }
-
-          .el-button-group {
-            margin-left: 12px;
-            flex-shrink: 0;
-            .el-button {
-              padding-left: 11px;
-              padding-right: 11px;
-            }
-          }
+        .el-select {
+          flex-grow: 0;
         }
 
-        .el-divider--horizontal {
-          margin: 12px -12px;
-          width: auto;
-          background-color: #ebeef5;
+        .el-button-group {
+          margin-left: 12px;
+          flex-shrink: 0;
+          .el-button {
+            padding-left: 11px;
+            padding-right: 11px;
+          }
         }
+      }
 
-        .upload-item {
-          display: flex;
-          justify-content: center;
-          .el-upload--picture-card {
-            overflow: hidden;
-            position: relative;
-            width: 100px;
-            height: 100px;
-            /*line-height: 100px;*/
-            border-radius: 50%;
-            .avatar-uploader-icon {
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              z-index: 1;
-              transform: translate(-50%, -50%);
-            }
+      .el-divider--horizontal {
+        margin: 12px -12px;
+        width: auto;
+        background-color: #ebeef5;
+      }
+
+      .upload-item {
+        display: flex;
+        justify-content: center;
+        .el-upload--picture-card {
+          overflow: hidden;
+          position: relative;
+          width: 100px;
+          height: 100px;
+          /*line-height: 100px;*/
+          border-radius: 50%;
+          .avatar-uploader-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
           }
         }
       }
     }
   }
+}
 </style>

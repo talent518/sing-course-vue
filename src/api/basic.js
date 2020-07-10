@@ -1,7 +1,7 @@
 import ajax from "./ajax";
 import config from "@/config";
 
-const {get, post, patch, put, delete: del} = ajax(config.apiUrl)();
+const { get, post, patch, put, delete: del } = ajax(config.apiUrl)();
 
 class Basic {
   getSegment(json) {
@@ -26,6 +26,10 @@ class Basic {
 
   getResource(json) {
     return get(`course/textbook-templates`, json);
+  }
+
+  getResourceById(id) {
+    return get(`course/textbook-templates/${id}`);
   }
 
   putResource(json) {
