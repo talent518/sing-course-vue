@@ -69,7 +69,7 @@
             </el-option>
           </el-select>
           <label v-else>{{
-            form.textbook_template_code + "" + form.textbook_template_name
+            form.textbook_template_code + "   " + form.textbook_template_name
           }}</label>
         </el-form-item>
 
