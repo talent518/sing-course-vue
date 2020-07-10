@@ -345,7 +345,6 @@ export default {
         }
       });
       this.form.segments[segmentIndex] = newValue;
-      this.$refs.segmentView.restForm();
     },
   },
 };
