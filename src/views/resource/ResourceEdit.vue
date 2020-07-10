@@ -68,9 +68,11 @@
               }}</span>
             </el-option>
           </el-select>
-          <label v-else>{{
-            form.textbook_template_code + "   " + form.textbook_template_name
-          }}</label>
+          <label style="font-weight: bold;" v-else
+            >{{ form.textbook_template_code }}-{{
+              form.textbook_template_name
+            }}</label
+          >
         </el-form-item>
 
         <el-form-item label="关联环节：" prop="segments">
