@@ -71,7 +71,8 @@ export default {
     "payload.id": {
       handler() {
         this.form = this.payload;
-        this.form.payload.auto_play = parseInt(this.form.payload.auto_play);
+        this.form.payload.auto_play =
+          parseInt(this.form.payload.auto_play) || "";
       },
       immediate: true,
     },
