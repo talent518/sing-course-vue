@@ -8,6 +8,10 @@ class Resource {
     return get("course/textbooks", json);
   }
 
+  getResourceById(id) {
+    return get(`course/textbooks/${id}`);
+  }
+
   postResourceStatus(json) {
     return post(`course/textbooks/${json.id}/${json.status}`);
   }
