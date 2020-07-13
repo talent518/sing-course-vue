@@ -23,7 +23,7 @@
         multiple
         filterable
         placeholder="请选择"
-        style="padding-bottom: 1px"
+        style="width: 220px"
       >
         <el-option
           v-for="item in listQuestion"
