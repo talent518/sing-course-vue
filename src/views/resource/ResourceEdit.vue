@@ -315,7 +315,7 @@ export default {
               message: "保存成功",
             });
           }
-          this.dialogToggle();
+          this.dialogData.show = false;
           this.$parent.getData();
         });
       } else {
