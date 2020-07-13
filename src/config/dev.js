@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: 'http://local.course.com/',
+    apiUrl: 'http://course-api.test.changchangenglish.com/',
     mediaUrl: 'https://media.changchangenglish.com/',
     ssoUrl: 'http://sso.test.changchangenglish.com/',
 };

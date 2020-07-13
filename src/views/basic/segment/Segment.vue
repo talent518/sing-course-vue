@@ -2,7 +2,7 @@
   <div class="segment-management">
     <el-form inline size="small">
       <div class="segment-management-form">
-        <el-form-item label="环节模板标题：">
+        <el-form-item label="">
           <el-input
             placeholder="请输入环节模板标题"
             v-model="search.title"
@@ -19,18 +19,18 @@
           >查询</el-button
         >
         <el-button plain size="small" @click="clearSearch">清除</el-button>
+        <el-button
+          type="success"
+          plain
+          size="small"
+          @click="handleAdd"
+          v-permission="'TemplateSegmentCreate'"
+        >新增</el-button
+        >
       </div>
     </el-form>
 
-    <el-divider></el-divider>
 
-    <el-button
-      type="success"
-      size="small"
-      @click="handleAdd"
-      v-permission="'TemplateSegmentCreate'"
-      >新增</el-button
-    >
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -38,7 +38,7 @@
       <el-tab-pane label="禁用" name="disable"></el-tab-pane>
     </el-tabs>
 
-    <my-table :data="list">
+    <my-table :data="list" v-loading="loading">
       <el-table-column prop="id" label="id"></el-table-column>
 
       <el-table-column prop="code" label="编号"></el-table-column>
@@ -87,15 +87,14 @@
       </el-table-column>
     </my-table>
 
-    <el-pagination
-      class="m20"
-      background
-      layout="prev, pager, next,total"
+    <page
+      style="text-align: left;margin: 18px 0"
+      :nowPage="page.now"
       :total="page.total"
-      :page-size="page.size"
-      @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :limit="page.limit"
+      @pageChange="onPageChange"
+      @sizeChange="onSizeChange"
+    />
 
     <segment-dialog :dialog-data="dialogData"></segment-dialog>
   </div>
@@ -105,13 +104,13 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import SegmentDialog from "@/views/basic/segment/SegmentDialog";
-
+import page from "@/components/page/page";
 export default {
   name: "Segment",
 
   mixins: [commonMessage, menuRole],
 
-  components: { SegmentDialog },
+  components: { SegmentDialog,page },
 
   data() {
     return {
@@ -127,9 +126,9 @@ export default {
       list: [],
 
       page: {
+        now: 1,
         total: 0,
-        index: 1,
-        size: 10,
+        limit: 10,
       },
     };
   },
@@ -147,6 +146,16 @@ export default {
           id: 0,
         },
       };
+    },
+
+    onPageChange(val) {
+      this.page.now = val;
+      this.getData();
+    },
+    onSizeChange(val) {
+      this.page.now = 1;
+      this.page.limit = val;
+      this.getData();
     },
 
     handleEdit(row) {
@@ -220,9 +229,10 @@ export default {
     },
 
     async getData() {
+      this.loading = true;
       let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
+        pageIndex: this.page.now,
+        pageSize: this.page.limit,
         title: this.search.title,
       };
       if (this.activeName == "enable") {
@@ -262,7 +272,7 @@ export default {
 .segment-management {
   text-align: left;
   .segment-management-form {
-    padding-top: 20px;
+
   }
 }
 </style>

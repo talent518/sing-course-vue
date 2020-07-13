@@ -1,8 +1,8 @@
 <template>
   <div class="course-management">
     <el-form inline size="small">
-      <div class="course-management-form">
-        <el-form-item label="课程标题：">
+      <div class="course-management-form" style="padding-top: 0">
+        <el-form-item label="">
           <el-input
             placeholder="请输入课程标题"
             v-model="search.title"
@@ -31,12 +31,9 @@
         <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch"
           >查询</el-button
         >
+        <el-button v-permission="'CourseCreate'" type="success" plain size="small" @click="addClass">新增课程</el-button>
       </div>
     </el-form>
-
-    <el-divider></el-divider>
-
-    <el-button v-permission="'CourseCreate'" type="success" size="small" @click="addClass">新增</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -104,6 +101,7 @@
       </el-table-column>
     </el-table>
     <page
+      style="text-align: left;margin: 18px 0"
       :nowPage="page.now"
       :total="page.total"
       :limit="page.limit"

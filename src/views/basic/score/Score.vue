@@ -6,7 +6,7 @@
       </el-form-item>
     </el-form>
 
-    <my-table :data="list">
+    <my-table :data="list" v-loading="loading">
       <el-table-column prop="id" label="id"></el-table-column>
 
       <el-table-column prop="title" label="评分标准名"></el-table-column>
@@ -33,15 +33,14 @@
       </el-table-column>
     </my-table>
 
-    <el-pagination
-      class="m20"
-      background
-      layout="prev, pager, next,total"
+    <page
+      style="text-align: left;margin: 18px 0"
+      :nowPage="page.now"
       :total="page.total"
-      :page-size="page.size"
-      @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :limit="page.limit"
+      @pageChange="onPageChange"
+      @sizeChange="onSizeChange"
+    />
 
     <score-dialog :dialog-data="dialogData"></score-dialog>
   </div>
@@ -51,13 +50,14 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import ScoreDialog from "@/views/basic/score/ScoreDialog";
+import page from "@/components/page/page";
 
 export default {
   name: "Score",
 
   mixins: [commonMessage, menuRole],
 
-  components: { ScoreDialog },
+  components: { ScoreDialog,page },
 
   data() {
     return {
@@ -71,9 +71,9 @@ export default {
       list: [],
 
       page: {
+        now: 1,
         total: 0,
-        index: 1,
-        size: 10,
+        limit: 10,
       },
     };
   },
@@ -91,6 +91,22 @@ export default {
         },
       };
     },
+
+    handleSearch() {
+      this.page.now = 1;
+      this.getData();
+    },
+
+    onPageChange(val) {
+      this.page.now = val;
+      this.getData();
+    },
+    onSizeChange(val) {
+      this.page.now = 1;
+      this.page.limit = val;
+      this.getData();
+    },
+
 
     handleEdit(row) {
       this.dialogData = {
@@ -116,9 +132,10 @@ export default {
     },
 
     async getData() {
+      this.loading = true;
       let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
+        pageIndex: this.page.now,
+        pageSize: this.page.limit,
       };
 
       let res = await this.ApiBasic.getScore(param);
