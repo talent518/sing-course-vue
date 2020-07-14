@@ -1,14 +1,5 @@
 <template>
   <div class="exercises">
-    <el-row>
-      <el-col :span="6">
-        <div class="titleFlex">
-          <div class="title">配音标题：</div>
-          <div>
-            <el-input v-model="searchObj.title" />
-          </div>
-        </div>
-      </el-col>
       <!--<el-col :span="6">-->
       <!--  <div class="titleFlex">-->
       <!--    <div>标签：</div>-->
@@ -21,17 +12,19 @@
       <!--    </div>-->
       <!--  </div>-->
       <!--</el-col>-->
-      <el-col :span="4">
-        <el-button type="primary" @click="search" v-permission="'ExercisesView'">查询</el-button>
-      </el-col>
-    </el-row>
     <el-form size="small" inline class="section-search">
+      <el-form-item>
+        <el-input v-model="searchObj.title"  placeholder="请输入配音标题"/>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" plain @click="search" v-permission="'ExercisesView'">查询</el-button>
+      </el-form-item>
       <el-form-item>
         <el-button v-permission="'ExercisesCreate'" type="success" plain @click="handleAdd">添加习题</el-button>
       </el-form-item>
     </el-form>
 
-    <my-table :data="list">
+    <my-table :data="list" v-loading="loading">
       <el-table-column
         v-for="item in cols"
         :key="item.prop"
@@ -82,15 +75,14 @@
         </template>
       </el-table-column>
     </my-table>
-    <el-pagination
-      class="m20"
-      background
-      layout="prev, pager, next,total"
+    <page
+      style="text-align: left;margin: 18px 0"
+      :nowPage="searchObj.pageIndex"
       :total="searchObj.total"
-      :page-size="searchObj.pageSize"
-      @current-change="pageCurrentChange"
-      :current-page.sync="searchObj.pageIndex"
-    ></el-pagination>
+      :limit="searchObj.pageSize"
+      @pageChange="onPageChange"
+      @sizeChange="onSizeChange"
+    />
     <el-dialog
       :title="title"
       v-if="dialogFormVisible"
@@ -206,13 +198,14 @@ import menuRole from "@/views/common/menuRole";
 import ScoreDialog from "@/views/basic/score/ScoreDialog";
 import { upload } from "@api/upload";
 import editorDetail from "@/components/editorDetail/editorDetail";
-
+import page from "@/components/page/page";
 export default {
   name: "Exercises",
   mixins: [commonMessage, menuRole],
-  components: { ScoreDialog,editorDetail },
+  components: { ScoreDialog,editorDetail,page },
   data() {
     return {
+      loading:false,
       title:'',
       searchObj: {
         title: "",
@@ -326,6 +319,17 @@ export default {
         }
       });
     },
+
+    onPageChange(val) {
+      this.searchObj.pageIndex = val;
+      this.getQuestion();
+    },
+    onSizeChange(val) {
+      this.searchObj.pageIndex = 1;
+      this.searchObj.pageSize = val;
+      this.getQuestion();
+    },
+
     openMedia() {
       window.open(this.model.ori_sound, "_blank");
     },
@@ -342,9 +346,11 @@ export default {
       return await this.ApiCourse.putVoiceQuestions(json);
     },
     async getQuestion() {
+      this.loading = true
       const QuestionMaterialTypeEnum = this.dictoryObj.QuestionMaterialTypeEnum;
       const DubbingTypeEnum = this.dictoryObj.DubbingTypeEnum;
       let d = await this.ApiCourse.getVoiceQuestions(this.searchObj);
+
       d.items.forEach((o) => {
         QuestionMaterialTypeEnum.forEach((i) => {
           if (o.material_type == i.key) {
@@ -358,7 +364,7 @@ export default {
         });
       });
       this.list = d.items;
-
+      this.loading = false
       this.searchObj.total = d.total;
     },
     handleAdd() {

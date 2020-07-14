@@ -3,7 +3,7 @@
     <el-form inline size="small" class="section-search">
       <el-form-item>
         <el-input
-          placeholder="主题标题"
+          placeholder="请输入主题标题"
           v-model="search.title"
           style="width: 200px;"
         ></el-input>
@@ -17,17 +17,15 @@
         >查询
       </el-button>
       <el-button plain size="small" @click="clearSearch">清除</el-button>
+      <el-button
+        type="success"
+        plain
+        v-permission="'ThemeCreate'"
+        size="small"
+        @click="addTheme"
+      >新增主题</el-button
+      >
     </el-form>
-
-    <el-divider></el-divider>
-
-    <el-button
-      type="success"
-      v-permission="'ThemeCreate'"
-      size="small"
-      @click="addTheme"
-      >新增</el-button
-    >
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
@@ -92,6 +90,7 @@
       </el-table-column>
     </el-table>
     <page
+      style="text-align: left;margin: 18px 0"
       :nowPage="page.now"
       :total="page.total"
       :limit="page.limit"

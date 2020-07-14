@@ -1,6 +1,13 @@
 <template>
   <div>
     <el-form size="small" inline class="section-search">
+      <el-button
+        type="primary"
+        plain
+        size="small"
+        @click="handleSearch"
+      >查询
+      </el-button>
       <el-form-item>
         <el-button
           v-permission="'TemplateResourceCreate'"
@@ -10,9 +17,10 @@
           >新增教材模板
         </el-button>
       </el-form-item>
+
     </el-form>
 
-    <my-table :data="list">
+    <my-table :data="list" v-loading="loading">
       <el-table-column prop="id" label="id"></el-table-column>
 
       <el-table-column prop="code" label="编号"></el-table-column>
@@ -70,15 +78,14 @@
       </el-table-column>
     </my-table>
 
-    <el-pagination
-      class="m20"
-      background
-      layout="prev, pager, next,total"
+    <page
+      style="text-align: left;margin: 18px 0"
+      :nowPage="page.now"
       :total="page.total"
-      :page-size="page.size"
-      @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :limit="page.limit"
+      @pageChange="onPageChange"
+      @sizeChange="onSizeChange"
+    />
 
     <template-resource-dialog
       :dialog-data="dialogData"
@@ -90,13 +97,14 @@
 import commonMessage from "@/views/common/commonMessage";
 import TemplateResourceDialog from "@/views/basic/resource/ResourceDialog";
 import globalFilter from "@util/filter";
+import page from "@/components/page/page";
 
 export default {
   name: "TemplateResource",
 
   mixins: [commonMessage],
 
-  components: { TemplateResourceDialog },
+  components: { TemplateResourceDialog ,page},
 
   data() {
     return {
@@ -108,9 +116,9 @@ export default {
       list: [],
 
       page: {
+        now: 1,
         total: 0,
-        index: 1,
-        size: 10,
+        limit: 10,
       },
     };
   },
@@ -123,12 +131,19 @@ export default {
       };
     },
 
-    handleDialog(type, row) {
-      this.dialogData = {
-        show: true,
-        type: type,
-        param: row ? row : { id: 0 },
-      };
+    handleSearch() {
+      this.page.now = 1;
+      this.getData();
+    },
+
+    onPageChange(val) {
+      this.page.now = val;
+      this.getData();
+    },
+    onSizeChange(val) {
+      this.page.now = 1;
+      this.page.limit = val;
+      this.getData();
     },
 
     handleSwitch(id, val) {
@@ -187,9 +202,10 @@ export default {
       );
     },
     async getData() {
+      this.loading = true;
       let param = {
-        pageIndex: this.page.index,
-        pageSize: this.page.size,
+        pageIndex: this.page.now,
+        pageSize: this.page.limit,
       };
       let res = await this.ApiBasic.getResource(param);
       this.loading = false;
@@ -208,4 +224,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .section-search{
+    margin-bottom: 18px;
+    padding-top: 0;
+  }
+</style>
