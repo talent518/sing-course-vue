@@ -198,10 +198,10 @@ export default {
         _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
-        _targetText = "启用";
+        _targetText = "上架";
       } else if (val === 1) {
         _target = "disable";
-        _targetText = "停用";
+        _targetText = "下架";
       }
 
       this.$confirm(`确定 ${_targetText} 课程？`, "提示", {
