@@ -39,8 +39,8 @@
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane label="启用" name="enable"></el-tab-pane>
-      <el-tab-pane label="禁用" name="disable"></el-tab-pane>
+      <el-tab-pane label="上架" name="enable"></el-tab-pane>
+      <el-tab-pane label="下架" name="disable"></el-tab-pane>
     </el-tabs>
 
     <el-table
@@ -92,7 +92,7 @@
             <template>
               <el-popconfirm
 			  v-permission="'ProductDel'"
-                title="确定要删除课程吗？"
+                title="确定要删除该产品吗？"
                 @onConfirm="delProduct(scope.row.id)"
               >
                 <el-link plain type="primary" size="mini" slot="reference"
@@ -137,13 +137,6 @@ export default {
         // label: "",
       },
       classList: [],
-      // watchList: [
-      //   { id: 5, title: 5 },
-      //   { id: 6, title: 6 },
-      //   { id: 10, title: 10 },
-      //   { id: 12, title: 12 },
-      //   { id: 20, title: 20 },
-      // ],
       page: {
         now: 1,
         total: 0,
@@ -222,7 +215,7 @@ export default {
         _targetText = "停用";
       }
 
-      this.$confirm(`确定 ${_targetText} 课程？`, "提示", {
+      this.$confirm(`确定 ${_targetText} 该产品？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -271,6 +264,7 @@ export default {
         sub_title: val.sub_title,
         status: val.status,
         cover: val.cover,
+        unit_price: val.unit_price,
         id: val.id,
         content: val.content,
         layout: val.layout,
