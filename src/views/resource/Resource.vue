@@ -149,10 +149,10 @@
         let _targetText = '', _target; // 要到达的状态
         if (val === 0) {
           _target = 'enable';
-          _targetText = '启用'
+          _targetText = '上架'
         } else if (val === 1) {
           _target = 'disable';
-          _targetText = '停用'
+          _targetText = '下架'
         }
 
         this.$confirm(`确定 ${_targetText} 教材？`, '提示', {
@@ -181,6 +181,10 @@
           this.$message({type: 'info', message: '已取消'});
         });
 
+      },
+
+      handleClick(tab) {
+        this.getData();
       },
 
       async handleDelete(id) {
