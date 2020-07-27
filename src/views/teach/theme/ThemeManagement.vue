@@ -29,8 +29,8 @@
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane label="启用" name="enable"></el-tab-pane>
-      <el-tab-pane label="禁用" name="disable"></el-tab-pane>
+      <el-tab-pane label="上架" name="enable"></el-tab-pane>
+      <el-tab-pane label="下架" name="disable"></el-tab-pane>
     </el-tabs>
 
     <el-table
