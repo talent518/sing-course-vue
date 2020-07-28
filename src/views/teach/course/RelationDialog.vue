@@ -149,9 +149,13 @@ export default {
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delCourseDetailApi(id).then((res) => {
-        if(this.list.length==1){
-          this.list = []
-        }else{
+        if(JSON.stringify(res) === '{}') {
+          if(this.list.length==1){
+            this.list = []
+          }else{
+            this.init();
+          }
+        } else {
           this.init();
         }
       });
@@ -161,7 +165,7 @@ export default {
       if(this.element_type == 0){
         return
       }
-      let api
+      let api;
       if (this.element_type == 1) {
         api = this.ApiTeach.delAllCourseRelationTextbookApi;
       } else if(this.element_type == 2){
@@ -169,10 +173,11 @@ export default {
       }
 
       api(this.id).then((res) => {
-        // this.init();
-        this.list = [];
-        this.element_type = 0;
-        this.$emit("reflash");
+        if(JSON.stringify(res) === '{}') {
+          this.list = [];
+          this.element_type = 0;
+          this.$emit("reflash");
+        }
       });
     },
   },
@@ -180,7 +185,7 @@ export default {
     "dialogObj.show"(value) {
       if (value) {
         this.list = [];
-        this.courseSortBtn = false
+        this.courseSortBtn = false;
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
           this.element_type = this.dialogObj.element_type;
