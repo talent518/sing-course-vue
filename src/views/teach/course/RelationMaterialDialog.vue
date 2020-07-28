@@ -107,10 +107,12 @@ export default {
       });
       json.element_id = arr.join(",");
       this.ApiTeach.postCourseDetailApi(json).then((res) => {
-        this.$message({
-          type: "success",
-          message: "保存成功",
-        });
+        if(JSON.stringify(res) === '{}'){
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+        }
         this.$emit("reflash",1);
         this.dialogObj.show = false;
       });
