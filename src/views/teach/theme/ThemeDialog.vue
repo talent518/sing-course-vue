@@ -70,9 +70,9 @@ export default {
   data() {
     return {
       form: {
-        title: "", //课程标题
-        sub_title: "", //课程副标题
-        cover: "", //课程封面
+        title: "", //主题标题
+        sub_title: "", //主题副标题
+        cover: "", //主题封面
         status: 0, //状态
       },
     };
@@ -99,7 +99,7 @@ export default {
       if (!form.cover) {
         this.$message({
           type: 'error',
-          message: '请上传课程封面!'
+          message: '请上传主题封面!'
         });
         return false;
       }
