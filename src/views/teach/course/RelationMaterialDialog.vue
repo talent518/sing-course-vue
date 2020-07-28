@@ -120,6 +120,7 @@ export default {
       let json = {
         scene: "all",
         exclude: "yes",
+        status: 1,
         bind_type:"textbook",
         id:this.dialogObj.id,
         title: this.search.title,

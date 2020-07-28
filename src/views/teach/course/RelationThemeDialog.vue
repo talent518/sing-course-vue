@@ -133,6 +133,7 @@ export default {
       let json = {
         scene: "all",
         exclude: "yes",
+        status: 1,
         id:this.dialogObj.id,
         title: this.search.title,
         code: this.search.code,

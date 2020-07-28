@@ -98,7 +98,9 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    this.handleSearch();
+  },
   methods: {
     //提交表单内容
     sub() {
@@ -135,7 +137,7 @@ export default {
         },
         this.filter
       );
-      console.log(this);
+      param.status = 1;
       this.ApiResource.getResource(param)
         .then((res) => {
           this.loading = false;
@@ -146,6 +148,7 @@ export default {
           this.loading = false;
         });
     },
+
     handleSearch() {
       this.page.index = 1;
       this.getData();
