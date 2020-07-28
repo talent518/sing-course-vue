@@ -9,7 +9,7 @@
     >
       <el-form :model="form" ref="form" size="small" label-width="100px">
 
-        <el-form-item label="产品标题">
+        <el-form-item label="产品标题" required>
           <el-input
             placeholder="请输入"
             v-model="form.title"
@@ -25,7 +25,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="布局类型">
+        <el-form-item label="布局类型" required>
           <el-select
             v-model="form.layout"
             filterable
@@ -42,7 +42,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="产品封面">
+        <el-form-item label="产品封面" required>
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -63,7 +63,7 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="单价">
+        <el-form-item label="单价" required>
           <el-input
                   class = "unit_price"
                   placeholder="请填写单节教材的价格"
@@ -136,13 +136,6 @@ export default {
         });
         return false;
       }
-      if (!form.cover) {
-        this.$message({
-          type: 'error',
-          message: '请上传课程封面!'
-        });
-        return false;
-      }
       if (!form.layout) {
         this.$message({
           type: 'error',
@@ -150,6 +143,20 @@ export default {
         });
         return false;
       }
+    if (!form.cover) {
+        this.$message({
+            type: 'error',
+            message: '请上传课程封面!'
+        });
+        return false;
+    }
+    if (!form.unit_price) {
+        this.$message({
+            type: 'error',
+            message: '请填写单节教材的价格!'
+        });
+        return false;
+    }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
