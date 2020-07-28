@@ -11,7 +11,7 @@
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
-        <el-form-item label="课程标题">
+        <el-form-item label="课程标题" required>
           <el-input
             placeholder="请输入"
             v-model="form.title"
@@ -35,7 +35,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="课程封面">
+        <el-form-item label="课程封面" required>
           <el-upload
             class="upload-item"
             action="/api/public/upload"

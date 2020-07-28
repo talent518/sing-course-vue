@@ -19,7 +19,7 @@
         <el-form-item prop="id">
           <el-input v-model="form.id" style="display: none;"></el-input>
         </el-form-item>
-        <el-form-item label="课节标题：" prop="title">
+        <el-form-item label="课节标题：" prop="title" required>
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -27,7 +27,7 @@
           <el-input v-model="form.sub_title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="封面：" prop="cover">
+        <el-form-item label="封面：" prop="cover" required>
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -47,7 +47,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="教材模板：" prop="textbook_template_id">
+        <el-form-item label="教材模板：" prop="textbook_template_id" required>
           <el-select
             v-if="form.id == 0"
             v-model="form.textbook_template_id"
