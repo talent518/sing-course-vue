@@ -54,6 +54,13 @@
           >新增教材</el-button
         >
       </el-form-item>
+
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="全部" name="all"></el-tab-pane>
+        <el-tab-pane label="上架" name="enable"></el-tab-pane>
+        <el-tab-pane label="下架" name="disable"></el-tab-pane>
+      </el-tabs>
+
     </el-form>
 
     <my-table :data="list" :loading="loading">
@@ -168,6 +175,7 @@ export default {
         index: 1,
         size: 10,
       },
+      activeName: "all",
     };
   },
 
@@ -198,16 +206,16 @@ export default {
       };
     },
 
-    handleSwitch(id, val) {
-      let _targetText = "",
-        _target; // 要到达的状态
-      if (val === 0) {
-        _target = "enable";
-        _targetText = "启用";
-      } else if (val === 1) {
-        _target = "disable";
-        _targetText = "停用";
-      }
+      handleSwitch(id, val) {
+
+        let _targetText = '', _target; // 要到达的状态
+        if (val === 0) {
+          _target = 'enable';
+          _targetText = '上架'
+        } else if (val === 1) {
+          _target = 'disable';
+          _targetText = '下架'
+        }
 
       this.$confirm(`确定 ${_targetText} 教材？`, "提示", {
         confirmButtonText: "确定",
@@ -263,6 +271,12 @@ export default {
         },
         this.filter
       );
+      if (this.activeName == "enable") {
+        param.status = 1;
+      } else if (this.activeName == "disable") {
+        param.status = 0;
+      }
+
       this.ApiResource.getResource(param)
         .then((res) => {
           this.loading = false;
@@ -280,6 +294,9 @@ export default {
     },
     handleSizeChange(size) {
       this.page.size = size;
+      this.getData();
+    },
+    handleClick() {
       this.getData();
     },
   },

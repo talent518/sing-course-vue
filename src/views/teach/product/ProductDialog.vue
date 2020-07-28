@@ -8,10 +8,8 @@
       append-to-body
     >
       <el-form :model="form" ref="form" size="small" label-width="100px">
-        <!--<div class="form-section">-->
-        <!--  <div class="form-section-content form-col-2">-->
 
-        <el-form-item label="产品标题">
+        <el-form-item label="产品标题" required>
           <el-input
             placeholder="请输入"
             v-model="form.title"
@@ -27,7 +25,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="布局类型">
+        <el-form-item label="布局类型" required>
           <el-select
             v-model="form.layout"
             filterable
@@ -44,7 +42,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="产品封面">
+        <el-form-item label="产品封面" required>
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -65,19 +63,20 @@
           </el-upload>
         </el-form-item>
 
+        <el-form-item label="单价" required>
+          <el-input
+                  class = "unit_price"
+                  placeholder="请填写单节教材的价格"
+                  v-model="form.unit_price"
+                  clearable
+                  @change="changeNumber"
+          ></el-input>
+        </el-form-item>
+
         <el-form-item label="产品说明">
           <editor-detail v-if="dialogObj.show" :lookData="form.desc" />
         </el-form-item>
 
-        <el-form-item label="状态">
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-          >
-          </el-switch>
-        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -108,19 +107,12 @@ export default {
         title: "", //课程标题
         sub_title: "", //课程副标题
         cover: "", //课程封面
-        status: 1, //状态
+        layout: "", //布局类型
+        unit_price: "", //教材单价
         desc: {
           detail: "",
         },
       },
-
-      // watchList: [
-      //   { id: 5, title: 5 },
-      //   { id: 6, title: 6 },
-      //   { id: 10, title: 10 },
-      //   { id: 12, title: 12 },
-      //   { id: 20, title: 20 },
-      // ],
     };
   },
   methods: {
@@ -131,9 +123,9 @@ export default {
         json = {
           title: form.title,
           sub_title: form.sub_title,
-          status: form.status,
           cover: form.cover,
           layout: form.layout,
+          unit_price: form.unit_price,
           content: form.desc.detail,
         };
 
@@ -144,20 +136,6 @@ export default {
         });
         return false;
       }
-      // if (!form.sub_title) {
-      //   this.$message({
-      //     type: 'error',
-      //     message: '请输入副标题!'
-      //   });
-      //   return false;
-      // }
-      if (!form.cover) {
-        this.$message({
-          type: 'error',
-          message: '请上传课程封面!'
-        });
-        return false;
-      }
       if (!form.layout) {
         this.$message({
           type: 'error',
@@ -165,13 +143,20 @@ export default {
         });
         return false;
       }
-      // if (!form.desc.detail) {
-      //   this.$message({
-      //     type: 'error',
-      //     message: '请输入产品类型!'
-      //   });
-      //   return false;
-      // }
+    if (!form.cover) {
+        this.$message({
+            type: 'error',
+            message: '请上传课程封面!'
+        });
+        return false;
+    }
+    if (!form.unit_price) {
+        this.$message({
+            type: 'error',
+            message: '请填写单节教材的价格!'
+        });
+        return false;
+    }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
@@ -197,6 +182,10 @@ export default {
         this.form.cover = res.url;
       });
     },
+    changeNumber(){
+      this.form.unit_price = this.form.unit_price.replace(/[^0-9.]/g, "").trim()
+
+    }
   },
   watch: {
     "dialogObj.show"(value) {
@@ -206,17 +195,17 @@ export default {
           this.form.sub_title = "";
           this.form.cover = "";
           this.form.layout = "";
-          this.form.status = 1;
+          this.form.unit_price = "";
           this.form.desc = { detail: "" };
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
               sub_title: this.dialogObj.sub_title,
               cover: this.dialogObj.cover,
-              status: this.dialogObj.status,
+              unit_price: this.dialogObj.unit_price,
               layout: this.dialogObj.layout,
             };
-            let richText = {... this.dialogObj}.content
+            let richText = {... this.dialogObj}.content;
             this.form.desc = {
               detail: richText,
             };
@@ -258,6 +247,8 @@ export default {
   height: 178px;
   display: block;
 }
-
+.unit_price {
+  width: 200px;
+}
 /*}*/
 </style>

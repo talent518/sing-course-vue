@@ -157,7 +157,7 @@ class Teach {
 
   //产品关联课程全部清除
   delAllProductRelationCourseApi(id) {
-    return post(`${url.themeList}/${id}/product`);
+    return post(`${url.productList}/${id}/product`);
   }
 
   //产品管理单个移除

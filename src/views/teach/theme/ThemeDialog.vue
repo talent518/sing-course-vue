@@ -11,7 +11,7 @@
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
-        <el-form-item label="主题标题">
+        <el-form-item label="主题标题" required>
           <el-input
             placeholder="请输入"
             v-model="form.title"
@@ -27,7 +27,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="主题封面">
+        <el-form-item label="主题封面" required>
           <el-upload
             class="upload-item"
             action="/api/public/upload"
@@ -48,15 +48,6 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="状态">
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-          >
-          </el-switch>
-        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -79,18 +70,11 @@ export default {
   data() {
     return {
       form: {
-        title: "", //课程标题
-        sub_title: "", //课程副标题
-        cover: "", //课程封面
-        status: 1, //状态
+        title: "", //主题标题
+        sub_title: "", //主题副标题
+        cover: "", //主题封面
+        status: 0, //状态
       },
-      // watchList: [
-      //   { id: 5, title: 5 },
-      //   { id: 6, title: 6 },
-      //   { id: 10, title: 10 },
-      //   { id: 12, title: 12 },
-      //   { id: 20, title: 20 },
-      // ],
     };
   },
   methods: {
@@ -112,17 +96,10 @@ export default {
         });
         return false;
       }
-      // if (!form.sub_title) {
-      //   this.$message({
-      //     type: 'error',
-      //     message: '请输入副标题!'
-      //   });
-      //   return false;
-      // }
       if (!form.cover) {
         this.$message({
           type: 'error',
-          message: '请上传课程封面!'
+          message: '请上传主题封面!'
         });
         return false;
       }

@@ -29,8 +29,8 @@
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane label="启用" name="enable"></el-tab-pane>
-      <el-tab-pane label="禁用" name="disable"></el-tab-pane>
+      <el-tab-pane label="上架" name="enable"></el-tab-pane>
+      <el-tab-pane label="下架" name="disable"></el-tab-pane>
     </el-tabs>
 
     <el-table
@@ -198,13 +198,13 @@ export default {
         _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
-        _targetText = "启用";
+        _targetText = "上架";
       } else if (val === 1) {
         _target = "disable";
-        _targetText = "停用";
+        _targetText = "下架";
       }
 
-      this.$confirm(`确定 ${_targetText} 课程？`, "提示", {
+      this.$confirm(`确定 ${_targetText} 主题？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -234,7 +234,7 @@ export default {
     },
 
     /**
-     * 新增课程
+     * 新增主题
      */
     addTheme() {
       this.dialogObj = {

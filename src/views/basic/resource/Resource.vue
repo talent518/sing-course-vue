@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-form size="small" inline class="section-search">
-      <el-button
-        type="primary"
-        plain
-        size="small"
-        @click="handleSearch"
-      >查询
-      </el-button>
+<!--      <el-button-->
+<!--        type="primary"-->
+<!--        plain-->
+<!--        size="small"-->
+<!--        @click="handleSearch"-->
+<!--      >查询-->
+<!--      </el-button>-->
       <el-form-item>
         <el-button
           v-permission="'TemplateResourceCreate'"

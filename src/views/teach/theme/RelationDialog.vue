@@ -116,18 +116,24 @@ export default {
       });
       json.ids = arr.join(",");
       this.ApiTeach.patchThemeDetailSortApi(this.id, json).then((res) => {
-        this.$message({
-          type: "success",
-          message: "保存成功",
-        });
+        if(JSON.stringify(res) === '{}') {
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+        }
       });
     },
 
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delThemeDetailApi(id).then((res) => {
-        if (this.list.length == 1) {
-          this.list = [];
+        if(JSON.stringify(res) === '{}') {
+          if (this.list.length == 1) {
+            this.list = [];
+          } else {
+            this.init();
+          }
         } else {
           this.init();
         }
