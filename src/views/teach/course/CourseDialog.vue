@@ -56,15 +56,6 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="状态">
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-          >
-          </el-switch>
-        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -90,16 +81,9 @@ export default {
         title: "", //课程标题
         sub_title: "", //课程副标题
         cover: "", //课程封面
-        status: 1, //状态
+        status: 0, //状态
         textbook_number: "", //教材数
       },
-      // watchList: [
-      //   { id: 5, title: 5 },
-      //   { id: 6, title: 6 },
-      //   { id: 10, title: 10 },
-      //   { id: 12, title: 12 },
-      //   { id: 20, title: 20 },
-      // ],
     };
   },
   methods: {
@@ -122,13 +106,6 @@ export default {
         });
         return false;
       }
-      // if (!form.sub_title) {
-      //   this.$message({
-      //     type: 'error',
-      //     message: '请输入副标题!'
-      //   });
-      //   return false;
-      // }
       if (!form.cover) {
         this.$message({
           type: 'error',
