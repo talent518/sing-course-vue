@@ -69,6 +69,7 @@
                   placeholder="请填写单节教材的价格"
                   v-model="form.unit_price"
                   clearable
+                  @change="changeNumber"
           ></el-input>
         </el-form-item>
 
@@ -174,6 +175,10 @@ export default {
         this.form.cover = res.url;
       });
     },
+    changeNumber(){
+      this.form.unit_price = this.form.unit_price.replace(/[^0-9.]/g, "").trim()
+
+    }
   },
   watch: {
     "dialogObj.show"(value) {
