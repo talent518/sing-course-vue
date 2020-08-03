@@ -72,6 +72,11 @@
             "CourseTypeEnum",
             "PlayStatusEnum",
             "BaseStatusEnum",
+            "VoiceQuestionTypeEnum",
+            "PlaySortStatusEnum",
+            "AssistToolEnum",
+            "TextbookTypeEnum",
+            "SegmentMaterialTypeEnum",
           ],
         };
         let o = {};

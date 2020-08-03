@@ -34,6 +34,9 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="重试次数：">
+      <el-input style="width: 216px" v-model="form.payload.again_count"  placeholder="请填写最多重试次数"/>
+    </el-form-item>
   </el-form>
 </template>
 

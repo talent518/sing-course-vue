@@ -90,8 +90,6 @@
       :close-on-click-modal="clickmodal"
     >
       <my-form
-        :rules="rules"
-        :model="model"
         class="textLeft"
         ref="myForm"
         label-width="150px"
@@ -99,91 +97,136 @@
         <el-form-item label="配音标题：" prop="title">
           <el-input v-model="model.title" placeholder="请输入标题"></el-input>
         </el-form-item>
-        <el-form-item label="素材类型：">
+
+        <el-form-item label="习题模板：">
           <el-select
-            v-model="model.material_type"
-            placeholder="请选择素材"
+            v-model="model.question_type"
+            placeholder="请选择习题模板"
             clearable
           >
             <el-option
-              v-for="item in dictoryObj.QuestionMaterialTypeEnum"
+              v-for="item in dictoryObj.VoiceQuestionTypeEnum"
               :label="item.value"
               :value="item.key"
               :key="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="配音素材">
-          <el-upload
-            class="avatar-uploader"
-            action="/api/public/upload"
-            :show-file-list="false"
-            :multiple="multiple"
-            :on-success="handleAvatarSuccess"
-            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-            :http-request="
+
+
+        <template v-if="model.question_type">
+          <el-form-item label="口型示范：" v-if="model.question_type === 2">
+            <div class="upload-wrapper">
+              <el-upload
+                class="avatar-uploader"
+                action="/api/public/upload"
+                :show-file-list="false"
+                :multiple="multiple"
+                :on-success="handleAvatarSuccess"
+                accept="video/mp4"
+                :http-request="
+              (file) => {
+                return uploadFile(file, '3');
+              }
+            "
+              >
+                <div class="videoWrap">
+                  <video style="width: 178px;height: 178px" v-if="model1.mouth_video" :src="model1.mouth_video" controls class="upload-video"></video>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </div>
+              </el-upload>
+
+            </div>
+          </el-form-item>
+
+          <el-form-item label="素材类型：">
+            <el-select
+              v-model="model.material_type"
+              placeholder="请选择素材"
+              clearable
+            >
+              <el-option
+                v-for="item in dictoryObj.QuestionMaterialTypeEnum"
+                :label="item.value"
+                :value="item.key"
+                :key="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="素材内容：">
+            <el-upload
+              class="avatar-uploader"
+              action="/api/public/upload"
+              :show-file-list="false"
+              :multiple="multiple"
+              :on-success="handleAvatarSuccess"
+              accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+              :http-request="
               (file) => {
                 return uploadFile(file, '1');
               }
             "
-          >
-            <div class="imageWrap">
-              <img
-                v-if="model.material_url"
-                :src="model.material_url"
-                class="avatar"
-              />
+            >
+              <div class="imageWrap">
+                <img
+                  v-if="model.material_url"
+                  :src="model.material_url"
+                  class="avatar"
+                />
 
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </div>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="原声录音：" prop="ori_sound">
-          <el-upload
-            class="upload-demo"
-            action="/api/public/upload"
-            accept=".MP3,.APE,.AAC,.WAV,.mp3,.ape,.aac,.wav"
-            :show-file-list="false"
-            :http-request="
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </div>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="原声录音：" prop="ori_sound" v-if="model.question_type !== 2">
+            <el-upload
+              class="upload-demo"
+              action="/api/public/upload"
+              accept=".MP3,.APE,.AAC,.WAV,.mp3,.ape,.aac,.wav"
+              :show-file-list="false"
+              :http-request="
               (file) => {
                 return uploadFile(file, '2');
               }
             "
-          >
-            <el-button size="small" type="primary">上传音频</el-button>
-          </el-upload>
-          <el-button
-            size="small"
-            v-if="model.ori_sound"
-            type="success"
-            @click="openMedia"
+            >
+              <el-button size="small" type="primary">上传音频</el-button>
+            </el-upload>
+            <el-button
+              size="small"
+              v-if="model1.ori_sound"
+              type="success"
+              @click="openMedia"
             >播放音频
-          </el-button>
-        </el-form-item>
-        <el-form-item label="配音类型：" prop="dubbing_type">
-          <el-select
-            v-model="model.dubbing_type"
-            placeholder="请选择配音类型"
-            clearable
-          >
-            <el-option
-              v-for="item in dictoryObj.DubbingTypeEnum"
-              :label="item.value"
-              :value="item.key"
-              :key="item.key"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="配音内容：" prop="dubbing_content">
-          <!--<editor-detail v-if="dialogFormVisible" :lookData="desc" />-->
-          <el-input type="textarea" v-model="model.dubbing_content"></el-input>
-        </el-form-item>
-        <el-form-item label="配音内容翻译：" prop="dubbing_content_tran">
-          <el-input v-model="model.dubbing_content_tran" placeholder="请输入翻译"></el-input>
-        </el-form-item>
-        <el-form-item label="配音答案：" prop="dubbing_answer">
-          <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
-        </el-form-item>
+            </el-button>
+          </el-form-item>
+          <el-form-item label="配音类型：" prop="dubbing_type">
+            <el-select
+              v-model="model.dubbing_type"
+              placeholder="请选择配音类型"
+              clearable
+            >
+              <el-option
+                v-for="item in dictoryObj.DubbingTypeEnum"
+                :label="item.value"
+                :value="item.key"
+                :key="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="配音内容：" prop="dubbing_content">
+            <!--<editor-detail v-if="dialogFormVisible" :lookData="desc" />-->
+            <el-input type="textarea" v-model="model.dubbing_content"></el-input>
+          </el-form-item>
+          <el-form-item label="配音内容翻译：" prop="dubbing_content_tran" v-if="model.question_type === 1">
+            <el-input v-model="model1.dubbing_content_tran" placeholder="请输入翻译"></el-input>
+          </el-form-item>
+          <el-form-item label="配音答案：" prop="dubbing_answer">
+            <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
+          </el-form-item>
+        </template>
+
         <!--<el-form-item label="配音描述详情：" prop="dubbing_content_tran">-->
         <!--</el-form-item>-->
         <el-button type="success" @click="save('myForm')">保存</el-button>
@@ -217,10 +260,14 @@ export default {
         title: "",
         material_type: "",
         material_url: "",
-        ori_sound: "",
         dubbing_type: "",
         dubbing_content: "",
         dubbing_answer: "",
+        question_type:'',
+      },
+      model1:{
+        mouth_video: "",
+        ori_sound: "",
         dubbing_content_tran:'',
       },
       desc: {
@@ -238,50 +285,50 @@ export default {
       ],
       list: [],
       state: 0,
-      rules: {
-        title: [
-          {
-            required: true,
-            message: "请输入配音标题",
-            trigger: ["blur", "change"],
-          },
-        ],
-        dubbing_type: [
-          {
-            required: true,
-            message: "请输入配音类型",
-            trigger: ["blur", "change"],
-          },
-        ],
-        ori_sound: [
-          {
-            required: true,
-            message: "请上传原声配音",
-            trigger: ["blur", "change"],
-          },
-        ],
-        dubbing_content: [
-          {
-            required: true,
-            message: "请填写配音内容",
-            trigger: ["blur", "change"],
-          },
-        ],
-        dubbing_answer: [
-          {
-            required: true,
-            message: "请填写配音答案",
-            trigger: ["blur", "change"],
-          },
-        ],
-        // dubbing_content_tran: [
-        //   {
-        //     required: true,
-        //     message: "请填写配音描述详情",
-        //     trigger: ["blur", "change"],
-        //   },
-        // ],
-      },
+      // rules: {
+      //   title: [
+      //     {
+      //       required: true,
+      //       message: "请输入配音标题",
+      //       trigger: ["blur", "change"],
+      //     },
+      //   ],
+      //   dubbing_type: [
+      //     {
+      //       required: true,
+      //       message: "请输入配音类型",
+      //       trigger: ["blur", "change"],
+      //     },
+      //   ],
+      //   ori_sound: [
+      //     {
+      //       required: true,
+      //       message: "请上传原声配音",
+      //       trigger: ["blur", "change"],
+      //     },
+      //   ],
+      //   dubbing_content: [
+      //     {
+      //       required: true,
+      //       message: "请填写配音内容",
+      //       trigger: ["blur", "change"],
+      //     },
+      //   ],
+      //   dubbing_answer: [
+      //     {
+      //       required: true,
+      //       message: "请填写配音答案",
+      //       trigger: ["blur", "change"],
+      //     },
+      //   ],
+      //   // dubbing_content_tran: [
+      //   //   {
+      //   //     required: true,
+      //   //     message: "请填写配音描述详情",
+      //   //     trigger: ["blur", "change"],
+      //   //   },
+      //   // ],
+      // },
       multiple: false,
       isShowOpen: false,
     };
@@ -292,32 +339,51 @@ export default {
       if (type == 1) {
         this.model.material_url = res.url;
       } else if (type == 2) {
-        this.model.ori_sound = res.url;
+        this.model1.ori_sound = res.url;
+      }else if (type == 3) {
+        this.model1.mouth_video = res.url;
+        this.$forceUpdate();
       }
-      // if (type == "retry_voice") {
-      //   this.form.retry_voice = res.url;
-      // } else if (type == "evaluate_voice") {
-      //   this.form.evaluate_voice.splice(index, 1, res.url);
-      // }
     },
-    save(formName) {
-      this.$refs[formName].$children[0].validate(async (valid) => {
-        if (valid) {
-          let d = "";
-          if (this.state == 0) {
-            d = await this.addQuestion();
-          } else {
-            d = await this.editQuestion();
-          }
-          if (typeof d !== "number") {
-            this.close();
-            this.search();
-          }
-        } else {
-          console.log("error submit!!");
-          return false;
+    async save() {
+      let flag = false,obj=this.model
+      Object.getOwnPropertyNames(obj).forEach(function(key){
+        console.log(key+ '---'+obj[key])
+        if(!obj[key]){
+          flag = true
         }
-      });
+      })
+      if(this.model.question_type === 1){
+        if(!this.model1.ori_sound){
+          flag =true
+        }
+      }else if(this.model.question_type === 2){
+        if(!this.model1.mouth_video){
+          flag =true
+        }
+      }else if(this.model.question_type === 3){
+        if(!this.model1.ori_sound){
+          flag =true
+        }
+      }
+      if (!flag) {
+        let d = "";
+        if (this.state == 0) {
+          d = await this.addQuestion();
+        } else {
+          d = await this.editQuestion();
+        }
+        if (typeof d !== "number") {
+          this.close();
+          this.search();
+        }
+      } else {
+        this.$message({
+          type: "error",
+          message: "请完善表单内容",
+        });
+        return false;
+      }
     },
 
     onPageChange(val) {
@@ -338,11 +404,11 @@ export default {
     },
     async handleAvatarSuccess(res, file) {},
     async addQuestion() {
-      let json = this.model
+      let json = Object.assign(this.model, this.model1);
       return await this.ApiCourse.postVoiceQuestions(json);
     },
     async editQuestion() {
-      let json = this.model
+      let json = Object.assign(this.model, this.model1);
       return await this.ApiCourse.putVoiceQuestions(json);
     },
     async getQuestion() {
@@ -375,16 +441,22 @@ export default {
     },
     resetData() {
       this.model = {
-        title: "",
+        title:'',
         material_type: "",
         material_url: "",
-        ori_sound: "",
         dubbing_type: "",
         dubbing_content: "",
         dubbing_answer: "",
-        dubbing_content_tran: "",
+        question_type: "",
         // dubbing_content_tran: "", //配音详情中文描述
       };
+
+      this.model1={
+        mouth_video: "",
+          ori_sound: "",
+          dubbing_content_tran:'',
+      };
+
       this.desc = {
         detail:''
       }
@@ -400,7 +472,19 @@ export default {
     },
     handleEdit(row) {
       this.title = '编辑习题'
-      Object.assign(this.model, row);
+      // Object.assign(this.model, row);
+      this.model.id = row.id;
+      this.model.title = row.title;
+      this.model.material_type = row.material_type;
+      this.model.material_url = row.material_url;
+      this.model.dubbing_type = row.dubbing_type;
+      this.model.dubbing_content = row.dubbing_content;
+      this.model.dubbing_answer = row.dubbing_answer;
+      this.model.question_type = row.question_type;
+      this.model1.mouth_video = row.mouth_video;
+      this.model1.ori_sound = row.ori_sound;
+      this.model1.dubbing_content_tran = row.dubbing_content_tran;
+
       let richText = {... this.model}.dubbing_content
       this.desc = {
         detail: richText,

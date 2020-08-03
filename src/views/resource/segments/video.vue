@@ -73,6 +73,9 @@ export default {
         this.form = this.payload;
         this.form.payload.auto_play =
           parseInt(this.form.payload.auto_play) || "";
+        if(!this.form.payload.auto_play){
+          this.form.payload.auto_play = 1
+        }
       },
       immediate: true,
     },

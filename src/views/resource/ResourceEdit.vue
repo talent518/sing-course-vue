@@ -158,6 +158,9 @@ import ResourceEditSegment from "@/views/resource/ResourceEditSegment";
 import VideoSegment from "@/views/resource/segments/video";
 import AudioSegment from "@/views/resource/segments/audio";
 import EvaluationSegment from "@/views/resource/segments/evaluation";
+import AudioandvideoSegment from "@/views/resource/segments/audioandvideo";
+import ListentothepictureSegment from "@/views/resource/segments/listentothepicture";
+import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
 
 export default {
   name: "ResourceDialog",
@@ -166,6 +169,9 @@ export default {
     VideoSegment,
     AudioSegment,
     EvaluationSegment,
+    AudioandvideoSegment,
+    ListentothepictureSegment,
+    EatbiscuitsSegment,
   },
   mixins: [commonMessage],
 
@@ -270,6 +276,15 @@ export default {
           break;
         case 3:
           this.segmentComponent = EvaluationSegment;
+          break;
+        case 4:
+          this.segmentComponent = AudioandvideoSegment;
+          break;
+        case 5:
+          this.segmentComponent = ListentothepictureSegment;
+          break;
+        case 6:
+          this.segmentComponent = EatbiscuitsSegment;
           break;
       }
       this.segmentData = item;

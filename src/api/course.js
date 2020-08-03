@@ -19,23 +19,27 @@ class Course {
   }
 
   postVoiceQuestions({
-    title,
-    material_type,
-    material_url,
-    ori_sound,
-    dubbing_type,
-    dubbing_content,
-    dubbing_answer,
-    dubbing_content_tran,
+       title,
+       material_type,
+       material_url,
+       dubbing_type,
+       dubbing_content,
+       dubbing_answer,
+       question_type,
+       mouth_video,
+       ori_sound,
+       dubbing_content_tran,
   }) {
     return post(`${url.voiceQuestions}`, {
       title,
       material_type,
       material_url,
-      ori_sound,
       dubbing_type,
       dubbing_content,
       dubbing_answer,
+      question_type,
+      mouth_video,
+      ori_sound,
       dubbing_content_tran,
     });
   }
@@ -44,20 +48,24 @@ class Course {
     title,
     material_type,
     material_url,
-    ori_sound,
     dubbing_type,
     dubbing_content,
     dubbing_answer,
+    question_type,
+    mouth_video,
+    ori_sound,
     dubbing_content_tran,
   }) {
     return put(`${url.voiceQuestions}/${id}`, {
       title,
       material_type,
       material_url,
-      ori_sound,
       dubbing_type,
       dubbing_content,
       dubbing_answer,
+      question_type,
+      mouth_video,
+      ori_sound,
       dubbing_content_tran,
     });
   }
