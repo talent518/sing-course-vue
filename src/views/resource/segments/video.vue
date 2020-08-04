@@ -84,6 +84,7 @@ export default {
     async uploadFile(e) {
       let res = await upload(e.file);
       this.form.payload.urls.push(res.url);
+      this.$forceUpdate();
     },
     videoDelete(i) {
       this.form.payload.urls.splice(i, 1);

@@ -77,6 +77,7 @@
             "AssistToolEnum",
             "TextbookTypeEnum",
             "SegmentMaterialTypeEnum",
+            "ResourcesTypeEnum",
           ],
         };
         let o = {};

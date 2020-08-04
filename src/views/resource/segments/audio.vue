@@ -65,7 +65,8 @@ export default {
   methods: {
     async uploadFile(e) {
       let res = await upload(e.file);
-      this.form.urls.push(res.url);
+      this.form.payload.urls.push(res.url);
+      this.$forceUpdate();
     },
     getFormData(callback) {
       return this.form;

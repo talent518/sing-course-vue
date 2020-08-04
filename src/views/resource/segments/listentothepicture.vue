@@ -1,46 +1,59 @@
 <template>
-  <el-form ref="videoForm" :model="form" label-width="120px">
-    <el-form-item label="播放规则：">
-      <el-select v-model="form.payload.auto_play" placeholder="请选择">
-        <el-option
-          v-for="item in dictoryObj.PlayStatusEnum"
-          :key="item.key"
-          :label="item.value"
-          :value="item.key"
-        >
-        </el-option>
-      </el-select>
+  <el-form ref="listentothepictureForm" :model="form" label-width="120px">
+    <el-form-item label="背景图片：">
+      <el-upload
+        class="avatar-uploader"
+        action="/api/public/upload"
+        :show-file-list="false"
+        accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+        :http-request="
+              (file) => {
+                return uploadFile(file, '1');
+              }
+            "
+      >
+        <div class="imageWrap">
+          <img
+            v-if="form.payload.bg_image"
+            :src="form.payload.bg_image"
+            class="avatar"
+          />
+
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </div>
+      </el-upload>
     </el-form-item>
 
-    <el-form-item label="视频：">
-      <div class="upload-wrapper">
-        <el-upload
-          class="upload-item"
-          action="/api/public/upload"
-          accept="video/mp4"
-          :show-file-list="false"
-          :http-request="uploadFile"
-          list-type="picture-card"
-          multiple
-        >
-          <template v-if="form.payload.urls.length">
-            <div
-              class="video-wrapper"
-              v-for="(item, index) in form.payload.urls"
-              :key="index"
-            >
-              <video :src="item" controls class="upload-video"></video>
-              <el-button
-                @click.stop="videoDelete(i)"
-                style="position: absolute; top: 150px;"
-              >删除</el-button
+
+    <template v-for="(val,index) in form.payload.content">
+      <el-form-item label="音频：" v-if="val.type === 2">
+        <div class="upload-wrapper" @click="getIndex(index)">
+          <el-upload
+            class="upload-item"
+            action="/api/public/upload"
+            accept="audio/mp3"
+            :show-file-list="false"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple
+          >
+            <template v-if="val.url">
+              <div
+                class="video-wrapper"
               >
-            </div>
-          </template>
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </div>
-    </el-form-item>
+                <audio :src="val.url" controls class="upload-audio"></audio>
+                <el-button
+                  @click.stop="videoDelete(index)"
+                  style="position: absolute; top: 150px;"
+                >删除</el-button
+                >
+              </div>
+            </template>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
+      </el-form-item>
+    </template>
   </el-form>
 </template>
 
@@ -89,7 +102,7 @@
         return this.form;
       },
       restForm() {
-        return this.$refs.videoForm.resetFields();
+        return this.$refs.listentothepictureForm.resetFields();
       },
     },
   };

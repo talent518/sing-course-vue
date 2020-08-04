@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="videoForm" :model="form" label-width="120px">
+  <el-form ref="audioandvideoForm" :model="form" label-width="120px">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择">
         <el-option
@@ -12,35 +12,88 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item label="视频：">
-      <div class="upload-wrapper">
-        <el-upload
-          class="upload-item"
-          action="/api/public/upload"
-          accept="video/mp4"
-          :show-file-list="false"
-          :http-request="uploadFile"
-          list-type="picture-card"
-          multiple
-        >
-          <template v-if="form.payload.urls.length">
-            <div
-              class="video-wrapper"
-              v-for="(item, index) in form.payload.urls"
-              :key="index"
-            >
-              <video :src="item" controls class="upload-video"></video>
-              <el-button
-                @click.stop="videoDelete(i)"
-                style="position: absolute; top: 150px;"
-              >删除</el-button
-              >
-            </div>
-          </template>
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </div>
+    <el-form-item label="素材列表：">
+      <el-button
+        type="success"
+        plain
+        @click="handleAdd"
+      >新增教材</el-button
+      >
     </el-form-item>
+
+    <template v-for="(val,index) in form.payload.content">
+      <el-form-item label="播放格式：">
+        <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
+          <el-option
+
+            v-for="item in dictoryObj.ResourcesTypeEnum"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
+        <div class="upload-wrapper" @click="getIndex(index)">
+          <el-upload
+            class="upload-item"
+            action="/api/public/upload"
+            accept="video/mp4"
+            :show-file-list="false"
+            :http-request="uploadFile"
+
+            list-type="picture-card"
+            multiple
+          >
+            <template v-if="val.url">
+              <div
+                class="video-wrapper"
+              >
+                <video :src="val.url" controls class="upload-video"></video>
+                <el-button
+                  @click.stop="videoDelete(index)"
+                  style="position: absolute; top: 150px;"
+                >删除</el-button
+                >
+              </div>
+            </template>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
+      </el-form-item>
+
+      <el-form-item label="音频：" v-if="val.type === 2">
+        <div class="upload-wrapper" @click="getIndex(index)">
+          <el-upload
+            class="upload-item"
+            action="/api/public/upload"
+            accept="audio/mp3"
+            :show-file-list="false"
+            :http-request="uploadFile"
+            list-type="picture-card"
+            multiple
+          >
+            <template v-if="val.url">
+              <div
+                class="video-wrapper"
+              >
+                <audio :src="val.url" controls class="upload-audio"></audio>
+                <el-button
+                  @click.stop="videoDelete(index)"
+                  style="position: absolute; top: 150px;"
+                >删除</el-button
+                >
+              </div>
+            </template>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
+      </el-form-item>
+
+    </template>
+
   </el-form>
 </template>
 
@@ -65,6 +118,7 @@
           template_id: 0,
           payload: {},
         },
+        index:''
       };
     },
     watch: {
@@ -76,23 +130,46 @@
           if(!this.form.payload.auto_play){
             this.form.payload.auto_play = 1
           }
+          if(!this.form.payload.content){
+            this.form.payload.content = []
+          }
+          this.$forceUpdate();
         },
+
         immediate: true,
       },
     },
     methods: {
+      getIndex(i){
+        this.index = i
+        console.log(this.index,444444)
+      },
+      handleAdd(){
+        this.form.payload.content.push({type:'',url:''})
+        this.$forceUpdate();
+      },
+
       async uploadFile(e) {
+        // console.log(this.form.payload.content)
+        let that = this
         let res = await upload(e.file);
-        this.form.payload.urls.push(res.url);
+        that.form.payload.content[that.index].url = res.url
+        console.log(that.form.payload.content)
+        that.$forceUpdate();
+
       },
       videoDelete(i) {
-        this.form.payload.urls.splice(i, 1);
+        this.form.payload.content.splice(i, 1);
+        this.$forceUpdate();
       },
       getFormData(callback) {
         return this.form;
       },
       restForm() {
-        return this.$refs.videoForm.resetFields();
+        return this.$refs.audioandvideoForm.resetFields();
+      },
+      stateUpdate(){
+        this.$forceUpdate();
       },
     },
   };

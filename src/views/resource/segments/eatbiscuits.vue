@@ -1,6 +1,6 @@
 <template>
-  <el-form ref="eatbiscuitsForm" :model="form" label-width="120px">
-    <el-form-item label="素材内容：">
+  <el-form ref="eatbiscuitsForm" :model="form" label-width="120px" class="eatbiscuitsForm">
+    <el-form-item label="背景图片：">
       <el-upload
         class="avatar-uploader"
         action="/api/public/upload"
@@ -113,8 +113,7 @@
 </script>
 
 <style lang="scss">
-  .upload-wrapper {
-    display: flex;
+  .eatbiscuitsForm {
     .avatar {
       width: 178px;
       height: 178px;
@@ -150,6 +149,6 @@
       display: inline-block;
       margin-right: 10px;
     }
-  
+
   }
 </style>
