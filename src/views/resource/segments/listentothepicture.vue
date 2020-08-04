@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="listentothepictureForm" :model="form" label-width="120px">
+  <el-form ref="listentothepictureForm" :model="form" label-width="120px" class="listentothepictureForm">
     <el-form-item label="背景图片：">
       <el-upload
         class="avatar-uploader"
@@ -25,35 +25,77 @@
     </el-form-item>
 
 
-    <template v-for="(val,index) in form.payload.content">
-      <el-form-item label="音频：" v-if="val.type === 2">
-        <div class="upload-wrapper" @click="getIndex(index)">
+    <template>
+      <el-form-item label="素材内容：">
+        <el-button
+          type="success"
+          plain
+          @click="handleAdd"
+        >新增</el-button>
+        <div class="upload-wrapper"  v-for="(val,index) in form.payload.content">
           <el-upload
+            style="margin-right: 60px"
             class="upload-item"
             action="/api/public/upload"
             accept="audio/mp3"
             :show-file-list="false"
-            :http-request="uploadFile"
+            :http-request=" (file) => {
+                return uploadFile(file, '2',index);
+              }"
             list-type="picture-card"
             multiple
           >
-            <template v-if="val.url">
+            <template v-if="val.audio">
               <div
                 class="video-wrapper"
               >
-                <audio :src="val.url" controls class="upload-audio"></audio>
-                <el-button
-                  @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px;"
-                >删除</el-button
-                >
+                <audio :src="val.audio" controls class="upload-audio"></audio>
+
               </div>
             </template>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i v-else>上传音频</i>
           </el-upload>
+
+          <el-upload
+            class="avatar-uploader"
+            action="/api/public/upload"
+            :show-file-list="false"
+            accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+            :http-request="
+              (file) => {
+                return uploadFile(file, '3',index);
+              }
+            "
+          >
+            <div class="imageWrap">
+              <img
+                v-if="val.image"
+                :src="val.image"
+                class="avatar"
+              />
+
+              <i v-else>上传图片</i>
+            </div>
+          </el-upload>
+          <el-button
+            @click.stop="contentDelete(index)"
+            style="width: 60px;height: 30px;text-align: center;line-height: 30px;padding: 0;margin-left: 10px"
+          >删除</el-button
+          >
         </div>
       </el-form-item>
     </template>
+    <el-form-item label="播放规则：">
+      <el-select v-model="form.payload.play_sort" placeholder="请选择">
+        <el-option
+          v-for="item in dictoryObj.PlaySortStatusEnum"
+          :key="item.key"
+          :label="item.value"
+          :value="item.key"
+        >
+        </el-option>
+      </el-select>
+    </el-form-item>
   </el-form>
 </template>
 
@@ -84,19 +126,39 @@
       "payload.id": {
         handler() {
           this.form = this.payload;
-          this.form.payload.auto_play =
-            parseInt(this.form.payload.auto_play) || "";
+          this.form.payload.play_sort =
+            parseInt(this.form.payload.play_sort) || 2;
+          // if(!this.form.payload.play_sort){
+          //   this.form.payload.play_sort = 2
+          // }
+          if(!this.form.payload.content){
+            this.form.payload.content = []
+          }
         },
         immediate: true,
       },
     },
     methods: {
-      async uploadFile(e) {
-        let res = await upload(e.file);
-        this.form.payload.urls.push(res.url);
+
+      handleAdd(){
+        this.form.payload.content.push({audio:'',image:''})
+        this.$forceUpdate();
       },
-      videoDelete(i) {
-        this.form.payload.urls.splice(i, 1);
+
+      async uploadFile(e,type,i) {
+        let res = await upload(e.file);
+        if(type == 1){
+          this.form.payload.bg_image = res.url;
+        }else if(type == 2){
+          this.form.payload.content[i].audio = res.url
+        }else if(type == 3){
+          this.form.payload.content[i].image = res.url
+        }
+        this.$forceUpdate();
+      },
+      contentDelete(i) {
+        this.form.payload.content.splice(i, 1);
+        this.$forceUpdate();
       },
       getFormData(callback) {
         return this.form;
@@ -109,30 +171,55 @@
 </script>
 
 <style lang="scss">
-  .upload-wrapper {
-    display: flex;
-
-    .video-wrapper {
-      overflow: hidden;
-      margin-right: 12px;
-      background-color: #000;
-      border-radius: 6px;
-      width: 200px;
+  .listentothepictureForm{
+    .avatar {
+      width: 148px;
       height: 148px;
-
+      display: block;
+    }
+    .upload-wrapper {
       display: flex;
-      align-items: center;
-      justify-content: center;
 
-      .upload-audio {
-        margin: 12px;
+      .video-wrapper {
+        overflow: hidden;
+        margin-right: 12px;
+        background-color: #000;
+        border-radius: 6px;
+        width: 200px;
+        height: 148px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .upload-audio {
+          margin: 12px;
+        }
+
+        .upload-video {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
       }
+      .upload-audio{
 
-      .upload-video {
-        display: block;
-        width: 100%;
-        height: 100%;
+      }
+      .imageWrap{
+        background-color: #fbfdff;
+        border: 1px dashed #c0ccda;
+        border-radius: 6px;
+        box-sizing: border-box;
+        width: 148px;
+        height: 148px;
+        cursor: pointer;
+        line-height: 146px;
+        vertical-align: top;
+        font-size: 28px;
+        color: #8c939d;
+        font-style: normal!important;
       }
     }
   }
+
 </style>

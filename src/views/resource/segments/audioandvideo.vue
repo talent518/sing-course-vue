@@ -36,13 +36,15 @@
       </el-form-item>
 
       <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
-        <div class="upload-wrapper" @click="getIndex(index)">
+        <div class="upload-wrapper">
           <el-upload
             class="upload-item"
             action="/api/public/upload"
             accept="video/mp4"
             :show-file-list="false"
-            :http-request="uploadFile"
+            :http-request=" (file) => {
+                return uploadFile(file, index);
+              }"
 
             list-type="picture-card"
             multiple
@@ -65,13 +67,15 @@
       </el-form-item>
 
       <el-form-item label="音频：" v-if="val.type === 2">
-        <div class="upload-wrapper" @click="getIndex(index)">
+        <div class="upload-wrapper">
           <el-upload
             class="upload-item"
             action="/api/public/upload"
             accept="audio/mp3"
             :show-file-list="false"
-            :http-request="uploadFile"
+            :http-request="(file) => {
+                return uploadFile(file, index);
+              }"
             list-type="picture-card"
             multiple
           >
@@ -118,7 +122,6 @@
           template_id: 0,
           payload: {},
         },
-        index:''
       };
     },
     watch: {
@@ -126,10 +129,10 @@
         handler() {
           this.form = this.payload;
           this.form.payload.auto_play =
-            parseInt(this.form.payload.auto_play) || "";
-          if(!this.form.payload.auto_play){
-            this.form.payload.auto_play = 1
-          }
+            parseInt(this.form.payload.auto_play) || 1;
+          // if(!this.form.payload.auto_play){
+          //   this.form.payload.auto_play = 1
+          // }
           if(!this.form.payload.content){
             this.form.payload.content = []
           }
@@ -140,21 +143,16 @@
       },
     },
     methods: {
-      getIndex(i){
-        this.index = i
-        console.log(this.index,444444)
-      },
       handleAdd(){
         this.form.payload.content.push({type:'',url:''})
         this.$forceUpdate();
       },
 
-      async uploadFile(e) {
+      async uploadFile(e,i) {
         // console.log(this.form.payload.content)
         let that = this
         let res = await upload(e.file);
-        that.form.payload.content[that.index].url = res.url
-        console.log(that.form.payload.content)
+        that.form.payload.content[i].url = res.url
         that.$forceUpdate();
 
       },

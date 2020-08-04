@@ -28,7 +28,14 @@
 
         <el-form-item label="模板：">
           <el-select v-model="form.template_data.layout" placeholder="请选择">
-            <el-option label="横向大卡片" :value="1"></el-option>
+            <!--<el-option label="横向大卡片" :value="1"></el-option>-->
+            <el-option
+              v-for="item in dictoryObj.TextbookTypeEnum"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
+            >
+            </el-option>
           </el-select>
         </el-form-item>
 
@@ -112,6 +119,11 @@
             </div>
           </div>
         </el-form-item>
+        <el-form-item label="辅助工具：">
+          <el-checkbox-group v-model="form.template_data.template_data_tools">
+            <el-checkbox style="display: block" v-for="(item,index) in dictoryObj.AssistToolEnum" :label="item.key" :key="index">{{item.value}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
       </el-form>
     </div>
     <div slot="footer" v-if="dialogData.type !== 'view'">
@@ -140,6 +152,7 @@
         lead_type: "",
         title: "",
         cover: "",
+        template_data_tools:[]
       },
     ],
   };
