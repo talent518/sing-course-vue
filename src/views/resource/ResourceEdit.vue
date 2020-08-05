@@ -127,6 +127,21 @@
             </div>
           </div>
         </el-form-item>
+
+        <el-form-item label="助学工具：" v-if="form.tools.length>0">
+          <template v-for="(item,index) in form.tools">
+            <el-form-item :label="item.title + ':'">
+              <el-button
+                @click="handleToolsLink(item,index)"
+                type="default"
+                style="width: 200px;"
+                v-if="item.tool_type!=3"
+              >
+                关联内容
+              </el-button>
+            </el-form-item>
+          </template>
+        </el-form-item>
       </el-form>
     </div>
     <div slot="footer" v-if="dialogData.type !== 'view'">
@@ -148,6 +163,9 @@
         <el-button type="primary" @click="handleSegmentSave">确 定</el-button>
       </div>
     </el-dialog>
+
+    <tools-link :toolsData="toolsData" @emit="updateToolsData"></tools-link>
+
   </el-dialog>
 </template>
 
@@ -161,6 +179,7 @@ import EvaluationSegment from "@/views/resource/segments/evaluation";
 import AudioandvideoSegment from "@/views/resource/segments/audioandvideo";
 import ListentothepictureSegment from "@/views/resource/segments/listentothepicture";
 import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
+import ToolsLink from "@/views/resource/segments/toolslink";
 
 export default {
   name: "ResourceDialog",
@@ -172,6 +191,7 @@ export default {
     AudioandvideoSegment,
     ListentothepictureSegment,
     EatbiscuitsSegment,
+    ToolsLink
   },
   mixins: [commonMessage],
 
@@ -199,6 +219,7 @@ export default {
         textbook_template_code: "",
         textbook_template_name: "",
         segments: [],
+        tools:[],
       },
       title: "编辑教材",
       listSegment: [],
@@ -207,6 +228,11 @@ export default {
       segmentDialogVisible: false,
       segmentData: {},
       loading: false,
+      toolsData:{
+        show:false,
+        obj:{},
+        index:''
+      },
     };
   },
 
@@ -224,6 +250,7 @@ export default {
     init() {
       if (this.dialogData.param.id === 0) {
         this.loading = true;
+        this.form.tools = []
         this.ApiBasic.getResource({ scene: "all", status: 1 })
           .then((res) => {
             this.listTemplateResource = res.items;
@@ -242,11 +269,18 @@ export default {
           });
       }
     },
+
+    updateToolsData(val){
+      console.log(val)
+      this.form.tools[val.index] = val.obj
+    },
+
     handleTemplateChange(value) {
       this.loading = true;
       let template = this.ApiBasic.getResourceById(value)
         .then((template) => {
           this.form.segments = [];
+          this.form.tools = template.tools
           template.items.forEach((e, index) => {
             this.form.segments.push({
               id: index,
@@ -289,6 +323,12 @@ export default {
       }
       this.segmentData = item;
       this.segmentDialogVisible = true;
+    },
+
+    handleToolsLink(val,index){
+      this.toolsData.show = true
+      this.toolsData.obj = val
+      this.toolsData.index = index
     },
 
     async uploadFileCover(e) {

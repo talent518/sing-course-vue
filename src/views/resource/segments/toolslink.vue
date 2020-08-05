@@ -1,7 +1,16 @@
 <template>
-  <el-form ref="audioandvideoForm" :model="form" label-width="120px">
+  <el-dialog
+    class="resource-dialog"
+    top="5vh"
+    width="1200px"
+    title="音视频"
+    :visible.sync="toolsData.show"
+    :close-on-click-modal="false"
+    append-to-body
+  >
+  <el-form ref="toolslinkForm" :model="form" label-width="120px">
     <el-form-item label="播放规则：">
-      <el-select v-model="form.payload.auto_play" placeholder="请选择">
+      <el-select v-model="form.obj.play_type" placeholder="请选择">
         <el-option
           v-for="item in dictoryObj.PlayStatusEnum"
           :key="item.key"
@@ -21,7 +30,7 @@
       >
     </el-form-item>
 
-    <template v-for="(val,index) in form.payload.content">
+    <template v-for="(val,index) in form.obj.content">
       <el-form-item label="播放格式：">
         <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
           <el-option
@@ -103,6 +112,11 @@
     </template>
 
   </el-form>
+    <div slot="footer">
+      <el-button @click="toolsData.show = false">取 消</el-button>
+      <el-button type="primary" @click="handleSave">确 定</el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -111,10 +125,10 @@
   import { upload } from "@api/upload";
 
   export default {
-    name: "AudioandvideoSegment",
+    name: "toolslink",
     mixins: [commonMessage, menuRole],
     props: {
-      payload: {
+      toolsData: {
         type: Object,
         default: {},
       },
@@ -122,53 +136,52 @@
     data() {
       return {
         form: {
-          id: 0,
-          template_id: 0,
-          payload: {},
+          obj: {},
         },
       };
     },
     watch: {
-      "payload.id": {
-        handler() {
-          this.form = this.payload;
-          this.form.payload.auto_play =
-            parseInt(this.form.payload.auto_play) || 1;
-          // if(!this.form.payload.auto_play){
-          //   this.form.payload.auto_play = 1
-          // }
-          if(!this.form.payload.content){
-            this.form.payload.content = []
-          }
-          this.$forceUpdate();
-        },
+      "toolsData.show"(val) {
+          if(val){
+            console.log(this.toolsData)
+            this.form = this.toolsData;
+            this.form.obj.play_type =
+              parseInt(this.form.obj.play_type) || 1;
 
-        immediate: true,
+            if(!this.form.obj.content){
+              this.form.obj.content = []
+            }
+            this.$forceUpdate();
+          }
       },
     },
     methods: {
+      handleSave(){
+        this.$emit('emit', this.form)
+        this.toolsData.show = false
+      },
+
       handleAdd(){
-        this.form.payload.content.push({type:'',url:''})
+        this.form.obj.content.push({type:'',url:''})
         this.$forceUpdate();
       },
 
       async uploadFile(e,i) {
-        // console.log(this.form.payload.content)
         let that = this
         let res = await upload(e.file);
-        that.form.payload.content[i].url = res.url
+        that.form.obj.content[i].url = res.url
         that.$forceUpdate();
 
       },
       videoDelete(i) {
-        this.form.payload.content.splice(i, 1);
+        this.form.obj.content.splice(i, 1);
         this.$forceUpdate();
       },
       getFormData(callback) {
         return this.form;
       },
       restForm() {
-        return this.$refs.audioandvideoForm.resetFields();
+        return this.$refs.toolslinkForm.resetFields();
       },
       stateUpdate(){
         this.$forceUpdate();

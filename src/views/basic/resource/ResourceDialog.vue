@@ -120,7 +120,7 @@
           </div>
         </el-form-item>
         <el-form-item label="辅助工具：" >
-          <el-checkbox-group v-model="form.template_data.template_data_tools" v-if="dictoryObj.AssistToolEnum">
+          <el-checkbox-group v-model="form.template_data_tools" v-if="dictoryObj.AssistToolEnum">
             <el-checkbox style="display: block" v-for="(item,index) in dictoryObj.AssistToolEnum" :label="item.key" :key="index">{{item.value}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -145,7 +145,6 @@
       layout: 1,
       status: 1,
       is_excessive: 1,
-      template_data_tools:[]
     },
     template_data_details: [
       {
@@ -153,9 +152,9 @@
         lead_type: "",
         title: "",
         cover: "",
-
       },
     ],
+    template_data_tools:[]
   };
 
   const SEGMENT_ITEM = {
@@ -239,6 +238,7 @@
           this.form = {
             template_data: this.dialogData.param,
             template_data_details: this.dialogData.param.template_data_details.length ? this.dialogData.param.template_data_details : FORM_DEFAULT.template_data_details,
+            template_data_tools:this.dialogData.param.template_data_tools,
           };
           this.form.template_data_details.forEach(e=>{
             if(e.lead_type == 0){
@@ -250,6 +250,7 @@
           this.form = {
             template_data: this.dialogData.param,
             template_data_details: this.dialogData.param.template_data_details.length ? this.dialogData.param.template_data_details : FORM_DEFAULT.template_data_details,
+            template_data_tools:this.dialogData.param.template_data_tools,
           };
         }
       },
@@ -300,7 +301,7 @@
             template_data_details: JSON.stringify(
               this.form.template_data_details
             ),
-            template_data_tools:JSON.stringify(this.form.template_data.template_data_tools.join(','))
+            template_data_tools:JSON.stringify(this.form.template_data_tools.join(','))
           };
 
         console.log(json);
