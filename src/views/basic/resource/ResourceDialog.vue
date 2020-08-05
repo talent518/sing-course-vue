@@ -119,8 +119,8 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="辅助工具：">
-          <el-checkbox-group v-model="form.template_data.template_data_tools">
+        <el-form-item label="辅助工具：" >
+          <el-checkbox-group v-model="form.template_data.template_data_tools" v-if="dictoryObj.AssistToolEnum">
             <el-checkbox style="display: block" v-for="(item,index) in dictoryObj.AssistToolEnum" :label="item.key" :key="index">{{item.value}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -145,6 +145,7 @@
       layout: 1,
       status: 1,
       is_excessive: 1,
+      template_data_tools:[]
     },
     template_data_details: [
       {
@@ -152,7 +153,7 @@
         lead_type: "",
         title: "",
         cover: "",
-        template_data_tools:[]
+
       },
     ],
   };
@@ -293,13 +294,13 @@
           });
           return false;
         }
-
         let api,
           json = {
             template_data: JSON.stringify(this.form.template_data),
             template_data_details: JSON.stringify(
               this.form.template_data_details
             ),
+            template_data_tools:this.form.template_data.template_data_tools.join(',')
           };
 
         console.log(json);

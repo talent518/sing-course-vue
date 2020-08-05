@@ -10,7 +10,7 @@
 <!--      </el-button>-->
       <el-form-item>
         <el-button
-
+          v-permission="'TemplateResourceCreate'"
           type="success"
           plain
           @click="handleDialog('add')"
