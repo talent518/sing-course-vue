@@ -32,7 +32,7 @@
           plain
           @click="handleAdd"
         >新增</el-button>
-        <div class="upload-wrapper"  v-for="(val,index) in form.payload.content">
+        <div class="upload-wrapper"  v-for="(val,index) in form.payload.resources.resources">
           <el-upload
             style="margin-right: 60px"
             class="upload-item"
@@ -131,8 +131,8 @@
           // if(!this.form.payload.play_sort){
           //   this.form.payload.play_sort = 2
           // }
-          if(!this.form.payload.content){
-            this.form.payload.content = []
+          if(!this.form.payload.resources.resources){
+            this.form.payload.resources.resources = []
           }
         },
         immediate: true,
@@ -141,7 +141,7 @@
     methods: {
 
       handleAdd(){
-        this.form.payload.content.push({audio:'',image:''})
+        this.form.payload.resources.resources.push({audio:'',image:''})
         this.$forceUpdate();
       },
 
@@ -150,14 +150,14 @@
         if(type == 1){
           this.form.payload.bg_image = res.url;
         }else if(type == 2){
-          this.form.payload.content[i].audio = res.url
+          this.form.payload.resources.resources[i].audio = res.url
         }else if(type == 3){
-          this.form.payload.content[i].image = res.url
+          this.form.payload.resources.resources[i].image = res.url
         }
         this.$forceUpdate();
       },
       contentDelete(i) {
-        this.form.payload.content.splice(i, 1);
+        this.form.payload.resources.resources.splice(i, 1);
         this.$forceUpdate();
       },
       getFormData(callback) {
