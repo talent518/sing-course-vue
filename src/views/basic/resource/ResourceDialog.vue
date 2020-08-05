@@ -300,7 +300,7 @@
             template_data_details: JSON.stringify(
               this.form.template_data_details
             ),
-            template_data_tools:this.form.template_data.template_data_tools.join(',')
+            template_data_tools:JSON.stringify(this.form.template_data.template_data_tools.join(','))
           };
 
         console.log(json);
