@@ -23,15 +23,15 @@
           list-type="picture-card"
           multiple
         >
-          <template v-if="form.payload.urls.length">
+          <template v-if="form.payload.resources[0].url">
             <div
               class="video-wrapper"
-              v-for="(item, index) in form.payload.urls"
+              v-for="(item, index) in form.payload.resources"
               :key="index"
             >
-              <video :src="item" controls class="upload-video"></video>
+              <video :src="item.url" controls class="upload-video"></video>
               <el-button
-                @click.stop="videoDelete(i)"
+                @click.stop="videoDelete(index)"
                 style="position: absolute; top: 150px;"
                 >删除</el-button
               >
@@ -71,6 +71,7 @@ export default {
     "payload.id": {
       handler() {
         this.form = this.payload;
+        console.log(this.form);
         this.form.payload.auto_play =
           parseInt(this.form.payload.auto_play) || "";
         if(!this.form.payload.auto_play){
@@ -83,11 +84,12 @@ export default {
   methods: {
     async uploadFile(e) {
       let res = await upload(e.file);
-      this.form.payload.urls.push(res.url);
+      this.form.payload.resources[0].url = res.url;
+      console.log(this.form.payload.resources)
       this.$forceUpdate();
     },
     videoDelete(i) {
-      this.form.payload.urls.splice(i, 1);
+      this.form.payload.resources[0].url = '';
     },
     getFormData(callback) {
       return this.form;

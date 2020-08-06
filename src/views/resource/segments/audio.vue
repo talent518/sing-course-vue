@@ -13,15 +13,7 @@
     </el-form-item>
     <el-form-item label="音频：">
       <div class="upload-wrapper">
-        <template v-if="form.payload.urls.length">
-          <div
-            class="video-wrapper"
-            v-for="(item, index) in form.payload.urls"
-            :key="index"
-          >
-            <audio :src="item" controls class="upload-audio"></audio>
-          </div>
-        </template>
+
 
         <el-upload
           class="upload-item"
@@ -32,7 +24,16 @@
           list-type="picture-card"
           multiple
         >
-          <i class="el-icon-plus avatar-uploader-icon"></i>
+          <template v-if="form.payload.resources[0].url">
+            <div
+              class="video-wrapper"
+              v-for="(item, index) in form.payload.resources"
+              :key="index"
+            >
+              <audio :src="item.url" controls class="upload-audio"></audio>
+            </div>
+          </template>
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
     </el-form-item>
@@ -65,7 +66,7 @@ export default {
   methods: {
     async uploadFile(e) {
       let res = await upload(e.file);
-      this.form.payload.urls.push(res.url);
+      this.form.payload.resources[0].url = res.url;
       this.$forceUpdate();
     },
     getFormData(callback) {

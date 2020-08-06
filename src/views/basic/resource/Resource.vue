@@ -8,9 +8,10 @@
 <!--        @click="handleSearch"-->
 <!--      >查询-->
 <!--      </el-button>-->
+<!--      v-permission="'TemplateResourceCreate'"-->
       <el-form-item>
         <el-button
-
+          v-permission="'TemplateResourceCreate'"
           type="success"
           plain
           @click="handleDialog('add')"
