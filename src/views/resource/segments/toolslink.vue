@@ -30,7 +30,7 @@
       >
     </el-form-item>
 
-    <template v-for="(val,index) in form.obj.content">
+    <template v-for="(val,index) in form.obj.resources">
       <el-form-item label="播放格式：">
         <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
           <el-option
@@ -148,8 +148,8 @@
             this.form.obj.play_type =
               parseInt(this.form.obj.play_type) || 1;
 
-            if(!this.form.obj.content){
-              this.form.obj.content = []
+            if(!this.form.obj.resources){
+              this.form.obj.resources = []
             }
             this.$forceUpdate();
           }
@@ -162,19 +162,19 @@
       },
 
       handleAdd(){
-        this.form.obj.content.push({type:'',url:''})
+        this.form.obj.resources.push({type:'',url:''})
         this.$forceUpdate();
       },
 
       async uploadFile(e,i) {
         let that = this
         let res = await upload(e.file);
-        that.form.obj.content[i].url = res.url
+        that.form.obj.resources[i].url = res.url
         that.$forceUpdate();
 
       },
       videoDelete(i) {
-        this.form.obj.content.splice(i, 1);
+        this.form.obj.resources.splice(i, 1);
         this.$forceUpdate();
       },
       getFormData(callback) {
