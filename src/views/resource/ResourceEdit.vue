@@ -311,13 +311,13 @@ export default {
         case 3:
           this.segmentComponent = EvaluationSegment;
           break;
-        case 4:
+        case 5:
           this.segmentComponent = AudioandvideoSegment;
           break;
-        case 5:
+        case 6:
           this.segmentComponent = ListentothepictureSegment;
           break;
-        case 6:
+        case 7:
           this.segmentComponent = EatbiscuitsSegment;
           break;
       }

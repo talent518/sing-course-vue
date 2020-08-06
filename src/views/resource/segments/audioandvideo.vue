@@ -22,6 +22,9 @@
     </el-form-item>
 
     <template v-for="(val,index) in form.payload.resources">
+      <el-form-item label="素材名称：">
+        <el-input v-model="val.title" style="width: 216px" placeholder="请填写素材名称"></el-input>
+      </el-form-item>
       <el-form-item label="播放格式：">
         <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
           <el-option
@@ -33,10 +36,6 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
-
-      <el-form-item label="素材名称：">
-        <el-input v-model="val.title" style="width: 216px" placeholder="请填写素材名称"></el-input>
       </el-form-item>
 
       <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
@@ -148,7 +147,7 @@
     },
     methods: {
       handleAdd(){
-        this.form.payload.resources.push({type:'',url:''})
+        this.form.payload.resources.push({type:'',url:'',title:''})
         this.$forceUpdate();
       },
 
