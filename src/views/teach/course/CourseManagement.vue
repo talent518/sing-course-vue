@@ -53,7 +53,7 @@
       <!--<el-table-column prop="" label="教具" width=""></el-table-column>-->
       <el-table-column prop="theme_num" label="主题" width=""></el-table-column>
       <el-table-column
-        prop="textbook_num"
+        prop="textbook_number"
         label="教材"
         width=""
       ></el-table-column>
