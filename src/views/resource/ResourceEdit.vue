@@ -128,7 +128,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="助学工具：" v-if="form.tools.length>0">
+        <el-form-item label="辅助工具：" v-if="form.tools.length>0">
           <template v-for="(item,index) in form.tools">
             <el-form-item :label="item.tool_title + ':'">
               <el-button
