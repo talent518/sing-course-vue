@@ -32,7 +32,7 @@
         <template slot-scope="scope">
           <template v-if="scope.row.template_data_details.length">
             <div v-for="item in scope.row.template_data_details">
-              {{ filterEnum("SegmentTypeEnum", item.lead_type) }}
+              {{ filterEnum("SegmentTypeEnum", item.type) }}
             </div>
           </template>
           <template v-else>-</template>
