@@ -80,7 +80,7 @@
         </div>
       </el-form-item>
 
-      <el-form-item label="音频：" v-if="val.type === 2">
+      <el-form-item label="音频：" v-if="val.type === 2" style="margin-bottom: 44px">
         <div class="upload-wrapper">
           <el-upload
             class="upload-item"

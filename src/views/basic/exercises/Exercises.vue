@@ -131,7 +131,7 @@
             "
               >
                 <div class="videoWrap">
-                  <video style="width: 178px;height: 178px" v-if="model1.mouth_video" :src="model1.mouth_video" controls class="upload-video"></video>
+                  <video style="width: 178px;height: 178px" v-if="model.mouth_video" :src="model.mouth_video" controls class="upload-video"></video>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </div>
               </el-upload>
@@ -195,7 +195,7 @@
             </el-upload>
             <el-button
               size="small"
-              v-if="model1.ori_sound"
+              v-if="model.ori_sound"
               type="success"
               @click="openMedia"
             >播放音频
@@ -220,7 +220,7 @@
             <el-input type="textarea" v-model="model.dubbing_content"></el-input>
           </el-form-item>
           <el-form-item label="配音内容翻译：" prop="dubbing_content_tran" v-if="model.question_type === 1">
-            <el-input v-model="model1.dubbing_content_tran" placeholder="请输入翻译"></el-input>
+            <el-input v-model="model.dubbing_content_tran" placeholder="请输入翻译"></el-input>
           </el-form-item>
           <el-form-item label="配音答案：" prop="dubbing_answer">
             <el-input type="textarea" v-model="model.dubbing_answer"></el-input>
@@ -264,8 +264,6 @@ export default {
         dubbing_content: "",
         dubbing_answer: "",
         question_type:'',
-      },
-      model1:{
         mouth_video: "",
         ori_sound: "",
         dubbing_content_tran:'',
@@ -339,30 +337,34 @@ export default {
       if (type == 1) {
         this.model.material_url = res.url;
       } else if (type == 2) {
-        this.model1.ori_sound = res.url;
+        this.model.ori_sound = res.url;
       }else if (type == 3) {
-        this.model1.mouth_video = res.url;
+        this.model.mouth_video = res.url;
         this.$forceUpdate();
       }
     },
     async save() {
       let flag = false,obj=this.model
       Object.getOwnPropertyNames(obj).forEach(function(key){
-        console.log(key+ '---'+obj[key])
-        if(!obj[key]){
-          flag = true
-        }
+          if(!obj[key]){
+            if(key == 'dubbing_content_tran' || key == 'mouth_video' || key == 'ori_sound'){
+
+            }else{
+              flag = true
+            }
+
+          }
       })
       if(this.model.question_type === 1){
-        if(!this.model1.ori_sound){
+        if(!this.model.ori_sound){
           flag =true
         }
       }else if(this.model.question_type === 2){
-        if(!this.model1.mouth_video){
+        if(!this.model.mouth_video){
           flag =true
         }
       }else if(this.model.question_type === 3){
-        if(!this.model1.ori_sound){
+        if(!this.model.ori_sound){
           flag =true
         }
       }
@@ -404,11 +406,13 @@ export default {
     },
     async handleAvatarSuccess(res, file) {},
     async addQuestion() {
-      let json = Object.assign(this.model, this.model1);
+      let json = Object.assign(this.model);
       return await this.ApiCourse.postVoiceQuestions(json);
     },
     async editQuestion() {
-      let json = Object.assign(this.model, this.model1);
+
+      let json = Object.assign(this.model);
+      console.log(json)
       return await this.ApiCourse.putVoiceQuestions(json);
     },
     async getQuestion() {
@@ -449,14 +453,10 @@ export default {
         dubbing_answer: "",
         question_type: "",
         // dubbing_content_tran: "", //配音详情中文描述
-      };
-
-      this.model1={
         mouth_video: "",
-          ori_sound: "",
-          dubbing_content_tran:'',
+        ori_sound: "",
+        dubbing_content_tran:'',
       };
-
       this.desc = {
         detail:''
       }
@@ -481,9 +481,9 @@ export default {
       this.model.dubbing_content = row.dubbing_content;
       this.model.dubbing_answer = row.dubbing_answer;
       this.model.question_type = row.question_type;
-      this.model1.mouth_video = row.mouth_video;
-      this.model1.ori_sound = row.ori_sound;
-      this.model1.dubbing_content_tran = row.dubbing_content_tran;
+      this.model.mouth_video = row.mouth_video;
+      this.model.ori_sound = row.ori_sound;
+      this.model.dubbing_content_tran = row.dubbing_content_tran;
 
       let richText = {... this.model}.dubbing_content
       this.desc = {
@@ -491,6 +491,7 @@ export default {
       };
       this.open();
       this.state = 1;
+      console.log(this.model)
     },
     async delQuestion(id) {
       return await this.ApiCourse.delVoiceQuestions(id);
