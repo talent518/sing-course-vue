@@ -68,15 +68,16 @@
                 class="video-wrapper"
               >
                 <video :src="val.url" controls class="upload-video"></video>
-                <el-button
-                  @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px;"
-                >删除</el-button
-                >
+
               </div>
             </template>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <el-button
+            @click.stop="videoDelete(index)"
+            style="position: absolute; top: 150px;"
+          >删除</el-button
+          >
         </div>
       </el-form-item>
 
@@ -98,15 +99,16 @@
                 class="video-wrapper"
               >
                 <audio :src="val.url" controls class="upload-audio"></audio>
-                <el-button
-                  @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px;"
-                >删除</el-button
-                >
+
               </div>
             </template>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <el-button
+            @click.stop="videoDelete(index)"
+            style="position: absolute; top: 150px;"
+          >删除</el-button
+          >
         </div>
       </el-form-item>
 
@@ -158,6 +160,22 @@
     },
     methods: {
       handleSave(){
+        let flag = false
+        console.log(this.form)
+        this.form.obj.resources.forEach(e=>{
+          Object.getOwnPropertyNames(e).forEach(function(key){
+            if(!e[key]){
+              flag = true
+            }
+          })
+        })
+        if(flag){
+          this.$message({
+            type: "error",
+            message: "请完善每一项的内容！",
+          });
+          return false
+        }
         this.$emit('emit', this.form)
         this.toolsData.show = false
       },

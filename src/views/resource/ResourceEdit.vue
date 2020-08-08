@@ -390,8 +390,25 @@ export default {
       this.dialogData.show = false;
     },
     handleSegmentSave() {
+      let newValue = this.$refs.segmentView.getFormData(),flag=false;
+      console.log(newValue)
+      if (newValue.type == 5){
+        newValue.payload.resources.forEach(e=>{
+          Object.getOwnPropertyNames(e).forEach(function(key){
+            if(!e[key]){
+              flag = true
+            }
+          })
+        })
+        if(flag){
+          this.$message({
+            type: "error",
+            message: "请完善每一项的内容！",
+          });
+          return false
+        }
+      }
       this.segmentDialogVisible = false;
-      let newValue = this.$refs.segmentView.getFormData();
       let segmentIndex = undefined;
       this.form.segments.forEach((value, index) => {
         if (value.id === newValue.id && value.type === newValue.type) {

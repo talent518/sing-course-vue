@@ -93,12 +93,14 @@
         class="textLeft"
         ref="myForm"
         label-width="150px"
+        :rules="rules"
+        :model="model"
       >
         <el-form-item label="配音标题：" prop="title">
           <el-input v-model="model.title" placeholder="请输入标题"></el-input>
         </el-form-item>
 
-        <el-form-item label="习题模板：">
+        <el-form-item label="习题模板：" prop="question_type">
           <el-select
             v-model="model.question_type"
             placeholder="请选择习题模板"
@@ -115,7 +117,7 @@
 
 
         <template v-if="model.question_type">
-          <el-form-item label="口型示范：" v-if="model.question_type === 2">
+          <el-form-item label="口型示范：" v-if="model.question_type === 2"  prop="mouth_video">
             <div class="upload-wrapper">
               <el-upload
                 class="avatar-uploader"
@@ -139,7 +141,7 @@
             </div>
           </el-form-item>
 
-          <el-form-item label="素材类型：">
+          <el-form-item label="素材类型："  prop="material_type">
             <el-select
               v-model="model.material_type"
               placeholder="请选择素材"
@@ -154,7 +156,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="素材内容：">
+          <el-form-item label="素材内容：" prop="material_url">
             <el-upload
               class="avatar-uploader"
               action="/api/public/upload"
@@ -283,50 +285,71 @@ export default {
       ],
       list: [],
       state: 0,
-      // rules: {
-      //   title: [
-      //     {
-      //       required: true,
-      //       message: "请输入配音标题",
-      //       trigger: ["blur", "change"],
-      //     },
-      //   ],
-      //   dubbing_type: [
-      //     {
-      //       required: true,
-      //       message: "请输入配音类型",
-      //       trigger: ["blur", "change"],
-      //     },
-      //   ],
-      //   ori_sound: [
-      //     {
-      //       required: true,
-      //       message: "请上传原声配音",
-      //       trigger: ["blur", "change"],
-      //     },
-      //   ],
-      //   dubbing_content: [
-      //     {
-      //       required: true,
-      //       message: "请填写配音内容",
-      //       trigger: ["blur", "change"],
-      //     },
-      //   ],
-      //   dubbing_answer: [
-      //     {
-      //       required: true,
-      //       message: "请填写配音答案",
-      //       trigger: ["blur", "change"],
-      //     },
-      //   ],
-      //   // dubbing_content_tran: [
-      //   //   {
-      //   //     required: true,
-      //   //     message: "请填写配音描述详情",
-      //   //     trigger: ["blur", "change"],
-      //   //   },
-      //   // ],
-      // },
+      rules: {
+        title: [
+          {
+            required: true,
+            // message: "请输入配音标题",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_type: [
+          {
+            required: true,
+            // message: "请输入配音类型",
+            trigger: ["blur", "change"],
+          },
+        ],
+        material_type: [
+          {
+            required: true,
+            // message: "请上传原声配音",
+            trigger: ["blur", "change"],
+          },
+        ],
+        material_url: [
+          {
+            required: true,
+            // message: "请上传原声配音",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_content: [
+          {
+            required: true,
+            // message: "请填写配音内容",
+            trigger: ["blur", "change"],
+          },
+        ],
+        dubbing_answer: [
+          {
+            required: true,
+            // message: "请填写配音答案",
+            trigger: ["blur", "change"],
+          },
+        ],
+        question_type: [
+          {
+            required: true,
+            // message: "请填写配音答案",
+            trigger: ["blur", "change"],
+          },
+        ],
+        mouth_video: [
+          {
+            required: true,
+            // message: "请填写配音描述详情",
+            trigger: ["blur", "change"],
+          },
+        ],
+        ori_sound: [
+          {
+            required: true,
+            // message: "请填写配音描述详情",
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
       multiple: false,
       isShowOpen: false,
     };
