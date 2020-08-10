@@ -86,7 +86,7 @@
       </el-form-item>
     </template>
     <el-form-item label="播放规则：">
-      <el-select v-model="form.payload.play_sort" placeholder="请选择">
+      <el-select v-model="form.payload.play_sort" placeholder="请选择" @change="changeUpdate">
         <el-option
           v-for="item in dictoryObj.PlaySortStatusEnum"
           :key="item.key"
@@ -139,6 +139,10 @@
       },
     },
     methods: {
+
+      changeUpdate(){
+        this.$forceUpdate();
+      },
 
       handleAdd(){
         this.form.payload.resources.resources.push({audio:'',image:''})
