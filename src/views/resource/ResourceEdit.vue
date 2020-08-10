@@ -388,6 +388,7 @@ export default {
     },
     handleCancel() {
       this.dialogData.show = false;
+      this.$parent.getData()
     },
     handleSegmentSave() {
       let newValue = this.$refs.segmentView.getFormData(),flag=false;
