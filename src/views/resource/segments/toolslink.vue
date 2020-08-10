@@ -8,39 +8,11 @@
     :close-on-click-modal="false"
     append-to-body
   >
-  <el-form ref="toolslinkForm" :model="form" label-width="120px">
-    <el-form-item label="播放规则：">
-      <el-select v-model="form.obj.play_type" placeholder="请选择">
-        <el-option
-          v-for="item in dictoryObj.PlayStatusEnum"
-          :key="item.key"
-          :label="item.value"
-          :value="item.key"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-
-    <el-form-item label="素材列表：">
-      <el-button
-        type="success"
-        plain
-        @click="handleAdd"
-      >新增教材</el-button
-      >
-    </el-form-item>
-
-    <template v-for="(val,index) in form.obj.resources">
-
-      <el-form-item label="素材名称：">
-        <el-input v-model="val.title" style="width: 216px" placeholder="请填写素材名称"></el-input>
-      </el-form-item>
-
-      <el-form-item label="播放格式：">
-        <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
+    <el-form ref="toolslinkForm" :model="form" label-width="120px">
+      <el-form-item label="播放规则：">
+        <el-select v-model="form.obj.play_type" placeholder="请选择">
           <el-option
-
-            v-for="item in dictoryObj.ResourcesTypeEnum"
+            v-for="item in dictoryObj.PlayStatusEnum"
             :key="item.key"
             :label="item.value"
             :value="item.key"
@@ -49,72 +21,100 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
-        <div class="upload-wrapper">
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="video/mp4"
-            :show-file-list="false"
-            :http-request=" (file) => {
+      <el-form-item label="素材列表：">
+        <el-button
+          type="success"
+          plain
+          @click="handleAdd"
+        >新增教材</el-button
+        >
+      </el-form-item>
+
+      <template v-for="(val,index) in form.obj.resources">
+
+        <el-form-item label="素材名称：">
+          <el-input v-model="val.title" style="width: 216px" placeholder="请填写素材名称"></el-input>
+        </el-form-item>
+
+        <el-form-item label="播放格式：">
+          <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
+            <el-option
+
+              v-for="item in dictoryObj.ResourcesTypeEnum"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
+          <div class="upload-wrapper">
+            <el-upload
+              class="upload-item"
+              action="/api/public/upload"
+              accept="video/mp4"
+              :show-file-list="false"
+              :http-request=" (file) => {
                 return uploadFile(file, index);
               }"
 
-            list-type="picture-card"
-            multiple
-          >
-            <template v-if="val.url">
-              <div
-                class="video-wrapper"
-              >
-                <video :src="val.url" controls class="upload-video"></video>
+              list-type="picture-card"
+              multiple
+            >
+              <template v-if="val.url">
+                <div
+                  class="video-wrapper"
+                >
+                  <video :src="val.url" controls class="upload-video"></video>
 
-              </div>
-            </template>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <el-button
-            @click.stop="videoDelete(index)"
-            style="position: absolute; top: 150px;"
-          >删除</el-button
-          >
-        </div>
-      </el-form-item>
+                </div>
+              </template>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-button
+              @click.stop="videoDelete(index)"
+              style="position: absolute; top: 150px;"
+            >删除</el-button
+            >
+          </div>
+        </el-form-item>
 
-      <el-form-item label="音频：" v-if="val.type === 2" style="margin-bottom: 44px">
-        <div class="upload-wrapper">
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="audio/mp3"
-            :show-file-list="false"
-            :http-request="(file) => {
+        <el-form-item label="音频：" v-if="val.type === 2" style="margin-bottom: 44px">
+          <div class="upload-wrapper">
+            <el-upload
+              class="upload-item"
+              action="/api/public/upload"
+              accept="audio/mp3"
+              :show-file-list="false"
+              :http-request="(file) => {
                 return uploadFile(file, index);
               }"
-            list-type="picture-card"
-            multiple
-          >
-            <template v-if="val.url">
-              <div
-                class="video-wrapper"
-              >
-                <audio :src="val.url" controls class="upload-audio"></audio>
+              list-type="picture-card"
+              multiple
+            >
+              <template v-if="val.url">
+                <div
+                  class="video-wrapper"
+                >
+                  <audio :src="val.url" controls class="upload-audio"></audio>
 
-              </div>
-            </template>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <el-button
-            @click.stop="videoDelete(index)"
-            style="position: absolute; top: 150px;"
-          >删除</el-button
-          >
-        </div>
-      </el-form-item>
+                </div>
+              </template>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-button
+              @click.stop="videoDelete(index)"
+              style="position: absolute; top: 150px;"
+            >删除</el-button
+            >
+          </div>
+        </el-form-item>
 
-    </template>
+      </template>
 
-  </el-form>
+    </el-form>
     <div slot="footer">
       <el-button @click="toolsData.show = false">取 消</el-button>
       <el-button type="primary" @click="handleSave">确 定</el-button>
@@ -145,23 +145,23 @@
     },
     watch: {
       "toolsData.show"(val) {
-          if(val){
-            console.log(this.toolsData)
-            this.form = this.toolsData;
-            this.form.obj.play_type =
-              parseInt(this.form.obj.play_type) || 1;
+        if(val){
+          console.log(this.toolsData)
+          this.form = this.toolsData;
+          this.form.obj.play_type =
+            parseInt(this.form.obj.play_type) || 1;
 
-            if(!this.form.obj.resources){
-              this.form.obj.resources = []
-            }else{
-              this.form.obj.resources.forEach(e=>{
-                if(e.type == 0){
-                  e.type == 1
-                }
-              })
-            }
-            this.$forceUpdate();
+          if(!this.form.obj.resources){
+            this.form.obj.resources = []
+          }else{
+            this.form.obj.resources.forEach(e=>{
+              if(e.type == 0){
+                e.type == 1
+              }
+            })
           }
+          this.$forceUpdate();
+        }
       },
     },
     methods: {
