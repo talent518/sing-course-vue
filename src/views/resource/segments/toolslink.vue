@@ -170,8 +170,12 @@
         console.log(this.form)
         this.form.obj.resources.forEach(e=>{
           Object.getOwnPropertyNames(e).forEach(function(key){
-            if(!e[key]){
-              flag = true
+            if(key == 'type_text'){
+
+            }else{
+              if(!e[key]){
+                flag = true
+              }
             }
           })
         })
