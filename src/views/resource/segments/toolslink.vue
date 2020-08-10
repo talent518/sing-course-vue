@@ -153,6 +153,12 @@
 
             if(!this.form.obj.resources){
               this.form.obj.resources = []
+            }else{
+              this.form.obj.resources.forEach(e=>{
+                if(e.type == 0){
+                  e.type == 1
+                }
+              })
             }
             this.$forceUpdate();
           }
