@@ -162,13 +162,12 @@
               action="/api/public/upload"
               :show-file-list="false"
               :multiple="multiple"
+              :before-upload=" (file) => {
+                return beforeUpload(file, '1');
+              }"
               :on-success="handleAvatarSuccess"
               accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-              :http-request="
-              (file) => {
-                return uploadFile(file, '1');
-              }
-            "
+
             >
               <div class="imageWrap">
                 <img
@@ -355,8 +354,15 @@ export default {
     };
   },
   methods: {
+    beforeUpload(file,type){
+      const timeStamp = new Date() - 0
+      const copyFile = new File([file], `${timeStamp}_${file.name}`)
+      this.uploadFile(copyFile,type)
+      return false
+    },
+
     async uploadFile(e, type, index) {
-      let res = await upload(e.file);
+      let res = await upload(e);
       if (type == 1) {
         this.model.material_url = res.url;
       } else if (type == 2) {
