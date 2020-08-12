@@ -126,11 +126,9 @@
                 :multiple="multiple"
                 :on-success="handleAvatarSuccess"
                 accept="video/mp4"
-                :http-request="
-              (file) => {
-                return uploadFile(file, '3');
-              }
-            "
+                :before-upload=" (file) => {
+                return beforeUpload(file, '3');
+              }"
               >
                 <div class="videoWrap">
                   <video style="width: 178px;height: 178px" v-if="model.mouth_video" :src="model.mouth_video" controls class="upload-video"></video>
@@ -186,11 +184,9 @@
               action="/api/public/upload"
               accept=".MP3,.APE,.AAC,.WAV,.mp3,.ape,.aac,.wav"
               :show-file-list="false"
-              :http-request="
-              (file) => {
-                return uploadFile(file, '2');
-              }
-            "
+              :before-upload=" (file) => {
+                return beforeUpload(file, '2');
+              }"
             >
               <el-button size="small" type="primary">上传音频</el-button>
             </el-upload>
