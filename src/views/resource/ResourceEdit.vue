@@ -347,7 +347,6 @@ export default {
     },
 
     toolSegementLink(item, itemIndex) {
-      console.log(item)
       switch (item.tool_type) {
         case 1:
           this.toolComponent = ToolsLink;
@@ -430,7 +429,6 @@ export default {
     },
     handleSegmentSave() {
       let newValue = this.$refs.segmentView.getFormData(),flag=false;
-      console.log(newValue)
       if (newValue.type == 5){
         newValue.payload.resources.forEach(e=>{
           Object.getOwnPropertyNames(e).forEach(function(key){
@@ -462,16 +460,17 @@ export default {
       this.form.segments[segmentIndex] = newValue;
     },
     handleToolSave() {
-      let newValue = this.$refs.toolView.getFormData()
+      let newValue = this.$refs.toolView.getFormData();
       this.toolDialogVisible = false;
       let segmentIndex = undefined;
       this.form.tools.forEach((value, index) => {
-        if (value.id === newValue.id && value.type === newValue.type) {
+        if (value.tool_type === newValue.tool_type) {
           segmentIndex = index;
           return false;
         }
       });
       this.form.tools[segmentIndex] = newValue;
+      this.$refs.toolView.restForm();
     },
   },
 };
