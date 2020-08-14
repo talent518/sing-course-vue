@@ -24,6 +24,18 @@
       </el-upload>
     </el-form-item>
 
+    <el-form-item label="评分规则：">
+      <el-select v-model="form.payload.score_config_id" placeholder="请选择">
+        <el-option
+                v-for="item in listScore"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+        >
+        </el-option>
+      </el-select>
+    </el-form-item>
+
     <el-form-item label="练习题：">
       <el-select
         v-model="form.payload.question_ids"
@@ -68,6 +80,7 @@
           template_id: 0,
           payload: {},
         },
+        listScore: [],
         listQuestion: [],
       };
     },
@@ -76,9 +89,12 @@
         handler() {
           this.loading = true;
           this.form = this.payload;
-          this.getQuestionAll().then(() => {
-              this.loading = false;
-            })
+          this.form.payload.score_config_id =
+                  parseInt(this.form.payload.score_config_id) || "";
+          Promise.all([this.getScoreAll(), this.getQuestionAll()])
+                  .then(() => {
+                    this.loading = false;
+                  })
             .catch(() => {
               this.loading = false;
             });
@@ -87,6 +103,9 @@
       },
     },
     methods: {
+      async getScoreAll() {
+        this.listScore = await this.ApiBasic.getScoreAll();
+      },
       async getQuestionAll() {
         let res = await this.ApiCourse.getVoiceQuestionAll({
           scene: "all",
