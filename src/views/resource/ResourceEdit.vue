@@ -132,7 +132,7 @@
           <template v-for="(item,index) in form.tools">
             <el-form-item :label="item.tool_title + ':'">
               <el-button
-                @click="handleToolsLink(item,index)"
+                @click="toolSegementLink(item,index)"
                 type="default"
                 style="width: 200px;"
                 v-if="item.tool_type!=3"
@@ -164,7 +164,23 @@
       </div>
     </el-dialog>
 
-    <tools-link :toolsData="toolsData" @emit="updateToolsData"></tools-link>
+    <el-dialog
+      title="辅助工具"
+      :visible.sync="toolDialogVisible"
+      :modal="false"
+    >
+      <component
+        ref="toolView"
+        :is="toolComponent"
+        :payload="toolData"
+      ></component>
+      <div slot="footer" v-if="dialogData.type !== 'view'">
+        <el-button @click="toolDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleToolSave">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--<tools-link :toolsData="toolsData" @emit="updateToolsData"></tools-link>-->
 
   </el-dialog>
 </template>
@@ -179,6 +195,7 @@ import EvaluationSegment from "@/views/resource/segments/evaluation";
 import AudioandvideoSegment from "@/views/resource/segments/audioandvideo";
 import ListentothepictureSegment from "@/views/resource/segments/listentothepicture";
 import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
+import LolacallSegment from "@/views/resource/segments/lolacall";
 import ToolsLink from "@/views/resource/segments/toolslink";
 
 export default {
@@ -191,6 +208,7 @@ export default {
     AudioandvideoSegment,
     ListentothepictureSegment,
     EatbiscuitsSegment,
+    LolacallSegment,
     ToolsLink
   },
   mixins: [commonMessage],
@@ -225,8 +243,11 @@ export default {
       listSegment: [],
       listTemplateResource: [],
       segmentComponent: "",
+      toolComponent: "",
       segmentDialogVisible: false,
+      toolDialogVisible: false,
       segmentData: {},
+      toolData: {},
       loading: false,
       toolsData:{
         show:false,
@@ -270,10 +291,10 @@ export default {
       }
     },
 
-    updateToolsData(val){
-      console.log(val)
-      this.form.tools[val.index] = val.obj
-    },
+    // updateToolsData(val){
+    //   console.log(val)
+    //   this.form.tools[val.index] = val.obj
+    // },
 
     handleTemplateChange(value) {
       this.loading = true;
@@ -323,6 +344,23 @@ export default {
       }
       this.segmentData = item;
       this.segmentDialogVisible = true;
+    },
+
+    toolSegementLink(item, itemIndex) {
+      console.log(item)
+      switch (item.tool_type) {
+        case 1:
+          this.toolComponent = ToolsLink;
+          break;
+        case 2:
+          this.toolComponent = ToolsLink;
+          break;
+        case 4:
+          this.toolComponent = LolacallSegment;
+          break;
+      }
+      this.toolData = item;
+      this.toolDialogVisible = true;
     },
 
     handleToolsLink(val,index){
@@ -422,6 +460,18 @@ export default {
         }
       });
       this.form.segments[segmentIndex] = newValue;
+    },
+    handleToolSave() {
+      let newValue = this.$refs.toolView.getFormData()
+      this.toolDialogVisible = false;
+      let segmentIndex = undefined;
+      this.form.tools.forEach((value, index) => {
+        if (value.id === newValue.id && value.type === newValue.type) {
+          segmentIndex = index;
+          return false;
+        }
+      });
+      this.form.tools[segmentIndex] = newValue;
     },
   },
 };
