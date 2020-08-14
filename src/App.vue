@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isShow"></router-view>
   </div>
 </template>
 <script>
@@ -22,6 +22,7 @@
       return {
         eventBus: new Vue(),
         o: {},
+        isShow:false
       };
     },
 
@@ -85,6 +86,10 @@
         data.forEach((item) => {
           o[item.name] = item.items;
         });
+        if(data.length){
+          this.isShow = true;
+        }
+
         this.set_dictoryObj(o);
       },
     },
