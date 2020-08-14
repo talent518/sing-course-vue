@@ -469,7 +469,9 @@ export default {
           return false;
         }
       });
-      this.form.tools[segmentIndex] = newValue;
+      let jsonStr=JSON.stringify(newValue);
+      let a=JSON.parse(jsonStr);
+      this.form.tools[segmentIndex] = a;
       this.$refs.toolView.restForm();
     },
   },

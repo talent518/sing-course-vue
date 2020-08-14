@@ -1,5 +1,8 @@
 <template>
   <el-form ref="lolacallForm" :model="form" label-width="120px">
+    <el-form-item style="display: none;">
+      <el-input  v-model="form.id" ></el-input>
+    </el-form-item>
     <el-form-item label="标题：" prop="title" required>
       <el-input style="width: 217px" v-model="form.title" placeholder="请输入"></el-input>
     </el-form-item>
@@ -50,7 +53,7 @@
       };
     },
     watch: {
-      "payload.tool_type": {
+      "payload.id": {
         handler() {
           this.form = this.payload;
         },
@@ -70,6 +73,7 @@
         return this.form;
       },
       restForm() {
+        this.payload.id='';
         return this.$refs.lolacallForm.resetFields();
       },
     },
