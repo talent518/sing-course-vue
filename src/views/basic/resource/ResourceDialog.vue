@@ -312,7 +312,6 @@
         } else {
           api = this.ApiBasic.postResource;
         }
-
         api(json).then((res) => {
           this.dialogToggle();
           this.$parent.getData();
