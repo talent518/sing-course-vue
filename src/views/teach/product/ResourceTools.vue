@@ -137,7 +137,6 @@ export default {
           this.segmentData = i;
         }
       });
-      debugger;
       if (!this.segmentData.hasOwnProperty("resources")) {
         this.segmentData = { play_type: 1, resources: [] };
       }
