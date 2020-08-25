@@ -86,7 +86,7 @@ export default {
       let tool_types = "";
       this.ProductToolTypeEnum.forEach((i) => {
         if (i.key == 1 && i.checked) {
-          newValue.tool_type = i.key;
+          newValue.tool_types = i.key;
           tool_types += i.key;
           arr.push(newValue);
         } else if (i.key == 2 && i.checked) {
@@ -95,7 +95,6 @@ export default {
         }
       });
       arr.push({ tool_types });
-      console.log(arr);
       this.$parent.ApiResource.postProduceTool(this.id, { tools: arr });
       this.cancel();
       this.$parent.init();
@@ -132,13 +131,12 @@ export default {
         }
       });
       this.list = d;
-      this.list.forEach((i) => {
-        if (i.tool_type == 1) {
-          this.segmentData = i;
+      let o = this.list[0];
+      if (o) {
+        if (o.tool_type == 1) {
+          this.segmentData = o || { play_type: 1, resources: [] };
         }
-      });
-      debugger;
-      if (!this.segmentData.hasOwnProperty("resources")) {
+      } else {
         this.segmentData = { play_type: 1, resources: [] };
       }
     } else {
