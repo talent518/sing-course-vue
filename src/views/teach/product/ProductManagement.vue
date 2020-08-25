@@ -6,7 +6,7 @@
           <el-input
             placeholder="请输入产品标题"
             v-model="search.title"
-            style="width: 200px;"
+            style="width: 200px"
           ></el-input>
         </el-form-item>
 
@@ -28,12 +28,24 @@
         <!--  </el-select>-->
         <!--</el-form-item>-->
 
-        <el-button v-permission="'ProductView'" type="primary" plain size="small" @click="handleSearch"
+        <el-button
+          v-permission="'ProductView'"
+          type="primary"
+          plain
+          size="small"
+          @click="handleSearch"
           >查询</el-button
         >
 
         <el-button plain size="small" @click="clearSearch">清除</el-button>
-        <el-button  v-permission="'ProductCreate'" type="success" plain size="small" @click="addClass">新增产品</el-button>
+        <el-button
+          v-permission="'ProductCreate'"
+          type="success"
+          plain
+          size="small"
+          @click="addClass"
+          >新增产品</el-button
+        >
       </div>
     </el-form>
 
@@ -44,7 +56,7 @@
     </el-tabs>
 
     <el-table
-      style="width: 100%;"
+      style="width: 100%"
       :data="classList"
       v-loading="loading"
       size="small"
@@ -65,16 +77,16 @@
       <el-table-column prop="status_text" label="状态">
         <template slot-scope="scope">
           <cc-cell-switch
-                  :value="scope.row.status"
-                  @click="handleSwitch(scope.row.id, scope.row.status)"
+            :value="scope.row.status"
+            @click="handleSwitch(scope.row.id, scope.row.status)"
           ></cc-cell-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: space-around;">
+          <div style="display: flex; justify-content: space-around">
             <el-link
-			v-permission="'ProductUpdate'"
+              v-permission="'ProductUpdate'"
               @click="editProduct(scope.row)"
               plain
               type="primary"
@@ -82,7 +94,7 @@
               >编辑</el-link
             >
             <el-link
-			v-permission="'ProductCorrelation'"
+              v-permission="'ProductCorrelation'"
               @click="relationCourse(scope.row.id)"
               plain
               type="primary"
@@ -91,7 +103,7 @@
             >
             <template>
               <el-popconfirm
-			  v-permission="'ProductDel'"
+                v-permission="'ProductDel'"
                 title="确定要删除该产品吗？"
                 @onConfirm="delProduct(scope.row.id)"
               >
@@ -99,13 +111,20 @@
                   >删除</el-link
                 >
               </el-popconfirm>
+              <el-link
+                plain
+                size="small"
+                type="primary"
+                @click="selectTools(scope.row.id)"
+                >辅助工具</el-link
+              >
             </template>
           </div>
         </template>
       </el-table-column>
     </el-table>
     <page
-      style="text-align: left;margin: 18px 0"
+      style="text-align: left; margin: 18px 0"
       :nowPage="page.now"
       :total="page.total"
       :limit="page.limit"
@@ -114,6 +133,11 @@
     />
     <dialog-com :dialogObj="dialogObj" @reflash="init" />
     <relation-dialog :dialogObj="relationObj" @reflash="init" />
+    <resource-tools
+      v-if="tools.show"
+      :id="tools.id"
+      @closeTools="closeTools"
+    ></resource-tools>
   </div>
 </template>
 
@@ -122,10 +146,10 @@ import Teach from "@/views/common/teach";
 import dialogCom from "./ProductDialog";
 import page from "@/components/page/page";
 import relationDialog from "./RelationDialog";
-
+import ResourceTools from "./ResourceTools";
 export default {
   mixins: [Teach],
-  components: { dialogCom, page, relationDialog },
+  components: { dialogCom, page, relationDialog, ResourceTools },
   name: "ProductManagement",
   data() {
     return {
@@ -153,12 +177,28 @@ export default {
         id: "",
         show: false,
       },
+      tools: {
+        id: "",
+        show: false,
+      },
     };
   },
   mounted() {
     this.init();
   },
   methods: {
+    selectTools(id) {
+      this.tools = {
+        id,
+        show: true,
+      };
+    },
+    closeTools() {
+      this.tools.show = false;
+    },
+    async auxiliaryTool(id) {
+      return this.ApiResource.getProduceTool(id);
+    },
     /**
      * 获取课程列表
      */
@@ -206,7 +246,7 @@ export default {
 
     handleSwitch(id, val) {
       let _targetText = "",
-              _target; // 要到达的状态
+        _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
         _targetText = "上架";
@@ -229,15 +269,15 @@ export default {
           };
 
           this.ApiTeach.postProductStatusApi(param)
-                  .then((res) => {
-                    this.$message.success("修改成功");
-                    this.init();
-                    this.loading = false;
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    this.loading = false;
-                  });
+            .then((res) => {
+              this.$message.success("修改成功");
+              this.init();
+              this.loading = false;
+            })
+            .catch((err) => {
+              console.log(err);
+              this.loading = false;
+            });
         })
         .catch(() => {
           this.$message.info("已取消");

@@ -79,6 +79,7 @@
             "TextbookTypeEnum",
             "SegmentMaterialTypeEnum",
             "ResourcesTypeEnum",
+            "ProductToolTypeEnum"
           ],
         };
         let o = {};
