@@ -83,18 +83,18 @@ export default {
         (this.$refs.segmentView && this.$refs.segmentView.getFormData()) ||
         this.segmentData;
       let arr = [];
-      let tool_type = "";
+      let tool_types = "";
       this.ProductToolTypeEnum.forEach((i) => {
         if (i.key == 1 && i.checked) {
           newValue.tool_type = i.key;
-          tool_type += i.key;
+          tool_types += i.key;
           arr.push(newValue);
         } else if (i.key == 2 && i.checked) {
-          tool_type += "," + i.key;
+          tool_types += "," + i.key;
           arr.push(parentVal);
         }
       });
-      arr.push({ tool_type });
+      arr.push({ tool_types });
       console.log(arr);
       this.$parent.ApiResource.postProduceTool(this.id, { tools: arr });
       this.cancel();
