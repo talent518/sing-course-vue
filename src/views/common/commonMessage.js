@@ -1,4 +1,4 @@
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   inject: [
@@ -25,15 +25,22 @@ export default {
     };
   },
   methods: {
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 0.1;
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 100kb!");
+        return false;
+      }
+    },
     filterEnum(type, key) {
-      console.log('123', this.dictoryObj[type])
-      let result = this.dictoryObj[type].find(i => {
-        return i.key == key
-      })
+      console.log("123", this.dictoryObj[type]);
+      let result = this.dictoryObj[type].find((i) => {
+        return i.key == key;
+      });
 
-      console.log('filterEnum', result);
+      console.log("filterEnum", result);
 
-      return (result && result.value) ? result.value : '-'
+      return result && result.value ? result.value : "-";
     },
 
     openLoading() {
@@ -94,8 +101,7 @@ export default {
       });
       return list;
     },
-    filterAllChild() {
-    },
+    filterAllChild() {},
     async remoteMethod(name) {
       this.userList = await this.ApiUser.getSelectUsers(name);
     },

@@ -90,12 +90,18 @@ export default {
           tool_types += i.key;
           arr.push(newValue);
         } else if (i.key == 2 && i.checked) {
+          let o2 = this.list.find((item) => item.tool_type == i.key);
+          if (o2) {
+            arr.push(o2);
+          } else {
+            arr.push(parentVal);
+          }
           tool_types += "," + i.key;
-          arr.push(parentVal);
         }
       });
       arr.push({ tool_types });
       console.log(arr);
+      return;
       this.$parent.ApiResource.postProduceTool(this.id, { tools: arr });
       this.cancel();
       this.$parent.init();

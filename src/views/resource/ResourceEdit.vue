@@ -17,7 +17,7 @@
         :loading="loading"
       >
         <el-form-item prop="id">
-          <el-input v-model="form.id" style="display: none;"></el-input>
+          <el-input v-model="form.id" style="display: none"></el-input>
         </el-form-item>
         <el-form-item label="课节标题：" prop="title" required>
           <el-input v-model="form.title" placeholder="请输入"></el-input>
@@ -38,7 +38,7 @@
             multiple
           >
             <el-image
-              style="width: 100%; height: 100%;"
+              style="width: 100%; height: 100%"
               fit="contain"
               v-if="form.cover"
               :src="form.cover"
@@ -62,13 +62,13 @@
               :label="item.code + ' ' + item.title"
               :value="item.id"
             >
-              <span style="float: left;">{{ item.code }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px;">{{
+              <span style="float: left">{{ item.code }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{
                 item.title
               }}</span>
             </el-option>
           </el-select>
-          <label style="font-weight: bold;" v-else
+          <label style="font-weight: bold" v-else
             >({{ form.textbook_template_code }})
             {{ form.textbook_template_name }}</label
           >
@@ -105,7 +105,7 @@
                   multiple
                 >
                   <el-image
-                    style="width: 100%; height: 100%;"
+                    style="width: 100%; height: 100%"
                     fit="cover"
                     v-if="segement.cover"
                     :src="segement.cover"
@@ -119,7 +119,7 @@
                 <el-button
                   @click="handleSegementLink(segement, index)"
                   type="default"
-                  style="width: 100%;"
+                  style="width: 100%"
                 >
                   关联内容
                 </el-button>
@@ -128,14 +128,14 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="辅助工具：" v-if="form.tools.length>0">
-          <template v-for="(item,index) in form.tools">
+        <el-form-item label="辅助工具：" v-if="form.tools.length > 0">
+          <template v-for="(item, index) in form.tools">
             <el-form-item :label="item.tool_title + ':'">
               <el-button
-                @click="toolSegementLink(item,index)"
+                @click="toolSegementLink(item, index)"
                 type="default"
-                style="width: 200px;"
-                v-if="item.tool_type!=3"
+                style="width: 200px"
+                v-if="item.tool_type != 3"
               >
                 关联内容
               </el-button>
@@ -181,7 +181,6 @@
     </el-dialog>
 
     <!--<tools-link :toolsData="toolsData" @emit="updateToolsData"></tools-link>-->
-
   </el-dialog>
 </template>
 
@@ -209,7 +208,7 @@ export default {
     ListentothepictureSegment,
     EatbiscuitsSegment,
     LolacallSegment,
-    ToolsLink
+    ToolsLink,
   },
   mixins: [commonMessage],
 
@@ -237,7 +236,7 @@ export default {
         textbook_template_code: "",
         textbook_template_name: "",
         segments: [],
-        tools:[],
+        tools: [],
       },
       title: "编辑教材",
       listSegment: [],
@@ -249,10 +248,10 @@ export default {
       segmentData: {},
       toolData: {},
       loading: false,
-      toolsData:{
-        show:false,
-        obj:{},
-        index:''
+      toolsData: {
+        show: false,
+        obj: {},
+        index: "",
       },
     };
   },
@@ -271,7 +270,7 @@ export default {
     init() {
       if (this.dialogData.param.id === 0) {
         this.loading = true;
-        this.form.tools = []
+        this.form.tools = [];
         this.ApiBasic.getResource({ scene: "all", status: 1 })
           .then((res) => {
             this.listTemplateResource = res.items;
@@ -301,7 +300,7 @@ export default {
       let template = this.ApiBasic.getResourceById(value)
         .then((template) => {
           this.form.segments = [];
-          this.form.tools = template.tools
+          this.form.tools = template.tools;
           template.items.forEach((e, index) => {
             this.form.segments.push({
               id: index,
@@ -362,10 +361,10 @@ export default {
       this.toolDialogVisible = true;
     },
 
-    handleToolsLink(val,index){
-      this.toolsData.show = true
-      this.toolsData.obj = val
-      this.toolsData.index = index
+    handleToolsLink(val, index) {
+      this.toolsData.show = true;
+      this.toolsData.obj = val;
+      this.toolsData.index = index;
     },
 
     async uploadFileCover(e) {
@@ -425,28 +424,28 @@ export default {
     },
     handleCancel() {
       this.dialogData.show = false;
-      this.$parent.getData()
+      this.$parent.getData();
     },
     handleSegmentSave() {
-      let newValue = this.$refs.segmentView.getFormData(),flag=false;
-      if (newValue.type == 5){
-        newValue.payload.resources.forEach(e=>{
-          Object.getOwnPropertyNames(e).forEach(function(key){
-            if(key == 'type_text'){
-
-            }else{
-              if(!e[key]){
-                flag = true
+      let newValue = this.$refs.segmentView.getFormData(),
+        flag = false;
+      if (newValue.type == 5) {
+        newValue.payload.resources.forEach((e) => {
+          Object.getOwnPropertyNames(e).forEach(function (key) {
+            if (key == "type_text") {
+            } else {
+              if (!e[key]) {
+                flag = true;
               }
             }
-          })
-        })
-        if(flag){
+          });
+        });
+        if (flag) {
           this.$message({
             type: "error",
             message: "请完善每一项的内容！",
           });
-          return false
+          return false;
         }
       }
       this.segmentDialogVisible = false;
@@ -469,8 +468,8 @@ export default {
           return false;
         }
       });
-      let jsonStr=JSON.stringify(newValue);
-      let a=JSON.parse(jsonStr);
+      let jsonStr = JSON.stringify(newValue);
+      let a = JSON.parse(jsonStr);
       this.form.tools[segmentIndex] = a;
       this.$refs.toolView.restForm();
     },

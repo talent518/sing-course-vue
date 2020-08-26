@@ -6,6 +6,7 @@
         action="/api/public/upload"
         :show-file-list="false"
         accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+         :before-upload="beforeAvatarUpload"
         :http-request="
               (file) => {
                 return uploadFile(file, '1');
@@ -21,6 +22,8 @@
 
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </div>
+         <div slot="tip" class="el-upload__tip">
+          <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>
       </el-upload>
     </el-form-item>
 
