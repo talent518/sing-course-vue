@@ -100,8 +100,6 @@ export default {
         }
       });
       arr.push({ tool_types });
-      console.log(arr);
-      return;
       this.$parent.ApiResource.postProduceTool(this.id, { tools: arr });
       this.cancel();
       this.$parent.init();
