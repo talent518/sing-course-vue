@@ -35,7 +35,7 @@ module.exports = {
       .set("@assets", resolve("src/assets"))
       .set("@components", resolve("src/components"))
   },
-  productionSourceMap: true,
+  productionSourceMap: false,
   configureWebpack: {
     devtool: "source-map",
     plugins,
