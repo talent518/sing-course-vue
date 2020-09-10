@@ -6,16 +6,14 @@
     :title="title"
     :visible.sync="dialogData.show"
     :close-on-click-modal="false"
-    append-to-body
-  >
+    append-to-body>
     <div>
       <el-form
         ref="form"
         :model="form"
         label-width="100px"
         size="small"
-        :loading="loading"
-      >
+        :loading="loading">
         <el-form-item prop="id">
           <el-input v-model="form.id" style="display: none"></el-input>
         </el-form-item>
@@ -35,18 +33,25 @@
             :show-file-list="false"
             :http-request="uploadFileCover"
             list-type="picture-card"
-            multiple
-          >
-            <el-image
-              style="width: 100%; height: 100%"
-              fit="contain"
+            multiple>
+
+            <div
               v-if="form.cover"
-              :src="form.cover"
-            >
-            </el-image>
+              class="upload-item-image">
+              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+              <el-image
+                style="width: 100%; height: 100%"
+                fit="contain"
+                :src="form.cover"></el-image>
+            </div>
+
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+
+          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
+
         </el-form-item>
+
         <el-form-item label="教材模板：" prop="textbook_template_id" required>
           <el-select
             v-if="form.id == 0"
@@ -54,24 +59,17 @@
             filterable
             clearable
             placeholder="请选择模版"
-            @change="handleTemplateChange"
-          >
+            @change="handleTemplateChange">
             <el-option
               v-for="item in listTemplateResource"
               :key="item.id"
               :label="item.code + ' ' + item.title"
-              :value="item.id"
-            >
+              :value="item.id">
               <span style="float: left">{{ item.code }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{
-                item.title
-              }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{item.title}}</span>
             </el-option>
           </el-select>
-          <label style="font-weight: bold" v-else
-            >({{ form.textbook_template_code }})
-            {{ form.textbook_template_name }}</label
-          >
+          <label style="font-weight: bold" v-else>({{ form.textbook_template_code }}) {{ form.textbook_template_name }}</label>
         </el-form-item>
 
         <el-form-item label="关联环节：" prop="segments">
@@ -79,14 +77,12 @@
             <div
               v-for="(segement, index) in form.segments"
               class="card-item"
-              :key="index"
-            >
+              :key="index">
               <el-card shadow="hover" :body-style="{ padding: '12px' }">
                 <div class="header">
                   <el-input
                     v-model="segement.title"
-                    placeholder="标题"
-                  ></el-input>
+                    placeholder="标题"></el-input>
                 </div>
 
                 <el-divider></el-divider>
@@ -102,14 +98,12 @@
                     }
                   "
                   list-type="picture-card"
-                  multiple
-                >
+                  multiple>
                   <el-image
                     style="width: 100%; height: 100%"
                     fit="cover"
                     v-if="segement.cover"
-                    :src="segement.cover"
-                  >
+                    :src="segement.cover">
                   </el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -119,9 +113,7 @@
                 <el-button
                   @click="handleSegementLink(segement, index)"
                   type="default"
-                  style="width: 100%"
-                >
-                  关联内容
+                  style="width: 100%">关联内容
                 </el-button>
               </el-card>
             </div>
@@ -135,9 +127,7 @@
                 @click="toolSegementLink(item, index)"
                 type="default"
                 style="width: 200px"
-                v-if="item.tool_type != 3"
-              >
-                关联内容
+                v-if="item.tool_type != 3">关联内容
               </el-button>
             </el-form-item>
           </template>
@@ -151,13 +141,11 @@
     <el-dialog
       title="编辑环节"
       :visible.sync="segmentDialogVisible"
-      :modal="false"
-    >
+      :modal="false">
       <component
         ref="segmentView"
         :is="segmentComponent"
-        :payload="segmentData"
-      ></component>
+        :payload="segmentData"></component>
       <div slot="footer" v-if="dialogData.type !== 'view'">
         <el-button @click="segmentDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleSegmentSave">确 定</el-button>
@@ -167,13 +155,11 @@
     <el-dialog
       title="辅助工具"
       :visible.sync="toolDialogVisible"
-      :modal="false"
-    >
+      :modal="false">
       <component
         ref="toolView"
         :is="toolComponent"
-        :payload="toolData"
-      ></component>
+        :payload="toolData"></component>
       <div slot="footer" v-if="dialogData.type !== 'view'">
         <el-button @click="toolDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleToolSave">确 定</el-button>
@@ -186,7 +172,7 @@
 
 <script>
 import commonMessage from "@/views/common/commonMessage";
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 import ResourceEditSegment from "@/views/resource/ResourceEditSegment";
 import VideoSegment from "@/views/resource/segments/video";
 import AudioSegment from "@/views/resource/segments/audio";
@@ -196,6 +182,8 @@ import ListentothepictureSegment from "@/views/resource/segments/listentothepict
 import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
 import LolacallSegment from "@/views/resource/segments/lolacall";
 import ToolsLink from "@/views/resource/segments/toolslink";
+
+const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png';
 
 export default {
   name: "ResourceDialog",
@@ -227,6 +215,7 @@ export default {
 
   data() {
     return {
+      coverSnapshot: '', // 封面快照（用于标识之前是否有cover）
       form: {
         id: 0,
         title: "",
@@ -271,7 +260,8 @@ export default {
       if (this.dialogData.param.id === 0) {
         this.loading = true;
         this.form.tools = [];
-        this.ApiBasic.getResource({ scene: "all", status: 1 })
+        this.coverSnapshot = '';
+        this.ApiBasic.getResource({scene: "all", status: 1})
           .then((res) => {
             this.listTemplateResource = res.items;
           })
@@ -283,6 +273,8 @@ export default {
         this.ApiResource.getResourceById(this.dialogData.param.id)
           .then((res) => {
             this.form = res;
+
+            this.coverSnapshot = res.cover;
           })
           .catch(() => {
             this.loading = false;
@@ -297,27 +289,35 @@ export default {
 
     handleTemplateChange(value) {
       this.loading = true;
-      let template = this.ApiBasic.getResourceById(value)
-        .then((template) => {
-          this.form.segments = [];
-          this.form.tools = template.tools;
-          template.items.forEach((e, index) => {
-            this.form.segments.push({
-              id: index,
-              cover: e.cover,
-              lead_type: e.lead_type,
-              segment_id: 0,
-              segment_template_id: e.segment_template_id,
-              title: e.title,
-              type: e.segment_type,
-              payload: e.payload,
-            });
+
+      // todo 这里有逻辑问题（如果已经有cover是否要）
+      // 通过 coverSnapshot 是否可用解决？
+      if (!this.coverSnapshot) {
+        let cover = this.listTemplateResource.find(i => {
+          return i.id == value
+        }).cover;
+        this.form.cover = cover || COVER
+      }
+
+      let template = this.ApiBasic.getResourceById(value).then((template) => {
+        this.form.segments = [];
+        this.form.tools = template.tools;
+        template.items.forEach((e, index) => {
+          this.form.segments.push({
+            id: index,
+            cover: e.cover,
+            lead_type: e.lead_type,
+            segment_id: 0,
+            segment_template_id: e.segment_template_id,
+            title: e.title,
+            type: e.segment_type,
+            payload: e.payload,
           });
-          this.loading = false;
-        })
-        .catch(() => {
-          this.loading = false;
         });
+        this.loading = false;
+      }).catch(() => {
+        this.loading = false;
+      });
     },
 
     handleSegementLink(item, itemIndex) {

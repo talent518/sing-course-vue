@@ -26,10 +26,10 @@
 
     <my-table :data="list" v-loading="loading">
       <el-table-column
-          v-for="item in cols"
-          :key="item.prop"
-          :prop="item.prop"
-          :label="item.name"
+        v-for="item in cols"
+        :key="item.prop"
+        :prop="item.prop"
+        :label="item.name"
       ></el-table-column>
 
       <el-table-column prop="title" label="配音素材">
@@ -46,7 +46,13 @@
           >播放录音
           </el-button>-->
 
-          <cc-cell-audio :src="row.ori_sound"></cc-cell-audio>
+          <cc-cell-audio
+            v-if="row.ori_sound"
+            :src="row.ori_sound"></cc-cell-audio>
+
+          <cc-cell-video
+            v-else-if="row.mouth_video"
+            :src="row.mouth_video"></cc-cell-video>
 
         </template>
       </el-table-column>
@@ -64,44 +70,44 @@
         <template slot-scope="scope">
 
           <el-button
-              v-permission="'ExercisesUpdate'"
-              plain
-              size="small"
-              type="warning"
-              @click="handleEdit(scope.row)"
+            v-permission="'ExercisesUpdate'"
+            plain
+            size="small"
+            type="warning"
+            @click="handleEdit(scope.row)"
           >编辑
           </el-button>
           <el-button
-              v-permission="'ExercisesDel'"
-              plain
-              size="small"
-              type="danger"
-              @click="handleDelete(scope.row.id)"
+            v-permission="'ExercisesDel'"
+            plain
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.row.id)"
           >删除
           </el-button>
         </template>
       </el-table-column>
     </my-table>
     <page
-        style="text-align: left;margin: 18px 0"
-        :nowPage="searchObj.pageIndex"
-        :total="searchObj.total"
-        :limit="searchObj.pageSize"
-        @pageChange="onPageChange"
-        @sizeChange="onSizeChange"
+      style="text-align: left;margin: 18px 0"
+      :nowPage="searchObj.pageIndex"
+      :total="searchObj.total"
+      :limit="searchObj.pageSize"
+      @pageChange="onPageChange"
+      @sizeChange="onSizeChange"
     />
     <el-dialog
-        :title="title"
-        v-if="dialogFormVisible"
-        :visible.sync="dialogFormVisible"
-        :close-on-click-modal="clickmodal"
+      :title="title"
+      v-if="dialogFormVisible"
+      :visible.sync="dialogFormVisible"
+      :close-on-click-modal="clickmodal"
     >
       <my-form
-          class="textLeft"
-          ref="myForm"
-          label-width="150px"
-          :rules="rules"
-          :model="model"
+        class="textLeft"
+        ref="myForm"
+        label-width="150px"
+        :rules="rules"
+        :model="model"
       >
         <el-form-item label="配音标题：" prop="title">
           <el-input v-model="model.title" placeholder="请输入标题"></el-input>
@@ -109,15 +115,15 @@
 
         <el-form-item label="习题模板：" prop="question_type">
           <el-select
-              v-model="model.question_type"
-              placeholder="请选择习题模板"
-              clearable
+            v-model="model.question_type"
+            placeholder="请选择习题模板"
+            clearable
           >
             <el-option
-                v-for="item in dictoryObj.VoiceQuestionTypeEnum"
-                :label="item.value"
-                :value="item.key"
-                :key="item.key"
+              v-for="item in dictoryObj.VoiceQuestionTypeEnum"
+              :label="item.value"
+              :value="item.key"
+              :key="item.key"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -127,13 +133,13 @@
           <el-form-item label="口型示范：" v-if="model.question_type === 2" prop="mouth_video">
             <div class="upload-wrapper">
               <el-upload
-                  class="avatar-uploader"
-                  action="/api/public/upload"
-                  :show-file-list="false"
-                  :multiple="multiple"
-                  :on-success="handleAvatarSuccess"
-                  accept="video/mp4"
-                  :http-request="
+                class="avatar-uploader"
+                action="/api/public/upload"
+                :show-file-list="false"
+                :multiple="multiple"
+                :on-success="handleAvatarSuccess"
+                accept="video/mp4"
+                :http-request="
               (file) => {
                 return uploadFile(file, '3');
               }
@@ -150,28 +156,28 @@
 
           <el-form-item label="素材类型：" prop="material_type">
             <el-select
-                v-model="model.material_type"
-                placeholder="请选择素材"
-                clearable
+              v-model="model.material_type"
+              placeholder="请选择素材"
+              clearable
             >
               <el-option
-                  v-for="item in dictoryObj.QuestionMaterialTypeEnum"
-                  :label="item.value"
-                  :value="item.key"
-                  :key="item.key"
+                v-for="item in dictoryObj.QuestionMaterialTypeEnum"
+                :label="item.value"
+                :value="item.key"
+                :key="item.key"
               ></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="素材内容：" prop="material_url">
             <el-upload
-                class="avatar-uploader"
-                action="/api/public/upload"
-                :show-file-list="false"
-                :multiple="multiple"
-                :on-success="handleAvatarSuccess"
-                accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-                :http-request="
+              class="avatar-uploader"
+              action="/api/public/upload"
+              :show-file-list="false"
+              :multiple="multiple"
+              :on-success="handleAvatarSuccess"
+              accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+              :http-request="
               (file) => {
                 return uploadFile(file, '1');
               }
@@ -179,9 +185,9 @@
             >
               <div class="imageWrap">
                 <img
-                    v-if="model.material_url"
-                    :src="model.material_url"
-                    class="avatar"
+                  v-if="model.material_url"
+                  :src="model.material_url"
+                  class="avatar"
                 />
 
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -190,11 +196,11 @@
           </el-form-item>
           <el-form-item label="原声录音：" prop="ori_sound" v-if="model.question_type !== 2">
             <el-upload
-                class="upload-demo"
-                action="/api/public/upload"
-                accept=".MP3,.APE,.AAC,.WAV,.mp3,.ape,.aac,.wav"
-                :show-file-list="false"
-                :http-request="
+              class="upload-demo"
+              action="/api/public/upload"
+              accept=".MP3,.APE,.AAC,.WAV,.mp3,.ape,.aac,.wav"
+              :show-file-list="false"
+              :http-request="
               (file) => {
                 return uploadFile(file, '2');
               }
@@ -203,24 +209,24 @@
               <el-button size="small" type="primary">上传音频</el-button>
             </el-upload>
             <el-button
-                size="small"
-                v-if="model.ori_sound"
-                type="success"
-                @click="openMedia"
+              size="small"
+              v-if="model.ori_sound"
+              type="success"
+              @click="openMedia"
             >播放音频
             </el-button>
           </el-form-item>
           <el-form-item label="配音类型：" prop="dubbing_type">
             <el-select
-                v-model="model.dubbing_type"
-                placeholder="请选择配音类型"
-                clearable
+              v-model="model.dubbing_type"
+              placeholder="请选择配音类型"
+              clearable
             >
               <el-option
-                  v-for="item in dictoryObj.DubbingTypeEnum"
-                  :label="item.value"
-                  :value="item.key"
-                  :key="item.key"
+                v-for="item in dictoryObj.DubbingTypeEnum"
+                :label="item.value"
+                :value="item.key"
+                :key="item.key"
               ></el-option>
             </el-select>
           </el-form-item>

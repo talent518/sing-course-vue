@@ -54,8 +54,7 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialog('view', scope.row)"
-          >预览
+            @click="handleDialog('view', scope.row)">预览
           </el-button>
 
           <el-button
@@ -63,16 +62,14 @@
             plain
             size="small"
             type="warning"
-            @click="handleDialog('edit', scope.row)"
-          >编辑
+            @click="handleDialog('edit', scope.row)">编辑
           </el-button>
           <el-button
             v-permission="'TemplateResourceDel'"
             plain
             size="small"
             type="danger"
-            @click="handleDelete(scope.row.id)"
-          >删除
+            @click="handleDelete(scope.row.id)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -84,12 +81,9 @@
       :total="page.total"
       :limit="page.limit"
       @pageChange="onPageChange"
-      @sizeChange="onSizeChange"
-    />
+      @sizeChange="onSizeChange"/>
 
-    <template-resource-dialog
-      :dialog-data="dialogData"
-    ></template-resource-dialog>
+    <template-resource-dialog :dialog-data="dialogData"></template-resource-dialog>
   </div>
 </template>
 

@@ -69,7 +69,7 @@
 import {upload} from "@api/upload";
 import Teach from "@/views/common/teach";
 
-const COVER = 'https://media.changchangenglish.com/new-sing/990cfef2da7830212295f87d29c0d4e5672d678d.png';
+const COVER = 'https://static-cdn.changchangenglish.com/course/1e89746fad68128ea9711e30e5852051fbffb989.png';
 
 export default {
   mixins: [Teach],

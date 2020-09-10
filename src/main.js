@@ -29,6 +29,11 @@ import CcCellAudio from "@components/cc/CcCellAudio";
 
 Vue.component("CcCellAudio", CcCellAudio);
 
+// 表格内视频 组件
+import CcCellVideo from "@components/cc/CcCellVideo";
+
+Vue.component("CcCellVideo", CcCellVideo);
+
 // 表格内图片 组件
 import CcCellImage from "@components/cc/CcCellImage";
 

@@ -40,7 +40,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
 
-          <span><i class="el-icon-warning"></i> 建议图片尺寸为：546 * 342px</span>
+          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
 
         </el-form-item>
 
@@ -60,9 +60,7 @@
               v-for="item in dictoryObj.TextbookTypeEnum"
               :key="item.key"
               :label="item.value"
-              :value="item.key"
-            >
-            </el-option>
+              :value="item.key"></el-option>
           </el-select>
         </el-form-item>
 
@@ -167,7 +165,7 @@ import menuRole from "@/views/common/menuRole";
 import {upload} from "@api/upload";
 
 const
-  COVER = 'https://media.changchangenglish.com/new-sing/15d0dace97ad9f2e3793c236d9ed03ddc43c856a.png',
+  COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png',
   FORM_DEFAULT = {
     template_data: {
       title: "",
