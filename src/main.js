@@ -24,6 +24,16 @@ import CcCellSwitch from "@components/cc/CcCellSwitch";
 
 Vue.component("CcCellSwitch", CcCellSwitch);
 
+// 表格内音频 组件
+import CcCellAudio from "@components/cc/CcCellAudio";
+
+Vue.component("CcCellAudio", CcCellAudio);
+
+// 表格内图片 组件
+import CcCellImage from "@components/cc/CcCellImage";
+
+Vue.component("CcCellImage", CcCellImage);
+
 // 数字区间 组件
 import CcNumberRange from "@components/cc/CcNumberRange";
 

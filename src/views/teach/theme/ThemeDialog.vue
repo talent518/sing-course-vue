@@ -35,25 +35,30 @@
             :show-file-list="false"
             :http-request="uploadFile"
             list-type="picture-card"
-            multiple
-          >
-            <el-image
-              style="width: 100%; height: 100%;"
-              fit="contain"
+            multiple>
+
+            <div
               v-if="form.cover"
-              :src="form.cover"
-            >
-            </el-image>
+              class="upload-item-image">
+              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+              <el-image
+                style="width: 100%; height: 100%;"
+                fit="contain"
+                v-if="form.cover"
+                :src="form.cover">
+              </el-image>
+            </div>
+
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+
+          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
         </el-form-item>
 
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
-        >
+        <el-button size="small" @click="dialogObj.show = false">取 消</el-button>
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
     </el-dialog>
@@ -61,8 +66,11 @@
 </template>
 
 <script>
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 import Teach from "@/views/common/teach";
+
+const COVER = 'https://media.changchangenglish.com/new-sing/990cfef2da7830212295f87d29c0d4e5672d678d.png';
+
 export default {
   mixins: [Teach],
   name: "ThemeDialog",
@@ -72,7 +80,7 @@ export default {
       form: {
         title: "", //主题标题
         sub_title: "", //主题副标题
-        cover: "", //主题封面
+        cover: COVER, //主题封面
         status: 0, //状态
       },
     };
@@ -112,7 +120,7 @@ export default {
       }
 
       api(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
@@ -135,7 +143,7 @@ export default {
         this.$nextTick(() => {
           this.form.title = "";
           this.form.sub_title = '';
-          this.form.cover = "";
+          this.form.cover = COVER;
           this.form.status = 1;
           if (this.dialogObj.type == 2) {
             this.form = {
@@ -162,9 +170,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .theme-avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .theme-avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -173,10 +183,12 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .theme-avatar {
   width: 178px;
   height: 178px;
   display: block;
 }
+
 /*}*/
 </style>

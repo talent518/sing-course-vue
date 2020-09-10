@@ -23,17 +23,16 @@
           <el-input
             placeholder="请输入"
             v-model="form.sub_title"
-            clearable
-          ></el-input>
+            clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="教材数">
+        <!--<el-form-item label="教材数">
           <el-input
             placeholder="请输入"
             v-model="form.textbook_number"
             clearable
           ></el-input>
-        </el-form-item>
+        </el-form-item>-->
 
         <el-form-item label="课程封面" required>
           <el-upload
@@ -43,25 +42,29 @@
             :show-file-list="false"
             :http-request="uploadFile"
             list-type="picture-card"
-            multiple
-          >
-            <el-image
-              style="width: 100%; height: 100%;"
-              fit="contain"
+            multiple>
+
+            <div
               v-if="form.cover"
-              :src="form.cover"
-            >
-            </el-image>
+              class="upload-item-image">
+              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+              <el-image
+                style="width: 100%; height: 100%;"
+                fit="contain"
+                :src="form.cover">
+              </el-image>
+            </div>
+
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+
+          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
         </el-form-item>
 
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
-        >
+        <el-button size="small" @click="dialogObj.show = false">取 消</el-button>
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
     </el-dialog>
@@ -69,8 +72,12 @@
 </template>
 
 <script>
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 import Teach from "@/views/common/teach";
+
+const COVER = 'https://static-cdn.changchangenglish.com/course/1e89746fad68128ea9711e30e5852051fbffb989.png',
+  SUB_TITLE = '用户端可见，请填写月主题英文';
+
 export default {
   mixins: [Teach],
   name: "CourseDialog",
@@ -79,8 +86,8 @@ export default {
     return {
       form: {
         title: "", //课程标题
-        sub_title: "", //课程副标题
-        cover: "", //课程封面
+        sub_title: SUB_TITLE, //课程副标题
+        cover: COVER, //课程封面
         status: 0, //状态
         textbook_number: "", //教材数
       },
@@ -122,7 +129,7 @@ export default {
       }
 
       api(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
@@ -144,14 +151,14 @@ export default {
       if (value) {
         this.$nextTick(() => {
           this.form.title = "";
-          this.form.sub_title = [];
-          this.form.cover = "";
+          this.form.sub_title = SUB_TITLE;
+          this.form.cover = COVER;
           this.form.status = 1;
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
               sub_title: this.dialogObj.sub_title,
-              cover: this.dialogObj.cover,
+              cover: this.dialogObj.cover || COVER,
               status: this.dialogObj.status,
               textbook_number: this.dialogObj.textbook_number,
             };
@@ -173,9 +180,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .course-avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .course-avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -184,10 +193,12 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .course-avatar {
   width: 178px;
   height: 178px;
   display: block;
 }
+
 /*}*/
 </style>

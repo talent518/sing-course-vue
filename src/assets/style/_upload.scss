@@ -1,0 +1,36 @@
+.upload-item {
+
+  .el-upload--picture-card {
+    overflow: hidden;
+  }
+
+  .upload-item-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    &:hover .mask {
+      opacity: 1;
+    }
+
+    .mask {
+      transition: opacity 280ms;
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      .iconfont {
+        color: #ffffff;
+        font-size: 28px;
+      }
+    }
+  }
+}
+

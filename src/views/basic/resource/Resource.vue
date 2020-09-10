@@ -1,21 +1,20 @@
 <template>
   <div>
     <el-form size="small" inline class="section-search">
-<!--      <el-button-->
-<!--        type="primary"-->
-<!--        plain-->
-<!--        size="small"-->
-<!--        @click="handleSearch"-->
-<!--      >查询-->
-<!--      </el-button>-->
-<!--      v-permission="'TemplateResourceCreate'"-->
+      <!--      <el-button-->
+      <!--        type="primary"-->
+      <!--        plain-->
+      <!--        size="small"-->
+      <!--        @click="handleSearch"-->
+      <!--      >查询-->
+      <!--      </el-button>-->
+      <!--      v-permission="'TemplateResourceCreate'"-->
       <el-form-item>
         <el-button
           v-permission="'TemplateResourceCreate'"
           type="success"
           plain
-          @click="handleDialog('add')"
-          >新增教材模板
+          @click="handleDialog('add')">新增教材模板
         </el-button>
       </el-form-item>
 
@@ -56,7 +55,7 @@
             size="small"
             type="primary"
             @click="handleDialog('view', scope.row)"
-            >预览
+          >预览
           </el-button>
 
           <el-button
@@ -65,7 +64,7 @@
             size="small"
             type="warning"
             @click="handleDialog('edit', scope.row)"
-            >编辑
+          >编辑
           </el-button>
           <el-button
             v-permission="'TemplateResourceDel'"
@@ -73,7 +72,7 @@
             size="small"
             type="danger"
             @click="handleDelete(scope.row.id)"
-            >删除
+          >删除
           </el-button>
         </template>
       </el-table-column>
@@ -105,7 +104,7 @@ export default {
 
   mixins: [commonMessage],
 
-  components: { TemplateResourceDialog ,page},
+  components: {TemplateResourceDialog, page},
 
   data() {
     return {
@@ -128,7 +127,7 @@ export default {
       this.dialogData = {
         show: true,
         type: type,
-        param: row ? row : { id: 0 },
+        param: row ? row : {id: 0},
       };
     },
 
@@ -149,7 +148,7 @@ export default {
 
     handleSwitch(id, val) {
       let _targetText = "",
-              _target; // 要到达的状态
+        _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
         _targetText = "启用";
@@ -163,28 +162,28 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-      .then(() => {
-        this.loading = true;
+        .then(() => {
+          this.loading = true;
 
-        let param = {
-          id: id,
-          status: _target,
-        };
+          let param = {
+            id: id,
+            status: _target,
+          };
 
-        this.ApiBasic.postResourceStatus(param)
-                .then((res) => {
-                  this.$message.success("修改成功");
-                  this.getData();
-                  this.loading = false;
-                })
-                .catch((err) => {
-                  console.log(err);
-                  this.loading = false;
-                });
-      })
-      .catch(() => {
-        this.$message.info("已取消");
-      });
+          this.ApiBasic.postResourceStatus(param)
+            .then((res) => {
+              this.$message.success("修改成功");
+              this.getData();
+              this.loading = false;
+            })
+            .catch((err) => {
+              console.log(err);
+              this.loading = false;
+            });
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
     },
 
     async handleDelete(id) {
@@ -226,8 +225,8 @@ export default {
 </script>
 
 <style scoped>
-  .section-search{
-    margin-bottom: 18px;
-    padding-top: 0;
-  }
+.section-search {
+  margin-bottom: 18px;
+  padding-top: 0;
+}
 </style>

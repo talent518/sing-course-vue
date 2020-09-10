@@ -1,12 +1,11 @@
 <template>
   <div class="product-dialog">
     <el-dialog
-      width="800px"
+      width="800px" top="4vh"
       :title="dialogObj.name"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
-      append-to-body
-    >
+      append-to-body>
       <el-form :model="form" ref="form" size="small" label-width="100px">
 
         <el-form-item label="产品标题" required>
@@ -25,7 +24,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="布局类型" required>
+        <el-form-item label="课程类型" required>
           <el-select
             v-model="form.layout"
             filterable
@@ -50,38 +49,42 @@
             :show-file-list="false"
             :http-request="uploadFile"
             list-type="picture-card"
-            multiple
-          >
-            <el-image
-              style="width: 100%; height: 100%;"
-              fit="contain"
+            multiple>
+
+            <div
               v-if="form.cover"
-              :src="form.cover"
-            >
-            </el-image>
+              class="upload-item-image">
+              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+              <el-image
+                style="width: 100%; height: 100%;"
+                fit="contain"
+                :src="form.cover"></el-image>
+            </div>
+
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <span><i class="el-icon-warning"></i> 建议图片尺寸为：546 * 342px</span>
         </el-form-item>
 
-        <el-form-item label="单价" required>
+        <el-form-item label="生产成本" required>
           <el-input
-                  class = "unit_price"
-                  placeholder="请填写单节教材的价格"
-                  v-model="form.unit_price"
-                  clearable
-                  @change="changeNumber"
+            class="unit_price"
+            placeholder="请填写单节教材的价格"
+            v-model="form.unit_price"
+            clearable
+            @change="changeNumber"
           ></el-input>
         </el-form-item>
 
         <el-form-item label="产品说明">
-          <editor-detail v-if="dialogObj.show" :lookData="form.desc" />
+          <editor-detail v-if="dialogObj.show" :lookData="form.desc"/>
         </el-form-item>
 
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
+        >取 消</el-button
         >
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
@@ -90,23 +93,25 @@
 </template>
 
 <script>
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 import Teach from "@/views/common/teach";
 import editorDetail from "@/components/editorDetail/editorDetail";
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 
+const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
+
 export default {
   mixins: [Teach, commonMessage, menuRole],
   name: "ProductDialog",
-  components: { editorDetail },
+  components: {editorDetail},
   props: ["dialogObj"],
   data() {
     return {
       form: {
         title: "", //课程标题
         sub_title: "", //课程副标题
-        cover: "", //课程封面
+        cover: COVER, //课程封面
         layout: "", //布局类型
         unit_price: "", //教材单价
         desc: {
@@ -143,20 +148,20 @@ export default {
         });
         return false;
       }
-    if (!form.cover) {
+      if (!form.cover) {
         this.$message({
-            type: 'error',
-            message: '请上传课程封面!'
+          type: 'error',
+          message: '请上传课程封面!'
         });
         return false;
-    }
-    if (!form.unit_price) {
+      }
+      if (!form.unit_price) {
         this.$message({
-            type: 'error',
-            message: '请填写单节教材的价格!'
+          type: 'error',
+          message: '请填写单节教材的价格!'
         });
         return false;
-    }
+      }
 
       if (this.dialogObj.type == 2) {
         json.id = this.dialogObj.id;
@@ -166,7 +171,7 @@ export default {
       }
 
       api(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
@@ -182,7 +187,7 @@ export default {
         this.form.cover = res.url;
       });
     },
-    changeNumber(){
+    changeNumber() {
       this.form.unit_price = this.form.unit_price.replace(/[^0-9.]/g, "").trim()
 
     }
@@ -193,10 +198,10 @@ export default {
         this.$nextTick(() => {
           this.form.title = "";
           this.form.sub_title = "";
-          this.form.cover = "";
+          this.form.cover = COVER;
           this.form.layout = "";
           this.form.unit_price = "";
-          this.form.desc = { detail: "" };
+          this.form.desc = {detail: ""};
           if (this.dialogObj.type == 2) {
             this.form = {
               title: this.dialogObj.title,
@@ -205,7 +210,7 @@ export default {
               unit_price: this.dialogObj.unit_price,
               layout: this.dialogObj.layout,
             };
-            let richText = {... this.dialogObj}.content;
+            let richText = {...this.dialogObj}.content;
             this.form.desc = {
               detail: richText,
             };
@@ -247,8 +252,10 @@ export default {
   height: 178px;
   display: block;
 }
+
 .unit_price {
   width: 200px;
 }
+
 /*}*/
 </style>
