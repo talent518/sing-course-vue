@@ -4,7 +4,7 @@
       <el-form-item>
         <el-input
           clearable
-          placeholder="请输入教材ID"
+          placeholder="教材ID"
           v-model="filter.id"
           style="width: 200px;"
         ></el-input>
@@ -12,7 +12,7 @@
       <el-form-item>
         <el-input
           clearable
-          placeholder="请输入教材编号"
+          placeholder="教材编号"
           v-model="filter.code"
           style="width: 200px;"
         ></el-input>
@@ -20,39 +20,44 @@
       <el-form-item>
         <el-input
           clearable
-          placeholder="请输入教材标题"
+          placeholder="教材标题"
           v-model="filter.title"
-          style="width: 200px;"
-        ></el-input>
+          style="width: 200px;"></el-input>
       </el-form-item>
+
       <el-form-item>
-        <el-form-item>
-          <el-select clearable v-model="filter.status" placeholder="请选择状态">
-            <el-option
-              v-for="item in dictoryObj.BaseStatusEnum"
-              :key="item.key"
-              :label="item.value"
-              :value="item.key"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+        <el-input
+          clearable
+          placeholder="教材副标题"
+          v-model="filter.sub_title"
+          style="width: 200px;"></el-input>
       </el-form-item>
+
+      <el-form-item>
+        <el-select clearable v-model="filter.status" placeholder="教材状态">
+          <el-option
+            v-for="item in dictoryObj.BaseStatusEnum"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button
           v-permission="'CourseView'"
           type="primary"
           plain
           size="small"
-          @click="handleSearch()"
-          >查询</el-button
-        >
+          @click="handleSearch()">查询
+        </el-button>
         <el-button
           type="success"
           v-permission="'ResourceCreate'"
           plain
-          @click="handleDialogAdd()"
-          >新增教材</el-button
-        >
+          @click="handleDialogAdd()">新增教材
+        </el-button>
       </el-form-item>
 
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -70,22 +75,25 @@
 
       <el-table-column prop="title" label="标题"></el-table-column>
 
+      <el-table-column prop="sub_title" label="副标题">
+        <template slot-scope="{row}">
+          {{row.sub_title || '-'}}
+        </template>
+      </el-table-column>
+
       <el-table-column prop="cover" label="封面">
         <template slot-scope="scope">
           <el-image
             style="width: 50px; height: 50px;"
             :src="scope.row.cover"
-            fit="fit"
-          ></el-image>
+            fit="fit"></el-image>
         </template>
       </el-table-column>
 
       <el-table-column prop="title" label="关联环节">
         <template slot-scope="scope">
           <template v-if="scope.row.template_data_details.length">
-            <div v-for="item in scope.row.template_data_details" :key="item.id">
-              {{ item.title }}
-            </div>
+            <div v-for="item in scope.row.template_data_details" :key="item.id">{{ item.title }}</div>
           </template>
           <template v-else>-</template>
         </template>
@@ -95,8 +103,7 @@
         <template slot-scope="scope">
           <cc-cell-switch
             :value="scope.row.status"
-            @click="handleSwitch(scope.row.id, scope.row.status)"
-          ></cc-cell-switch>
+            @click="handleSwitch(scope.row.id, scope.row.status)"></cc-cell-switch>
         </template>
       </el-table-column>
 
@@ -107,26 +114,24 @@
             plain
             size="small"
             type="primary"
-            @click="handleDialogEdit(scope.row)"
-            >预览</el-button
-          >
+            @click="handleDialogEdit(scope.row)">预览
+          </el-button>
 
           <el-button
             v-permission="'ResourceUpdate'"
             plain
             size="small"
             type="warning"
-            @click="handleDialogEdit(scope.row)"
-            >编辑</el-button
-          >
+            @click="handleDialogEdit(scope.row)">编辑
+          </el-button>
+
           <el-button
             v-permission="'ResourceDel'"
             plain
             size="small"
             type="danger"
-            @click="handleDelete(scope.row.id)"
-            >删除</el-button
-          >
+            @click="handleDelete(scope.row.id)">删除
+          </el-button>
         </template>
       </el-table-column>
     </my-table>
@@ -155,7 +160,7 @@ export default {
 
   mixins: [commonMessage],
 
-  components: { ResourceEdit },
+  components: {ResourceEdit},
 
   data() {
     return {
@@ -206,16 +211,16 @@ export default {
       };
     },
 
-      handleSwitch(id, val) {
+    handleSwitch(id, val) {
 
-        let _targetText = '', _target; // 要到达的状态
-        if (val === 0) {
-          _target = 'enable';
-          _targetText = '上架'
-        } else if (val === 1) {
-          _target = 'disable';
-          _targetText = '下架'
-        }
+      let _targetText = '', _target; // 要到达的状态
+      if (val === 0) {
+        _target = 'enable';
+        _targetText = '上架'
+      } else if (val === 1) {
+        _target = 'disable';
+        _targetText = '下架'
+      }
 
       this.$confirm(`确定 ${_targetText} 教材？`, "提示", {
         confirmButtonText: "确定",
@@ -232,7 +237,7 @@ export default {
 
           this.ApiResource.postResourceStatus(param)
             .then((res) => {
-              this.$message({ type: "success", message: "修改成功!" });
+              this.$message({type: "success", message: "修改成功!"});
               this.getData();
               this.loading = false;
             })
@@ -242,7 +247,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$message({ type: "info", message: "已取消" });
+          this.$message({type: "info", message: "已取消"});
         });
     },
 

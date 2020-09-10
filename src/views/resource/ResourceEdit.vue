@@ -17,11 +17,12 @@
         <el-form-item prop="id">
           <el-input v-model="form.id" style="display: none"></el-input>
         </el-form-item>
-        <el-form-item label="课节标题：" prop="title" required>
+        <el-form-item label="教材标题：" prop="title" required>
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="课节副标题：" prop="sub_title">
+        <!--todo 这里用默认值还是 placholder ？？或者 提示文字？-->
+        <el-form-item label="教材副标题：" prop="sub_title">
           <el-input v-model="form.sub_title" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -183,7 +184,8 @@ import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
 import LolacallSegment from "@/views/resource/segments/lolacall";
 import ToolsLink from "@/views/resource/segments/toolslink";
 
-const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png';
+const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png',
+  SUB_TITLE = '仅在后台展示，用户端不可见';
 
 export default {
   name: "ResourceDialog",
@@ -219,7 +221,7 @@ export default {
       form: {
         id: 0,
         title: "",
-        sub_title: "",
+        sub_title: SUB_TITLE,
         cover: "",
         textbook_template_id: "",
         textbook_template_code: "",
@@ -259,6 +261,7 @@ export default {
     init() {
       if (this.dialogData.param.id === 0) {
         this.loading = true;
+        this.title = '新增教材';
         this.form.tools = [];
         this.coverSnapshot = '';
         this.ApiBasic.getResource({scene: "all", status: 1})

@@ -3,28 +3,32 @@
     <el-form inline size="small" class="section-search">
       <el-form-item>
         <el-input
-          placeholder="请输入主题标题"
+          clearable
+          placeholder="主题标题"
           v-model="search.title"
-          style="width: 200px;"
-        ></el-input>
+          style="width: 200px;"></el-input>
       </el-form-item>
-      <el-button
-        v-permission="'ThemeView'"
-        type="primary"
-        plain
-        size="small"
-        @click="handleSearch"
-        >查询
-      </el-button>
-      <el-button plain size="small" @click="clearSearch">清除</el-button>
-      <el-button
-        type="success"
-        plain
-        v-permission="'ThemeCreate'"
-        size="small"
-        @click="addTheme"
-      >新增主题</el-button
-      >
+
+      <el-form-item>
+        <el-button
+          v-permission="'ThemeView'"
+          type="primary"
+          plain
+          size="small"
+          @click="handleSearch">查询
+        </el-button>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button
+          type="success"
+          plain
+          v-permission="'ThemeCreate'"
+          size="small"
+          @click="addTheme">新增主题
+        </el-button>
+      </el-form-item>
+
     </el-form>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -38,8 +42,7 @@
       :data="classList"
       v-loading="loading"
       size="small"
-      border
-    >
+      border>
       <el-table-column prop="code" label="编号" width=""></el-table-column>
       <el-table-column prop="title" label="主題标题" width=""></el-table-column>
       <el-table-column
@@ -64,7 +67,7 @@
               plain
               type="primary"
               size="mini"
-              >编辑
+            >编辑
             </el-link>
             <el-link
               v-permission="'ThemeCorrelation'"
@@ -72,7 +75,7 @@
               plain
               type="primary"
               size="mini"
-              >关联教材
+            >关联教材
             </el-link>
             <template>
               <el-popconfirm
@@ -81,7 +84,7 @@
                 @onConfirm="delTheme(scope.row.id)"
               >
                 <el-link plain type="primary" size="mini" slot="reference"
-                  >删除
+                >删除
                 </el-link>
               </el-popconfirm>
             </template>
@@ -97,8 +100,8 @@
       @pageChange="onPageChange"
       @sizeChange="onSizeChange"
     />
-    <dialog-com :dialogObj="dialogObj" @reflash="init" />
-    <relation-dialog :dialogObj="relationObj" @reflash="init" />
+    <dialog-com :dialogObj="dialogObj" @reflash="init"/>
+    <relation-dialog :dialogObj="relationObj" @reflash="init"/>
   </div>
 </template>
 
@@ -110,7 +113,7 @@ import page from "@/components/page/page";
 
 export default {
   mixins: [Teach],
-  components: { dialogCom, page, relationDialog },
+  components: {dialogCom, page, relationDialog},
   name: "ThemeManagement",
   data() {
     return {
