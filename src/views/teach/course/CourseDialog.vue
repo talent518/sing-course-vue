@@ -24,6 +24,7 @@
             placeholder="请输入"
             v-model="form.sub_title"
             clearable></el-input>
+          <span><i class="el-icon-warning"></i> 用户端可见，请填写月主题英文</span>
         </el-form-item>
 
         <!--<el-form-item label="教材数">
@@ -86,7 +87,7 @@ export default {
     return {
       form: {
         title: "", //课程标题
-        sub_title: SUB_TITLE, //课程副标题
+        sub_title: '', //课程副标题
         cover: COVER, //课程封面
         status: 0, //状态
         textbook_number: "", //教材数
@@ -151,7 +152,7 @@ export default {
       if (value) {
         this.$nextTick(() => {
           this.form.title = "";
-          this.form.sub_title = SUB_TITLE;
+          this.form.sub_title = '';
           this.form.cover = COVER;
           this.form.status = 1;
           if (this.dialogObj.type == 2) {

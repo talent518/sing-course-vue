@@ -24,6 +24,7 @@
         <!--todo 这里用默认值还是 placholder ？？或者 提示文字？-->
         <el-form-item label="教材副标题：" prop="sub_title">
           <el-input v-model="form.sub_title" placeholder="请输入"></el-input>
+          <span><i class="el-icon-warning"></i> 仅在后台展示，用户端不可见</span>
         </el-form-item>
 
         <el-form-item label="封面：" prop="cover" required>
@@ -221,7 +222,7 @@ export default {
       form: {
         id: 0,
         title: "",
-        sub_title: SUB_TITLE,
+        sub_title: '',
         cover: "",
         textbook_template_id: "",
         textbook_template_code: "",
