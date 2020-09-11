@@ -1,38 +1,22 @@
 <template>
   <div class="course-management">
-    <el-form inline size="small">
-      <div class="course-management-form" style="padding-top: 0">
-        <el-form-item label="">
-          <el-input
-            placeholder="请输入课程标题"
-            v-model="search.title"
-            style="width: 200px;"
-          ></el-input>
-        </el-form-item>
+    <el-form inline size="small" class="section-search">
 
-        <!--<el-form-item label="标签：">-->
-        <!--  <el-select-->
-        <!--    v-model="search.label"-->
-        <!--    multiple-->
-        <!--    filterable-->
-        <!--    clearable-->
-        <!--    placeholder=""-->
-        <!--    style="width: 200px;"-->
-        <!--  >-->
-        <!--    <el-option-->
-        <!--      v-for="(data, index) in watchList"-->
-        <!--      :key="index"-->
-        <!--      :label="data.title"-->
-        <!--      :value="data.id"-->
-        <!--    ></el-option>-->
-        <!--  </el-select>-->
-        <!--</el-form-item>-->
+      <el-form-item>
+        <el-input
+          clearable
+          placeholder="请输入课程标题"
+          v-model="search.title"
+          style="width: 200px;"></el-input>
+      </el-form-item>
 
-        <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch"
-          >查询</el-button
-        >
+      <el-form-item>
+        <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch">查询</el-button>
+      </el-form-item>
+
+      <el-form-item>
         <el-button v-permission="'CourseCreate'" type="success" plain size="small" @click="addClass">新增课程</el-button>
-      </div>
+      </el-form-item>
     </el-form>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -60,8 +44,8 @@
       <el-table-column prop="status_text" label="状态">
         <template slot-scope="scope">
           <cc-cell-switch
-                  :value="scope.row.status"
-                  @click="handleSwitch(scope.row.id, scope.row.status)"
+            :value="scope.row.status"
+            @click="handleSwitch(scope.row.id, scope.row.status)"
           ></cc-cell-switch>
         </template>
       </el-table-column>
@@ -69,30 +53,33 @@
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
             <el-link
-			v-permission="'CourseUpdate'"
+              v-permission="'CourseUpdate'"
               @click="editCourse(scope.row)"
               plain
               type="primary"
               size="mini"
-              >编辑</el-link
+            >编辑
+            </el-link
             >
             <el-link
-			v-permission="'CourseCorrelation'"
+              v-permission="'CourseCorrelation'"
               @click="relationClass(scope.row)"
               plain
               type="primary"
               size="mini"
-              >关联教材</el-link
+            >关联教材
+            </el-link
             >
 
             <template>
               <el-popconfirm
-			  v-permission="'CourseDel'"
+                v-permission="'CourseDel'"
                 title="确定要删除课程吗？"
                 @onConfirm="delCourse(scope.row.id)"
               >
                 <el-link plain type="primary" size="mini" slot="reference"
-                  >删除</el-link
+                >删除
+                </el-link
                 >
               </el-popconfirm>
             </template>
@@ -108,8 +95,8 @@
       @pageChange="onPageChange"
       @sizeChange="onSizeChange"
     />
-    <dialog-com :dialogObj="dialogObj" @reflash="init" />
-    <relation-dialog :dialogObj="relationObj" @reflash="init" />
+    <dialog-com :dialogObj="dialogObj" @reflash="init"/>
+    <relation-dialog :dialogObj="relationObj" @reflash="init"/>
   </div>
 </template>
 
@@ -121,7 +108,7 @@ import page from "@/components/page/page";
 
 export default {
   mixins: [Teach],
-  components: { dialogCom, page, relationDialog },
+  components: {dialogCom, page, relationDialog},
   name: "CourseManagement",
   data() {
     return {
@@ -208,7 +195,7 @@ export default {
 
     handleSwitch(id, val) {
       let _targetText = "",
-              _target; // 要到达的状态
+        _target; // 要到达的状态
       if (val === 0) {
         _target = "enable";
         _targetText = "上架";
@@ -231,15 +218,15 @@ export default {
           };
 
           this.ApiTeach.postCourseStatusApi(param)
-                  .then((res) => {
-                    this.$message.success("修改成功");
-                    this.init();
-                    this.loading = false;
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    this.loading = false;
-                  });
+            .then((res) => {
+              this.$message.success("修改成功");
+              this.init();
+              this.loading = false;
+            })
+            .catch((err) => {
+              console.log(err);
+              this.loading = false;
+            });
         })
         .catch(() => {
           this.$message.info("已取消");

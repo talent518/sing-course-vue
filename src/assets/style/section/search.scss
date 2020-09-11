@@ -4,7 +4,7 @@ $gutterSize: 16px;
   //margin-bottom: 10px;
   //padding: $gutterSize $gutterSize 0 $gutterSize;
   //background-color: #fff;
-  border-bottom: solid 1px #ebeef5;
+  //border-bottom: solid 1px #ebeef5;
 
   &.border {
     border-top: solid 1px #ebeef5;
@@ -12,13 +12,14 @@ $gutterSize: 16px;
 
   &.search-single {
     font-size: 0; // 去掉空隙
-    /*.el-form-item__content {
-      font-size: 0; // 去掉空隙
-    }*/
 
     .el-form-item {
       margin-bottom: 0;
     }
+  }
+
+  .el-form-item__content {
+    font-size: 0; // 去掉空隙
   }
 
   .el-form,

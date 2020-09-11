@@ -5,31 +5,24 @@
       title="唱唱VIP口语配音课"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
-      append-to-body
-    >
+      append-to-body>
       <div class="handle-box">
         <el-link
+          plain
           v-if="element_type == 0 || element_type == 1"
           @click="relationMaterial"
-          plain
-          type="primary"
-          size="mini"
-          >关联教材</el-link
-        >
+          type="primary" size="mini">关联教材
+        </el-link>
         <el-link
+          plain
           v-if="element_type == 0 || element_type == 2"
           @click="relationTheme"
-          plain
-          type="primary"
-          size="mini"
-          >关联主题</el-link
-        >
+          type="primary" size="mini">关联主题
+        </el-link>
 
         <template>
           <el-popconfirm title="确定要移除所有吗？" @onConfirm="deleteAllClass">
-            <el-link @click="" plain type="primary" size="mini" slot="reference"
-              >全部清除</el-link
-            >
+            <el-link @click="" plain type="primary" size="mini" slot="reference">全部清除</el-link>
           </el-popconfirm>
         </template>
       </div>
@@ -38,19 +31,17 @@
           class="class-box"
           v-for="(item, index) in list"
           v-dragging="{ item: item, list: list, group: 'list' }"
-          :key="index"
-        >
+          :key="index">
           <div class="title">
             {{ item.element.title }}
           </div>
           <div class="img-box">
-            <img :src="item.element.cover" alt="" />
+            <img :src="item.element.cover" alt=""/>
 
             <template>
               <el-popconfirm
                 title="确定要移除吗？"
-                @onConfirm="deleteClass(item.id)"
-              >
+                @onConfirm="deleteClass(item.id)">
                 <i class="iconfont el-icon-delete" slot="reference"></i>
               </el-popconfirm>
             </template>
@@ -61,11 +52,9 @@
         <el-button size="small" type="primary" v-if="courseSortBtn" @click="courseSort">保存当前排序</el-button>
       </span>
     </el-dialog>
-    <relation-material-dialog
-      :dialogObj="relationMaterialObj"
-      @reflash="init"
-    />
-    <relation-theme-dialog :dialogObj="relationThemeObj" @reflash="init" />
+
+    <relation-material-dialog :dialogObj="relationMaterialObj" @reflash="init"/>
+    <relation-theme-dialog :dialogObj="relationThemeObj" @reflash="init"/>
   </div>
 </template>
 
@@ -73,11 +62,12 @@
 import RelationMaterialDialog from "./RelationMaterialDialog";
 import RelationThemeDialog from "./RelationThemeDialog";
 import Teach from "@/views/common/teach";
+
 export default {
   mixins: [Teach],
   name: "RelationDialog",
   props: ["dialogObj"],
-  components: { RelationMaterialDialog, RelationThemeDialog },
+  components: {RelationMaterialDialog, RelationThemeDialog},
   data() {
     return {
       relationMaterialObj: {
@@ -91,20 +81,21 @@ export default {
       id: "",
       element_type: "",
       list: [],
-      courseSortArr:[],
-      courseSortBtn:false
+      courseSortArr: [],
+      courseSortBtn: false
     };
   },
   mounted() {
-    this.$dragging.$on("dragged", ({ value }) => {
+    this.$dragging.$on("dragged", ({value}) => {
       this.courseSortArr = value.list
       this.courseSortBtn = true
     });
-    this.$dragging.$on("dragend", () => {});
+    this.$dragging.$on("dragend", () => {
+    });
   },
   methods: {
     async init(val) {
-      if(val){
+      if (val) {
         this.element_type = val
         this.$emit("reflash");
       }
@@ -118,7 +109,8 @@ export default {
       // this.page.total = data.total;
     },
     //提交表单内容
-    sub() {},
+    sub() {
+    },
     relationMaterial() {
       this.relationMaterialObj = {
         show: true,
@@ -131,14 +123,14 @@ export default {
         id: this.id,
       };
     },
-    courseSort(){
-      let json={ids:''},arr=[]
-      this.courseSortArr.forEach(e=>{
+    courseSort() {
+      let json = {ids: ''}, arr = []
+      this.courseSortArr.forEach(e => {
         arr.push(e.id)
       })
       json.ids = arr.join(',')
-      this.ApiTeach.patchCourseDetailSortApi(this.id,json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+      this.ApiTeach.patchCourseDetailSortApi(this.id, json).then((res) => {
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
@@ -149,10 +141,10 @@ export default {
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delCourseDetailApi(id).then((res) => {
-        if(JSON.stringify(res) === '{}') {
-          if(this.list.length==1){
+        if (JSON.stringify(res) === '{}') {
+          if (this.list.length == 1) {
             this.list = []
-          }else{
+          } else {
             this.init();
           }
         } else {
@@ -162,18 +154,18 @@ export default {
     },
     //删除全部
     deleteAllClass() {
-      if(this.element_type == 0){
+      if (this.element_type == 0) {
         return
       }
       let api;
       if (this.element_type == 1) {
         api = this.ApiTeach.delAllCourseRelationTextbookApi;
-      } else if(this.element_type == 2){
+      } else if (this.element_type == 2) {
         api = this.ApiTeach.delAllCourseRelationThemeApi;
       }
 
       api(this.id).then((res) => {
-        if(JSON.stringify(res) === '{}') {
+        if (JSON.stringify(res) === '{}') {
           this.list = [];
           this.element_type = 0;
           this.$emit("reflash");
@@ -205,6 +197,7 @@ export default {
   width: 50%;
   justify-content: space-around;
 }
+
 .class-list-box {
   width: 100%;
   display: flex;

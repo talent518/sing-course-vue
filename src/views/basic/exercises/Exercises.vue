@@ -74,16 +74,14 @@
             plain
             size="small"
             type="warning"
-            @click="handleEdit(scope.row)"
-          >编辑
+            @click="handleEdit(scope.row)">编辑
           </el-button>
           <el-button
             v-permission="'ExercisesDel'"
             plain
             size="small"
             type="danger"
-            @click="handleDelete(scope.row.id)"
-          >删除
+            @click="handleDelete(scope.row.id)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -94,21 +92,19 @@
       :total="searchObj.total"
       :limit="searchObj.pageSize"
       @pageChange="onPageChange"
-      @sizeChange="onSizeChange"
-    />
+      @sizeChange="onSizeChange"/>
+
     <el-dialog
       :title="title"
       v-if="dialogFormVisible"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal="clickmodal"
-    >
+      :close-on-click-modal="clickmodal">
       <my-form
         class="textLeft"
         ref="myForm"
         label-width="150px"
         :rules="rules"
-        :model="model"
-      >
+        :model="model">
         <el-form-item label="配音标题：" prop="title">
           <el-input v-model="model.title" placeholder="请输入标题"></el-input>
         </el-form-item>
@@ -117,14 +113,12 @@
           <el-select
             v-model="model.question_type"
             placeholder="请选择习题模板"
-            clearable
-          >
+            clearable>
             <el-option
               v-for="item in dictoryObj.VoiceQuestionTypeEnum"
               :label="item.value"
               :value="item.key"
-              :key="item.key"
-            ></el-option>
+              :key="item.key"></el-option>
           </el-select>
         </el-form-item>
 

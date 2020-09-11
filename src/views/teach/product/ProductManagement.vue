@@ -1,52 +1,51 @@
 <template>
   <div class="product-management">
-    <el-form inline size="small">
-      <div class="product-management-form" style="padding-top: 0">
-        <el-form-item label="">
-          <el-input
-            placeholder="请输入产品标题"
-            v-model="search.title"
-            style="width: 200px"
-          ></el-input>
-        </el-form-item>
+    <el-form inline size="small" class="section-search">
+      <el-form-item>
+        <el-input
+          clearable
+          placeholder="请输入产品标题"
+          v-model="search.title"
+          style="width: 200px"></el-input>
+      </el-form-item>
 
-        <!--<el-form-item label="标签：">-->
-        <!--  <el-select-->
-        <!--    v-model="search.label"-->
-        <!--    multiple-->
-        <!--    filterable-->
-        <!--    clearable-->
-        <!--    placeholder=""-->
-        <!--    style="width: 200px;"-->
-        <!--  >-->
-        <!--    <el-option-->
-        <!--      v-for="(data, index) in watchList"-->
-        <!--      :key="index"-->
-        <!--      :label="data.title"-->
-        <!--      :value="data.id"-->
-        <!--    ></el-option>-->
-        <!--  </el-select>-->
-        <!--</el-form-item>-->
+      <!--<el-form-item label="标签：">-->
+      <!--  <el-select-->
+      <!--    v-model="search.label"-->
+      <!--    multiple-->
+      <!--    filterable-->
+      <!--    clearable-->
+      <!--    placeholder=""-->
+      <!--    style="width: 200px;"-->
+      <!--  >-->
+      <!--    <el-option-->
+      <!--      v-for="(data, index) in watchList"-->
+      <!--      :key="index"-->
+      <!--      :label="data.title"-->
+      <!--      :value="data.id"-->
+      <!--    ></el-option>-->
+      <!--  </el-select>-->
+      <!--</el-form-item>-->
 
+      <el-form-item>
         <el-button
           v-permission="'ProductView'"
           type="primary"
           plain
           size="small"
-          @click="handleSearch"
-          >查询</el-button
-        >
+          @click="handleSearch">查询
+        </el-button>
+      </el-form-item>
 
-        <el-button plain size="small" @click="clearSearch">清除</el-button>
+      <el-form-item>
         <el-button
           v-permission="'ProductCreate'"
           type="success"
           plain
           size="small"
-          @click="addClass"
-          >新增产品</el-button
-        >
-      </div>
+          @click="addClass">新增产品
+        </el-button>
+      </el-form-item>
     </el-form>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -60,29 +59,26 @@
       :data="classList"
       v-loading="loading"
       size="small"
-      border
-    >
+      border>
       <el-table-column prop="code" label="产品编号" width=""></el-table-column>
       <el-table-column prop="title" label="产品标题" width=""></el-table-column>
       <el-table-column
         prop="layout_text"
-        label="布局类型"
-        width=""
-      ></el-table-column>
+        label="课程类型"
+        width=""></el-table-column>
       <el-table-column label="封面">
         <template slot-scope="scope">
-          <img class="coverImg" :src="scope.row.cover" alt="" />
+          <img class="coverImg" :src="scope.row.cover" alt=""/>
         </template>
       </el-table-column>
       <el-table-column prop="status_text" label="状态">
         <template slot-scope="scope">
           <cc-cell-switch
             :value="scope.row.status"
-            @click="handleSwitch(scope.row.id, scope.row.status)"
-          ></cc-cell-switch>
+            @click="handleSwitch(scope.row.id, scope.row.status)"></cc-cell-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="260">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around">
             <el-link
@@ -90,34 +86,28 @@
               @click="editProduct(scope.row)"
               plain
               type="primary"
-              size="mini"
-              >编辑</el-link
-            >
+              size="mini">编辑
+            </el-link>
             <el-link
               v-permission="'ProductCorrelation'"
               @click="relationCourse(scope.row.id)"
               plain
               type="primary"
-              size="mini"
-              >关联课程</el-link
-            >
+              size="mini">关联课程
+            </el-link>
             <template>
               <el-popconfirm
                 v-permission="'ProductDel'"
                 title="确定要删除该产品吗？"
-                @onConfirm="delProduct(scope.row.id)"
-              >
-                <el-link plain type="primary" size="mini" slot="reference"
-                  >删除</el-link
-                >
+                @onConfirm="delProduct(scope.row.id)">
+                <el-link plain type="primary" size="mini" slot="reference">删除</el-link>
               </el-popconfirm>
               <el-link
                 plain
                 size="small"
                 type="primary"
-                @click="selectTools(scope.row.id)"
-                >辅助工具</el-link
-              >
+                @click="selectTools(scope.row.id)">辅助工具
+              </el-link>
             </template>
           </div>
         </template>
@@ -129,10 +119,9 @@
       :total="page.total"
       :limit="page.limit"
       @pageChange="onPageChange"
-      @sizeChange="onSizeChange"
-    />
-    <dialog-com :dialogObj="dialogObj" @reflash="init" />
-    <relation-dialog :dialogObj="relationObj" @reflash="init" />
+      @sizeChange="onSizeChange"/>
+    <dialog-com :dialogObj="dialogObj" @reflash="init"/>
+    <relation-dialog :dialogObj="relationObj" @reflash="init"/>
     <resource-tools
       v-if="tools.show"
       :id="tools.id"
@@ -147,9 +136,10 @@ import dialogCom from "./ProductDialog";
 import page from "@/components/page/page";
 import relationDialog from "./RelationDialog";
 import ResourceTools from "./ResourceTools";
+
 export default {
   mixins: [Teach],
-  components: { dialogCom, page, relationDialog, ResourceTools },
+  components: {dialogCom, page, relationDialog, ResourceTools},
   name: "ProductManagement",
   data() {
     return {
@@ -221,10 +211,6 @@ export default {
     handleSearch() {
       this.page.now = 1;
       this.init();
-    },
-
-    clearSearch() {
-      this.search.title = "";
     },
 
     onPageChange(val) {
@@ -332,6 +318,7 @@ export default {
     padding-top: 20px;
   }
 }
+
 .coverImg {
   width: 100px;
   height: 100px;

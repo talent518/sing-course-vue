@@ -217,10 +217,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.section-search {
-  margin-bottom: 18px;
-  padding-top: 0;
-}
-</style>

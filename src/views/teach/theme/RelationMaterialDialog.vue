@@ -2,43 +2,36 @@
   <div class="relation-dialog">
     <el-dialog
       width="800px"
+      top="4vh"
       title="教材列表"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
-      append-to-body
-    >
+      append-to-body>
       <el-form inline size="small">
         <div class="course-management-form">
           <el-form-item label="教材编号：">
             <el-input
               placeholder="请输入教材编号"
               v-model="filter.code"
-              style="width: 200px;"
-            ></el-input>
+              style="width: 200px;"></el-input>
           </el-form-item>
 
           <el-form-item label="教材标题：">
             <el-input
               placeholder="请输入教材标题"
               v-model="filter.title"
-              style="width: 200px;"
-            ></el-input>
+              style="width: 200px;"></el-input>
           </el-form-item>
 
-          <el-button type="primary" plain size="small" @click="handleSearch"
-            >查询</el-button
-          >
+          <el-button type="primary" plain size="small" @click="handleSearch">查询</el-button>
         </div>
       </el-form>
-      <el-divider></el-divider>
 
       <el-table
         :data="list"
         v-loading="loading"
         @selection-change="handleSelectionChange"
-        size="mini"
-        border
-      >
+        size="mini" border>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
         <el-table-column prop="title" label="教材标题"></el-table-column>
@@ -47,9 +40,7 @@
             <img
               style="height: 50px; width: 50px;"
               class="coverImg"
-              :src="scope.row.cover"
-              alt=""
-            />
+              :src="scope.row.cover"/>
           </template>
         </el-table-column>
       </el-table>
@@ -62,12 +53,9 @@
         :page-size="page.size"
         @size-change="handleSizeChange"
         @current-change="pageCurrentChange"
-        :current-page.sync="page.index"
-      ></el-pagination>
+        :current-page.sync="page.index"></el-pagination>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
-        >
+        <el-button size="small" @click="dialogObj.show = false">取 消</el-button>
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
     </el-dialog>
@@ -76,6 +64,7 @@
 
 <script>
 import Teach from "@/views/common/teach";
+
 export default {
   mixins: [Teach],
   name: "RelationMaterialDialog",
@@ -98,10 +87,27 @@ export default {
       },
     };
   },
-  mounted() {
-    this.handleSearch();
+
+  watch: {
+    "dialogObj.show"(val) {
+      if (val) this.init();
+    },
   },
+
   methods: {
+    init() {
+      this.filter = {
+        id: "",
+        title: "",
+        sub_title: "",
+        status: "",
+      };
+      this.list = [];
+      this.selected = [];
+      this.page.index = 1;
+      this.handleSearch();
+    },
+
     //提交表单内容
     sub() {
       let json = {
@@ -120,7 +126,7 @@ export default {
       });
       json.element_id = arr.join(",");
       this.ApiTeach.postThemeDetailApi(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",

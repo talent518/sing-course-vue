@@ -6,17 +6,17 @@
           clearable
           placeholder="教材ID"
           v-model="filter.id"
-          style="width: 200px;"
-        ></el-input>
+          style="width: 200px;"></el-input>
       </el-form-item>
+
       <el-form-item>
         <el-input
           clearable
           placeholder="教材编号"
           v-model="filter.code"
-          style="width: 200px;"
-        ></el-input>
+          style="width: 200px;"></el-input>
       </el-form-item>
+
       <el-form-item>
         <el-input
           clearable
@@ -39,8 +39,7 @@
             v-for="item in dictoryObj.BaseStatusEnum"
             :key="item.key"
             :label="item.value"
-            :value="item.key"
-          ></el-option>
+            :value="item.key"></el-option>
         </el-select>
       </el-form-item>
 
@@ -52,6 +51,9 @@
           size="small"
           @click="handleSearch()">查询
         </el-button>
+      </el-form-item>
+
+      <el-form-item>
         <el-button
           type="success"
           v-permission="'ResourceCreate'"
@@ -107,7 +109,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <el-button
             v-permission="'ResourcePreview'"
