@@ -160,6 +160,7 @@
       :modal="false">
       <component
         ref="toolView"
+        v-if="toolDialogVisible"
         :is="toolComponent"
         :payload="toolData"></component>
       <div slot="footer" v-if="dialogData.type !== 'view'">

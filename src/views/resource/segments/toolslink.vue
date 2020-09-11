@@ -29,7 +29,7 @@
         <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
           <el-option
 
-            v-for="item in dictoryObj.ResourcesTypeEnum"
+            v-for="item in dictoryObj.TextbookToolTypeEnum"
             :key="item.key"
             :label="item.value"
             :value="item.key"
