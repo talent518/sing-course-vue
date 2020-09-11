@@ -66,14 +66,13 @@
           <span><i class="el-icon-warning"></i> 建议图片尺寸为：546 * 342px</span>
         </el-form-item>
 
-        <el-form-item label="生产成本" required>
+        <el-form-item label="生产成本">
           <el-input
             class="unit_price"
             placeholder="请填写单节教材的价格"
             v-model="form.unit_price"
             clearable
-            @change="changeNumber"
-          ></el-input>
+            @change="changeNumber"></el-input>
         </el-form-item>
 
         <el-form-item label="产品说明">
