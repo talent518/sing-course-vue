@@ -6,8 +6,7 @@
           <el-input
             placeholder="请输入环节模板标题"
             v-model="search.title"
-            style="width: 200px;"
-          ></el-input>
+            style="width: 200px;"></el-input>
         </el-form-item>
 
         <el-button
@@ -15,21 +14,18 @@
           type="primary"
           plain
           size="small"
-          @click="handleSearch"
-          >查询</el-button
-        >
+          @click="handleSearch">查询
+        </el-button>
         <el-button plain size="small" @click="clearSearch">清除</el-button>
         <el-button
           type="success"
           plain
           size="small"
           @click="handleAdd"
-          v-permission="'TemplateSegmentCreate'"
-        >新增</el-button
-        >
+          v-permission="'TemplateSegmentCreate'">新增
+        </el-button>
       </div>
     </el-form>
-
 
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -56,33 +52,37 @@
 
       <el-table-column prop="type_text" label="类别"></el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="190">
         <template slot-scope="scope">
-          <el-button
-            v-permission="'TemplateSegmentPreview'"
-            plain
-            size="small"
-            type="primary"
-            @click="handlePreview(scope.row)"
-            >预览
-          </el-button>
 
-          <el-button
-            v-permission="'TemplateSegmentUpdate'"
-            plain
-            size="small"
-            type="warning"
-            @click="handleEdit(scope.row)"
-            >编辑
-          </el-button>
-          <el-button
-                  v-permission="'TemplateResourceDel'"
-                  plain
-                  size="small"
-                  type="danger"
-                  @click="handleDelete(scope.row.id)"
-          >删除
-          </el-button>
+          <el-button-group>
+
+            <el-button
+              v-permission="'TemplateSegmentPreview'"
+              plain
+              size="small"
+              type="primary"
+              @click="handlePreview(scope.row)">预览
+            </el-button>
+
+            <el-button
+              v-permission="'TemplateSegmentUpdate'"
+              plain
+              size="small"
+              type="warning"
+              @click="handleEdit(scope.row)">编辑
+            </el-button>
+
+            <el-button
+              v-permission="'TemplateResourceDel'"
+              plain
+              size="small"
+              type="danger"
+              @click="handleDelete(scope.row.id)">删除
+            </el-button>
+
+          </el-button-group>
+
         </template>
       </el-table-column>
     </my-table>
@@ -105,12 +105,13 @@ import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import SegmentDialog from "@/views/basic/segment/SegmentDialog";
 import page from "@/components/page/page";
+
 export default {
   name: "Segment",
 
   mixins: [commonMessage, menuRole],
 
-  components: { SegmentDialog,page },
+  components: {SegmentDialog, page},
 
   data() {
     return {
@@ -175,17 +176,17 @@ export default {
     },
     async handleDelete(id) {
       this.confirmDelMessage(
-              "确定要删除环节模板吗？",
-              async () => {
-                return await this.ApiBasic.delSegment(id);
-              },
-              async () => {
-                this.$message({
-                  type: "success",
-                  message: "删除成功",
-                });
-                this.getData();
-              }
+        "确定要删除环节模板吗？",
+        async () => {
+          return await this.ApiBasic.delSegment(id);
+        },
+        async () => {
+          this.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          this.getData();
+        }
       );
     },
     handleSwitch(id, val) {
@@ -214,7 +215,7 @@ export default {
 
           this.ApiBasic.postSegmentStatus(param)
             .then((res) => {
-              this.$message({ type: "success", message: "修改成功!" });
+              this.$message({type: "success", message: "修改成功!"});
               this.getData();
               this.loading = false;
             })
@@ -224,7 +225,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$message({ type: "info", message: "已取消" });
+          this.$message({type: "info", message: "已取消"});
         });
     },
 

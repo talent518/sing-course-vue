@@ -1,0 +1,21 @@
+$border-color: #E7E7E7;
+
+.el-button-group {
+
+  .el-button {
+    &.el-button:not(:first-child):not(:last-child) {
+      border-left-color: $border-color;
+      border-right-color: $border-color;
+    }
+
+    &.el-button:first-child {
+      border-right-color: $border-color;
+    }
+
+    &.el-button:last-child {
+      border-left-color: $border-color;
+    }
+  }
+
+}
+

@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <el-form size="small" inline class="section-search">
       <el-form-item>
-        <el-button  v-permission="'ScoreCreate'" type="success" plain @click="handleAdd">新增标准</el-button>
+        <el-button v-permission="'ScoreCreate'" type="success" plain @click="handleAdd">新增标准</el-button>
       </el-form-item>
     </el-form>
 
@@ -13,22 +13,24 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button
-		  v-permission="'ScoreUpdate'"
-            plain
-            size="small"
-            type="warning"
-            @click="handleEdit(scope.row)"
-            >编辑
-          </el-button>
-          <el-button
-		  v-permission="'ScoreDel'"
-            plain
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-            >删除
-          </el-button>
+
+          <el-button-group>
+            <el-button
+              v-permission="'ScoreUpdate'"
+              plain
+              size="small"
+              type="warning"
+              @click="handleEdit(scope.row)">编辑
+            </el-button>
+            <el-button
+              v-permission="'ScoreDel'"
+              plain
+              size="small"
+              type="danger"
+              @click="handleDelete(scope.row.id)">删除
+            </el-button>
+          </el-button-group>
+
         </template>
       </el-table-column>
     </my-table>
@@ -39,8 +41,7 @@
       :total="page.total"
       :limit="page.limit"
       @pageChange="onPageChange"
-      @sizeChange="onSizeChange"
-    />
+      @sizeChange="onSizeChange"/>
 
     <score-dialog :dialog-data="dialogData"></score-dialog>
   </div>
@@ -57,7 +58,7 @@ export default {
 
   mixins: [commonMessage, menuRole],
 
-  components: { ScoreDialog,page },
+  components: {ScoreDialog, page},
 
   data() {
     return {

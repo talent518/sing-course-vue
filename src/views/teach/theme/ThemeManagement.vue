@@ -58,36 +58,39 @@
           ></cc-cell-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+
+      <el-table-column label="操作" width="220">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
-            <el-link
-              v-permission="'ThemeUpdate'"
-              @click="editTheme(scope.row)"
-              plain
-              type="primary"
-              size="mini"
-            >编辑
-            </el-link>
-            <el-link
-              v-permission="'ThemeCorrelation'"
-              @click="relationMaterial(scope.row.id)"
-              plain
-              type="primary"
-              size="mini"
-            >关联教材
-            </el-link>
-            <template>
-              <el-popconfirm
-                v-permission="'ThemeDel'"
-                title="确定要删除主题吗？"
-                @onConfirm="delTheme(scope.row.id)"
-              >
-                <el-link plain type="primary" size="mini" slot="reference"
-                >删除
-                </el-link>
-              </el-popconfirm>
-            </template>
+
+            <el-button-group>
+              <el-button
+                v-permission="'ThemeUpdate'"
+                @click="editTheme(scope.row)"
+                plain
+                type="warning"
+                size="small">编辑
+              </el-button>
+
+              <el-button
+                v-permission="'ThemeCorrelation'"
+                @click="relationMaterial(scope.row.id)"
+                plain
+                type="success"
+                size="small">关联教材
+              </el-button>
+
+              <template>
+                <el-popconfirm
+                  v-permission="'ThemeDel'"
+                  title="确定要删除主题吗？"
+                  @onConfirm="delTheme(scope.row.id)">
+                  <el-button plain type="danger" size="small" slot="reference">删除</el-button>
+                </el-popconfirm>
+              </template>
+
+            </el-button-group>
+
           </div>
         </template>
       </el-table-column>

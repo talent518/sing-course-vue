@@ -109,31 +109,35 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="190">
         <template slot-scope="scope">
-          <el-button
-            v-permission="'ResourcePreview'"
-            plain
-            size="small"
-            type="primary"
-            @click="handleDialogEdit(scope.row)">预览
-          </el-button>
 
-          <el-button
-            v-permission="'ResourceUpdate'"
-            plain
-            size="small"
-            type="warning"
-            @click="handleDialogEdit(scope.row)">编辑
-          </el-button>
+          <el-button-group>
+            <el-button
+              v-permission="'ResourcePreview'"
+              plain
+              size="small"
+              type="primary"
+              @click="handleDialogEdit(scope.row)">预览
+            </el-button>
 
-          <el-button
-            v-permission="'ResourceDel'"
-            plain
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.row.id)">删除
-          </el-button>
+            <el-button
+              v-permission="'ResourceUpdate'"
+              plain
+              size="small"
+              type="warning"
+              @click="handleDialogEdit(scope.row)">编辑
+            </el-button>
+
+            <el-button
+              v-permission="'ResourceDel'"
+              plain
+              size="small"
+              type="danger"
+              @click="handleDelete(scope.row.id)">删除
+            </el-button>
+          </el-button-group>
+
         </template>
       </el-table-column>
     </my-table>
