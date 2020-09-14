@@ -42,28 +42,11 @@
         </el-form-item>
 
         <el-form-item label="产品封面" required>
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="image/*"
-            :show-file-list="false"
-            :http-request="uploadFile"
-            list-type="picture-card"
-            multiple>
 
-            <div
-              v-if="form.cover"
-              class="upload-item-image">
-              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
-              <el-image
-                style="width: 100%; height: 100%;"
-                fit="contain"
-                :src="form.cover"></el-image>
-            </div>
+          <cc-form-upload
+            v-model="form.cover"
+            tips="建议图片尺寸为：546 * 342px"></cc-form-upload>
 
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <span><i class="el-icon-warning"></i> 建议图片尺寸为：546 * 342px</span>
         </el-form-item>
 
         <el-form-item label="生产成本">
@@ -181,14 +164,8 @@ export default {
       });
     },
 
-    uploadFile(e) {
-      upload(e.file).then((res) => {
-        this.form.cover = res.url;
-      });
-    },
     changeNumber() {
       this.form.unit_price = this.form.unit_price.replace(/[^0-9.]/g, "").trim()
-
     }
   },
   watch: {

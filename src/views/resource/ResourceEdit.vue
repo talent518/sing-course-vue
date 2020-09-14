@@ -21,36 +21,16 @@
           <el-input v-model="form.title" placeholder="请输入"></el-input>
         </el-form-item>
 
-        <!--todo 这里用默认值还是 placholder ？？或者 提示文字？-->
         <el-form-item label="教材副标题：" prop="sub_title">
           <el-input v-model="form.sub_title" placeholder="请输入"></el-input>
           <span><i class="el-icon-warning"></i> 仅在后台展示，用户端不可见</span>
         </el-form-item>
 
         <el-form-item label="封面：" prop="cover" required>
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="image/*"
-            :show-file-list="false"
-            :http-request="uploadFileCover"
-            list-type="picture-card"
-            multiple>
 
-            <div
-              v-if="form.cover"
-              class="upload-item-image">
-              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
-              <el-image
-                style="width: 100%; height: 100%"
-                fit="contain"
-                :src="form.cover"></el-image>
-            </div>
-
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-
-          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
+          <cc-form-upload
+            v-model="form.cover"
+            tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
 
         </el-form-item>
 
@@ -265,6 +245,7 @@ export default {
         this.loading = true;
         this.title = '新增教材';
         this.form.tools = [];
+        this.form.cover = COVER;
         this.coverSnapshot = '';
         this.ApiBasic.getResource({scene: "all", status: 1})
           .then((res) => {
@@ -370,11 +351,6 @@ export default {
       this.toolsData.show = true;
       this.toolsData.obj = val;
       this.toolsData.index = index;
-    },
-
-    async uploadFileCover(e) {
-      let res = await upload(e.file);
-      this.form.cover = res.url;
     },
 
     async uploadFile(e, index) {

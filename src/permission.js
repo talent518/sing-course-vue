@@ -1,9 +1,9 @@
 import router from "@/router";
-import { getStorage } from "@util/storage";
+import {getStorage} from "@util/storage";
 import store from "@/store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
-NProgress.configure({ showSpinner: false });
+NProgress.configure({showSpinner: false});
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
@@ -24,8 +24,8 @@ router.beforeEach(async (to, from, next) => {
           "permission/generateRoutes",
           permissions
         );
-		console.log("aaaaa")
-        console.log(newRoutes);
+        /*console.log("aaaaa")*/
+        /*console.log(newRoutes);*/
         router.addRoutes([
           ...newRoutes,
           {
@@ -33,7 +33,7 @@ router.beforeEach(async (to, from, next) => {
             redirect: "/index",
           },
         ]);
-        next({ ...to, replace: true });
+        next({...to, replace: true});
       } else {
         next();
       }

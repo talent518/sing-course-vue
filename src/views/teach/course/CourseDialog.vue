@@ -36,30 +36,9 @@
         </el-form-item>-->
 
         <el-form-item label="课程封面" required>
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="image/*"
-            :show-file-list="false"
-            :http-request="uploadFile"
-            list-type="picture-card"
-            multiple>
-
-            <div
-              v-if="form.cover"
-              class="upload-item-image">
-              <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
-              <el-image
-                style="width: 100%; height: 100%;"
-                fit="contain"
-                :src="form.cover">
-              </el-image>
-            </div>
-
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-
-          <span><i class="el-icon-warning"></i> 建议图片尺寸为：600 * 600px</span>
+          <cc-form-upload
+            v-model="form.cover"
+            tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
         </el-form-item>
 
       </el-form>
@@ -141,11 +120,6 @@ export default {
       });
     },
 
-    uploadFile(e) {
-      upload(e.file).then((res) => {
-        this.form.cover = res.url;
-      });
-    },
   },
   watch: {
     "dialogObj.show"(value) {
