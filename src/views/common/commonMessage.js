@@ -1,4 +1,4 @@
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   inject: [
@@ -33,12 +33,12 @@ export default {
       }
     },
     filterEnum(type, key) {
-      console.log("123", this.dictoryObj[type]);
+      /*console.log("123", this.dictoryObj[type]);*/
       let result = this.dictoryObj[type].find((i) => {
         return i.key == key;
       });
 
-      console.log("filterEnum", result);
+      /*console.log("filterEnum", result);*/
 
       return result && result.value ? result.value : "-";
     },
@@ -101,7 +101,8 @@ export default {
       });
       return list;
     },
-    filterAllChild() {},
+    filterAllChild() {
+    },
     async remoteMethod(name) {
       this.userList = await this.ApiUser.getSelectUsers(name);
     },

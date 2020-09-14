@@ -68,7 +68,12 @@
         width=""></el-table-column>
       <el-table-column label="封面">
         <template slot-scope="scope">
-          <img class="coverImg" :src="scope.row.cover" alt=""/>
+
+          <cc-cell-image
+            :src="scope.row.cover"
+            :index="scope.$index"
+            :list="classList.map(i => {return i.cover})"></cc-cell-image>
+
         </template>
       </el-table-column>
       <el-table-column prop="status_text" label="状态">
@@ -78,38 +83,44 @@
             @click="handleSwitch(scope.row.id, scope.row.status)"></cc-cell-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="260">
+      <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: space-around">
-            <el-link
-              v-permission="'ProductUpdate'"
-              @click="editProduct(scope.row)"
-              plain
-              type="primary"
-              size="mini">编辑
-            </el-link>
-            <el-link
-              v-permission="'ProductCorrelation'"
-              @click="relationCourse(scope.row.id)"
-              plain
-              type="primary"
-              size="mini">关联课程
-            </el-link>
-            <template>
-              <el-popconfirm
-                v-permission="'ProductDel'"
-                title="确定要删除该产品吗？"
-                @onConfirm="delProduct(scope.row.id)">
-                <el-link plain type="primary" size="mini" slot="reference">删除</el-link>
-              </el-popconfirm>
-              <el-link
+
+          <div style="display:flex; justify-content: center">
+            <el-button-group>
+              <el-button
+                v-permission="'ProductUpdate'"
+                @click="editProduct(scope.row)"
+                plain
+                type="warning"
+                size="small">编辑
+              </el-button>
+
+              <el-button
+                v-permission="'ProductCorrelation'"
+                @click="relationCourse(scope.row.id)"
+                plain
+                type="success"
+                size="small">关联课程
+              </el-button>
+
+              <el-button
                 plain
                 size="small"
                 type="primary"
                 @click="selectTools(scope.row.id)">辅助工具
-              </el-link>
-            </template>
+              </el-button>
+
+              <el-popconfirm
+                v-permission="'ProductDel'"
+                title="确定要删除该产品吗？"
+                @onConfirm="delProduct(scope.row.id)">
+                <el-button plain type="danger" size="small" slot="reference">删除</el-button>
+              </el-popconfirm>
+
+            </el-button-group>
           </div>
+
         </template>
       </el-table-column>
     </el-table>

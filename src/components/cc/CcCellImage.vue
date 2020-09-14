@@ -1,8 +1,11 @@
 <template>
   <span class="cell-img-wrapper flex">
-    <a v-if="src" target="_blank" download :href="src">
-      <img class="cell-img" :src="src + '?imageView2/2/w/144'">
-    </a>
+    <el-image
+      v-if="src"
+      style="width: 100%; height: 100%"
+      fit="contain"
+      :src="src + '?imageView2/2/w/144'"
+      :preview-src-list="getImgList()"></el-image>
     <img v-else class="cell-img" :src="src + '?imageView2/2/w/144'">
   </span>
 
@@ -19,6 +22,16 @@ export default {
       default: ''
     },
 
+    list: { // 图片列表
+      type: Array,
+      default: () => []
+    },
+
+    index: { // list中当前图片的index
+      type: Number,
+      default: 0
+    },
+
     align: {
       type: String,
       default: 'center'
@@ -32,7 +45,23 @@ export default {
   methods: {
     componentClick() {
       this.$emit('click')
-    }
+    },
+
+    getImgList() {
+      let arr = [];
+
+      if (this.list && this.list.length) {
+        arr = JSON.parse(JSON.stringify(this.list));
+        for (let i = 0; i < this.index; i++) {
+          arr.push(arr[0]);
+          arr.splice(0, 1);
+        }
+      } else {
+        arr = [this.src];
+      }
+
+      return arr
+    },
   }
 }
 
@@ -64,5 +93,9 @@ export default {
     }
 
   }
+}
+
+.el-image-viewer__close {
+  color: #ffffff;
 }
 </style>

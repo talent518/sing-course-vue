@@ -30,8 +30,7 @@
       :data="classList"
       v-loading="loading"
       size="small"
-      border
-    >
+      border>
       <el-table-column prop="code" label="编号" width=""></el-table-column>
       <el-table-column prop="title" label="课程标题" width=""></el-table-column>
       <!--<el-table-column prop="" label="教具" width=""></el-table-column>-->
@@ -49,44 +48,43 @@
           ></cc-cell-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="220">
         <template slot-scope="scope">
           <div style="display: flex; justify-content: space-around;">
-            <el-link
-              v-permission="'CourseUpdate'"
-              @click="editCourse(scope.row)"
-              plain
-              type="primary"
-              size="mini"
-            >编辑
-            </el-link
-            >
-            <el-link
-              v-permission="'CourseCorrelation'"
-              @click="relationClass(scope.row)"
-              plain
-              type="primary"
-              size="mini"
-            >关联教材
-            </el-link
-            >
 
-            <template>
-              <el-popconfirm
-                v-permission="'CourseDel'"
-                title="确定要删除课程吗？"
-                @onConfirm="delCourse(scope.row.id)"
-              >
-                <el-link plain type="primary" size="mini" slot="reference"
-                >删除
-                </el-link
-                >
-              </el-popconfirm>
-            </template>
+            <el-button-group>
+              <el-button
+                v-permission="'CourseUpdate'"
+                @click="editCourse(scope.row)"
+                plain
+                type="warning"
+                size="small">编辑
+              </el-button>
+
+              <el-button
+                v-permission="'CourseCorrelation'"
+                @click="relationClass(scope.row)"
+                plain
+                type="success"
+                size="small">关联教材
+              </el-button>
+
+              <template>
+                <el-popconfirm
+                  v-permission="'CourseDel'"
+                  title="确定要删除课程吗？"
+                  @onConfirm="delCourse(scope.row.id)">
+                  <el-button plain type="danger" size="small" slot="reference">删除</el-button>
+                </el-popconfirm>
+              </template>
+
+            </el-button-group>
+
           </div>
         </template>
       </el-table-column>
     </el-table>
+
     <page
       style="text-align: left;margin: 18px 0"
       :nowPage="page.now"

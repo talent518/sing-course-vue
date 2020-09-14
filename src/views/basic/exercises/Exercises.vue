@@ -33,10 +33,12 @@
       ></el-table-column>
 
       <el-table-column prop="title" label="配音素材">
-        <template slot-scope="{ row }">
-          <!--<el-image :src="row.material_url"></el-image>-->
+        <template slot-scope="scope">
 
-          <cc-cell-image :src="row.material_url"></cc-cell-image>
+          <cc-cell-image
+            :src="scope.row.material_url"
+            :index="scope.$index"
+            :list="list.map(i => {return i.material_url})"></cc-cell-image>
 
         </template>
       </el-table-column>
@@ -66,26 +68,32 @@
           <div v-html="row.dubbing_answer"></div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150">
+
+      <el-table-column label="操作" width="140">
         <template slot-scope="scope">
 
-          <el-button
-            v-permission="'ExercisesUpdate'"
-            plain
-            size="small"
-            type="warning"
-            @click="handleEdit(scope.row)">编辑
-          </el-button>
-          <el-button
-            v-permission="'ExercisesDel'"
-            plain
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.row.id)">删除
-          </el-button>
+          <el-button-group>
+
+            <el-button
+              v-permission="'ExercisesUpdate'"
+              plain
+              size="small"
+              type="warning"
+              @click="handleEdit(scope.row)">编辑
+            </el-button>
+            <el-button
+              v-permission="'ExercisesDel'"
+              plain
+              size="small"
+              type="danger"
+              @click="handleDelete(scope.row.id)">删除
+            </el-button>
+
+          </el-button-group>
         </template>
       </el-table-column>
     </my-table>
+
     <page
       style="text-align: left;margin: 18px 0"
       :nowPage="searchObj.pageIndex"
