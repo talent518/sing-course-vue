@@ -85,10 +85,10 @@
 
       <el-table-column prop="cover" label="封面">
         <template slot-scope="scope">
-          <el-image
-            style="width: 50px; height: 50px;"
+          <cc-cell-image
             :src="scope.row.cover"
-            fit="fit"></el-image>
+            :index="scope.$index"
+            :list="list.map(i => {return i.cover})"></cc-cell-image>
         </template>
       </el-table-column>
 

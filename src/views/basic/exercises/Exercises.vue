@@ -33,10 +33,12 @@
       ></el-table-column>
 
       <el-table-column prop="title" label="配音素材">
-        <template slot-scope="{ row }">
-          <!--<el-image :src="row.material_url"></el-image>-->
+        <template slot-scope="scope">
 
-          <cc-cell-image :src="row.material_url"></cc-cell-image>
+          <cc-cell-image
+            :src="scope.row.material_url"
+            :index="scope.$index"
+            :list="list.map(i => {return i.material_url})"></cc-cell-image>
 
         </template>
       </el-table-column>

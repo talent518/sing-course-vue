@@ -5,8 +5,7 @@
       :title="dialogObj.name"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
-      append-to-body
-    >
+      append-to-body>
       <el-form :model="form" ref="form" size="small" label-width="100px">
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->

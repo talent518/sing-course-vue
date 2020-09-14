@@ -68,7 +68,12 @@
         width=""></el-table-column>
       <el-table-column label="封面">
         <template slot-scope="scope">
-          <img class="coverImg" :src="scope.row.cover" alt=""/>
+
+          <cc-cell-image
+            :src="scope.row.cover"
+            :index="scope.$index"
+            :list="classList.map(i => {return i.cover})"></cc-cell-image>
+
         </template>
       </el-table-column>
       <el-table-column prop="status_text" label="状态">
