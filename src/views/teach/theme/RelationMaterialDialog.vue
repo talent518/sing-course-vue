@@ -9,17 +9,27 @@
       append-to-body>
       <el-form inline size="small">
         <div class="course-management-form">
-          <el-form-item label="教材编号：">
+          <el-form-item>
             <el-input
-              placeholder="请输入教材编号"
+              clearable
+              placeholder="教材编号"
               v-model="filter.code"
               style="width: 200px;"></el-input>
           </el-form-item>
 
-          <el-form-item label="教材标题：">
+          <el-form-item>
             <el-input
-              placeholder="请输入教材标题"
+              clearable
+              placeholder="教材标题"
               v-model="filter.title"
+              style="width: 200px;"></el-input>
+          </el-form-item>
+
+          <el-form-item>
+            <el-input
+              clearable
+              placeholder="教材副标题"
+              v-model="filter.sub_title"
               style="width: 200px;"></el-input>
           </el-form-item>
 
@@ -35,6 +45,11 @@
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
         <el-table-column prop="title" label="教材标题"></el-table-column>
+        <el-table-column prop="sub_title" label="教材副标题">
+          <template slot-scope="{row}">
+            {{row.sub_title || '-'}}
+          </template>
+        </el-table-column>
         <el-table-column label="封面" width="">
           <template slot-scope="scope">
             <img
