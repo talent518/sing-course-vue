@@ -44,8 +44,8 @@
         size="mini" border>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
-        <el-table-column prop="title" label="教材标题"></el-table-column>
-        <el-table-column prop="sub_title" label="教材副标题">
+        <el-table-column prop="title" label="教材标题" min-width="160"></el-table-column>
+        <el-table-column prop="sub_title" label="教材副标题" min-width="220">
           <template slot-scope="{row}">
             {{row.sub_title || '-'}}
           </template>
