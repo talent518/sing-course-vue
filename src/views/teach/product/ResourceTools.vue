@@ -4,33 +4,40 @@
       <div
         v-for="(item, index) in ProductToolTypeEnum"
         :key="index"
-        class="m30"
-      >
+        class="m30">
         <el-checkbox v-model="item.checked">{{ item.value }}</el-checkbox>
+
+        <!--家长须知需要关联内容-->
         <el-button
-          class="relationBtn"
-          @click="uploadContent"
           v-if="item.key == 1"
-          type="default"
-          >关联内容</el-button
-        >
+          @click="uploadContent"
+          class="relationBtn"
+          type="default">关联内容
+        </el-button>
+
+        <cc-form-upload
+          v-if="item.key == 2"
+          v-model="form.template_data.cover"
+          tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
+
       </div>
     </div>
-    <div>
+
+    <div slot="footer" class="dialog-footer">
       <el-button @click="cancel">取消</el-button>
       <el-button type="primary" @click="handleSegmentSave">保存</el-button>
     </div>
+
     <div>
       <el-dialog title="音视频" :visible.sync="childIsShow" append-to-body>
         <toolslink :payload="segmentData" ref="segmentView"></toolslink>
         <div slot="footer">
           <el-button @click="childIsShow = false">取 消</el-button>
-          <el-button type="primary" @click="childIsShow = false"
-            >确 定</el-button
-          >
+          <el-button type="primary" @click="childIsShow = false">确 定</el-button>
         </div>
       </el-dialog>
     </div>
+
   </el-dialog>
 </template>
 <script>
@@ -48,6 +55,7 @@ let parentVal = {
 };
 //https://media.changchangenglish.com/course/847368d37b9166d723fc3ad51341a627fab414b8.mp4
 import toolslink from "@/views/teach/product/toolslink";
+
 export default {
   props: {
     // id 为product_id
@@ -55,7 +63,7 @@ export default {
       type: [String, Number],
     },
   },
-  components: { toolslink },
+  components: {toolslink},
   data() {
     return {
       show: true,
@@ -79,9 +87,7 @@ export default {
   },
   methods: {
     handleSegmentSave() {
-      let newValue =
-        (this.$refs.segmentView && this.$refs.segmentView.getFormData()) ||
-        this.segmentData;
+      let newValue = (this.$refs.segmentView && this.$refs.segmentView.getFormData()) || this.segmentData;
       let arr = [];
       let tool_types = "";
       this.ProductToolTypeEnum.forEach((i) => {
@@ -99,8 +105,8 @@ export default {
           tool_types += "," + i.key;
         }
       });
-      arr.push({ tool_types });
-      this.$parent.ApiResource.postProduceTool(this.id, { tools: arr });
+      arr.push({tool_types});
+      this.$parent.ApiResource.postProduceTool(this.id, {tools: arr});
       this.cancel();
       this.$parent.init();
     },
@@ -142,7 +148,7 @@ export default {
         }
       });
       if (!this.segmentData.hasOwnProperty("resources")) {
-        this.segmentData = { play_type: 1, resources: [] };
+        this.segmentData = {play_type: 1, resources: []};
       }
     } else {
       console.error("您没有传值");

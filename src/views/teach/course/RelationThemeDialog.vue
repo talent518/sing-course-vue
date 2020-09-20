@@ -40,28 +40,24 @@
             ></el-input>
           </el-form-item>
 
-          <el-button type="primary" plain size="small" @click="handleSearch"
-            >查询</el-button
-          >
+          <el-button type="primary" plain size="small" @click="handleSearch">查询</el-button>
 
           <el-button plain size="small" @click="clearSearch">清除</el-button>
         </div>
       </el-form>
-      <el-divider></el-divider>
 
       <el-table
         :data="list"
         v-loading="loading"
         @selection-change="handleSelectionChange"
         size="mini"
-        border
-      >
+        border>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
         <el-table-column prop="title" label="教材标题"></el-table-column>
         <el-table-column label="封面" width="">
           <template slot-scope="scope">
-            <img class="coverImg" :src="scope.row.cover" alt="" />
+            <img class="coverImg" :src="scope.row.cover" alt=""/>
           </template>
         </el-table-column>
         <el-table-column
@@ -72,7 +68,7 @@
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
+        >取 消</el-button
         >
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
@@ -82,6 +78,7 @@
 
 <script>
 import Teach from "@/views/common/teach";
+
 export default {
   mixins: [Teach],
   name: "RelationThemeDialog",
@@ -107,7 +104,7 @@ export default {
         course_id: this.dialogObj.id,
         element_type: 2,
       };
-      if (this.selected.length==0) {
+      if (this.selected.length == 0) {
         this.$message({
           type: 'error',
           message: '请至少勾选一个!'
@@ -120,13 +117,13 @@ export default {
       });
       json.element_id = arr.join(",");
       this.ApiTeach.postCourseDetailApi(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
           });
         }
-        this.$emit("reflash",2);
+        this.$emit("reflash", 2);
         this.dialogObj.show = false;
       });
     },
@@ -136,7 +133,7 @@ export default {
         scene: "all",
         exclude: "yes",
         status: 1,
-        id:this.dialogObj.id,
+        id: this.dialogObj.id,
         title: this.search.title,
         code: this.search.code,
       };

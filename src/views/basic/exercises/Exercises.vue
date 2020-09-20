@@ -246,8 +246,12 @@
 
         <!--<el-form-item label="配音描述详情：" prop="dubbing_content_tran">-->
         <!--</el-form-item>-->
-        <el-button type="success" @click="save('myForm')">保存</el-button>
       </my-form>
+
+      <div slot="footer">
+        <el-button type="primary" @click="save('myForm')">保存</el-button>
+      </div>
+
     </el-dialog>
   </div>
 </template>
