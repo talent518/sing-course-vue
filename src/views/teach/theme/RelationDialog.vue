@@ -2,7 +2,7 @@
   <div class="relation-dialog">
     <el-dialog
       width="800px"
-      title="唱唱VIP口语配音课"
+      title="关联教材"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
       append-to-body>

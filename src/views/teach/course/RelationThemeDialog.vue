@@ -53,8 +53,8 @@
         size="mini"
         border>
         <el-table-column type="selection" width="40"></el-table-column>
-        <el-table-column prop="code" label="教材编号"></el-table-column>
-        <el-table-column prop="title" label="教材标题"></el-table-column>
+        <el-table-column prop="code" label="主题编号"></el-table-column>
+        <el-table-column prop="title" label="主题标题"></el-table-column>
         <el-table-column label="封面" width="">
           <template slot-scope="scope">
             <img class="coverImg" :src="scope.row.cover" alt=""/>
@@ -62,7 +62,7 @@
         </el-table-column>
         <el-table-column
           prop="textbook_num"
-          label="教材数"
+          label="主题数"
           width="115"
         ></el-table-column>
       </el-table>

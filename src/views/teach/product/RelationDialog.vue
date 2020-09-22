@@ -2,21 +2,17 @@
   <div class="relation-dialog">
     <el-dialog
       width="800px"
-      title="唱唱VIP口语配音课"
+      title="关联课程"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
       append-to-body
     >
       <div class="handle-box">
-        <el-link @click="relationCourse" plain type="primary" size="mini"
-          >关联课程</el-link
-        >
+        <el-link @click="relationCourse" plain type="primary" size="mini">关联课程</el-link>
 
         <template>
           <el-popconfirm title="确定要移除所有吗？" @onConfirm="deleteAllClass">
-            <el-link @click="" plain type="primary" size="mini" slot="reference"
-              >全部清除</el-link
-            >
+            <el-link @click="" plain type="primary" size="mini" slot="reference">全部清除</el-link>
           </el-popconfirm>
         </template>
       </div>
@@ -31,7 +27,7 @@
             {{ item.course.title }}
           </div>
           <div class="img-box">
-            <img :src="item.course.cover" alt="" />
+            <img :src="item.course.cover" alt=""/>
 
             <template>
               <el-popconfirm
@@ -48,18 +44,19 @@
         <el-button size="small" type="primary" v-if="productSortBtn" @click="productSort">保存当前排序</el-button>
       </span>
     </el-dialog>
-    <relation-course-dialog :dialogObj="relationCourseObj" @reflash="init" />
+    <relation-course-dialog :dialogObj="relationCourseObj" @reflash="init"/>
   </div>
 </template>
 
 <script>
 import RelationCourseDialog from "./RelationCourseDialog";
 import Teach from "@/views/common/teach";
+
 export default {
   mixins: [Teach],
   name: "RelationDialog",
   props: ["dialogObj"],
-  components: { RelationCourseDialog },
+  components: {RelationCourseDialog},
   data() {
     return {
       relationCourseObj: {
@@ -67,16 +64,17 @@ export default {
         show: false,
       },
       list: [],
-      productSortArr:[],
-      productSortBtn:false
+      productSortArr: [],
+      productSortBtn: false
     };
   },
   mounted() {
-    this.$dragging.$on("dragged", ({ value }) => {
+    this.$dragging.$on("dragged", ({value}) => {
       this.productSortArr = value.list
       this.productSortBtn = true
     });
-    this.$dragging.$on("dragend", () => {});
+    this.$dragging.$on("dragend", () => {
+    });
   },
   methods: {
     async init() {
@@ -89,21 +87,22 @@ export default {
       // this.page.total = data.total;
     },
     //提交表单内容
-    sub() {},
+    sub() {
+    },
     relationCourse() {
       this.relationCourseObj = {
         show: true,
         id: this.id,
       };
     },
-    productSort(){
-      let json={ids:''},arr=[]
-      this.productSortArr.forEach(e=>{
+    productSort() {
+      let json = {ids: ''}, arr = []
+      this.productSortArr.forEach(e => {
         arr.push(e.id)
       })
       json.ids = arr.join(',')
-      this.ApiTeach.patchProductDetailSortApi(this.id,json).then((res) => {
-        if(JSON.stringify(res) === '{}') {
+      this.ApiTeach.patchProductDetailSortApi(this.id, json).then((res) => {
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
@@ -114,10 +113,10 @@ export default {
     //删除单个
     deleteClass(id) {
       this.ApiTeach.delProductDetailApi(id).then((res) => {
-        if(JSON.stringify(res) === '{}') {
-          if(this.list.length==1){
+        if (JSON.stringify(res) === '{}') {
+          if (this.list.length == 1) {
             this.list = []
-          }else{
+          } else {
             this.init();
           }
         } else {
@@ -127,7 +126,7 @@ export default {
     },
     //删除全部
     deleteAllClass() {
-      if(this.list.length==0){
+      if (this.list.length == 0) {
         return
       }
       this.ApiTeach.delAllProductRelationCourseApi(this.id).then((res) => {
@@ -155,6 +154,7 @@ export default {
   width: 50%;
   justify-content: space-around;
 }
+
 .class-list-box {
   width: 100%;
   display: flex;
