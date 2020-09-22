@@ -2,7 +2,7 @@
   <div class="relation-dialog">
     <el-dialog
       width="800px"
-      title="唱唱VIP口语配音课"
+      title="关联主题"
       :visible.sync="dialogObj.show"
       :close-on-click-modal="false"
       append-to-body>
@@ -13,6 +13,7 @@
           @click="relationMaterial"
           type="primary" size="mini">关联教材
         </el-link>
+
         <el-link
           plain
           v-if="element_type == 0 || element_type == 2"

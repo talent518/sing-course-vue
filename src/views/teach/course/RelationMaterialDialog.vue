@@ -13,40 +13,33 @@
             <el-input
               placeholder="请输入教材编号"
               v-model="search.code"
-              style="width: 200px;"
-            ></el-input>
+              style="width: 200px;"></el-input>
           </el-form-item>
 
           <el-form-item label="教材标题：">
             <el-input
               placeholder="请输入课程标题"
               v-model="search.title"
-              style="width: 200px;"
-            ></el-input>
+              style="width: 200px;"></el-input>
           </el-form-item>
 
-          <el-button type="primary" plain size="small" @click="handleSearch"
-            >查询</el-button
-          >
-
+          <el-button type="primary" plain size="small" @click="handleSearch">查询</el-button>
           <el-button plain size="small" @click="clearSearch">清除</el-button>
         </div>
       </el-form>
-      <el-divider></el-divider>
 
       <el-table
         :data="list"
         v-loading="loading"
         @selection-change="handleSelectionChange"
         size="mini"
-        border
-      >
+        border>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column prop="code" label="教材编号"></el-table-column>
         <el-table-column prop="title" label="教材标题"></el-table-column>
         <el-table-column label="封面" width="">
           <template slot-scope="scope">
-            <img class="coverImg" :src="scope.row.cover" alt="" />
+            <img class="coverImg" :src="scope.row.cover" alt=""/>
           </template>
         </el-table-column>
         <!--<el-table-column-->
@@ -56,9 +49,7 @@
         <!--&gt;</el-table-column>-->
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogObj.show = false"
-          >取 消</el-button
-        >
+        <el-button size="small" @click="dialogObj.show = false">取 消</el-button>
         <el-button size="small" type="primary" @click="sub">保 存</el-button>
       </span>
     </el-dialog>
@@ -67,6 +58,7 @@
 
 <script>
 import Teach from "@/views/common/teach";
+
 export default {
   mixins: [Teach],
   name: "RelationMaterialDialog",
@@ -93,7 +85,7 @@ export default {
         element_type: 1,
       };
 
-      if (this.selected.length==0) {
+      if (this.selected.length == 0) {
         this.$message({
           type: 'error',
           message: '请至少勾选一个!'
@@ -107,13 +99,13 @@ export default {
       });
       json.element_id = arr.join(",");
       this.ApiTeach.postCourseDetailApi(json).then((res) => {
-        if(JSON.stringify(res) === '{}'){
+        if (JSON.stringify(res) === '{}') {
           this.$message({
             type: "success",
             message: "保存成功",
           });
         }
-        this.$emit("reflash",1);
+        this.$emit("reflash", 1);
         this.dialogObj.show = false;
       });
     },
@@ -123,8 +115,8 @@ export default {
         scene: "all",
         exclude: "yes",
         status: 1,
-        bind_type:"textbook",
-        id:this.dialogObj.id,
+        bind_type: "textbook",
+        id: this.dialogObj.id,
         title: this.search.title,
         code: this.search.code,
       };

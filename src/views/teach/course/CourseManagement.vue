@@ -34,12 +34,8 @@
       <el-table-column prop="code" label="编号" width=""></el-table-column>
       <el-table-column prop="title" label="课程标题" width=""></el-table-column>
       <!--<el-table-column prop="" label="教具" width=""></el-table-column>-->
-      <el-table-column prop="theme_num" label="主题" width=""></el-table-column>
-      <el-table-column
-        prop="textbook_number"
-        label="教材"
-        width=""
-      ></el-table-column>
+      <el-table-column prop="theme_num" label="关联主题数" width=""></el-table-column>
+      <el-table-column prop="textbook_num" label="关联教材数" width=""></el-table-column>
       <el-table-column prop="status_text" label="状态">
         <template slot-scope="scope">
           <cc-cell-switch
@@ -66,7 +62,7 @@
                 @click="relationClass(scope.row)"
                 plain
                 type="success"
-                size="small">关联教材
+                size="small">关联主题
               </el-button>
 
               <template>
@@ -115,16 +111,8 @@ export default {
       activeName: "all",
       search: {
         title: "",
-        // label: "",
       },
       classList: [],
-      // watchList: [
-      //   { id: 5, title: 5 },
-      //   { id: 6, title: 6 },
-      //   { id: 10, title: 10 },
-      //   { id: 12, title: 12 },
-      //   { id: 20, title: 20 },
-      // ],
       page: {
         now: 1,
         total: 0,
