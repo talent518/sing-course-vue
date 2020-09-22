@@ -54,6 +54,7 @@ export default {
     handleUploadFile(e) {
       upload(e.file).then((res) => {
         this.$emit("input", res.url);
+        this.$emit("change", res.url);
       });
     },
   },
@@ -69,6 +70,7 @@ export default {
 
   .form-upload-tip {
     display: block;
+    line-height: 32px;
   }
 
   .upload-item {

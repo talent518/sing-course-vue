@@ -150,8 +150,8 @@
       :page-size="page.size"
       @size-change="handleSizeChange"
       @current-change="pageCurrentChange"
-      :current-page.sync="page.index"
-    ></el-pagination>
+      :current-page.sync="page.index"></el-pagination>
+
     <resource-edit :dialog-data="dialogEditData"></resource-edit>
   </div>
 </template>

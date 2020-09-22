@@ -126,9 +126,31 @@
           </div>
         </el-form-item>
         <el-form-item label="辅助工具：">
-          <el-checkbox-group v-model="form.template_data_tools" v-if="dictoryObj.AssistToolEnum">
-            <el-checkbox style="display: block" v-for="(item,index) in dictoryObj.AssistToolEnum" :label="item.key" :key="index">{{item.value}}</el-checkbox>
+
+          <el-checkbox-group
+            v-if="dictoryObj.AssistToolEnum"
+            v-model="form.template_data_tools"
+            class="tools-checkbox-group">
+            <el-checkbox
+              v-for="(item,index) in dictoryObj.AssistToolEnum"
+              class="tools-checkbox-item" :label="item.key" :key="index">
+              {{item.value}}
+              <div
+                v-if="item.key == 5  && dialogData.type!='add'"
+                class="tools-tip">报告模板：{{dialogData.param.learn_report_template}}类型
+                <el-tooltip effect="dark" placement="top-start" offset="10">
+                  <div class="tools-tip-content" slot="content">
+                    A类型：含有点击游戏，无AI测评环节时，适用。海报上将会展示互动次数等学习数据。<br>
+                    B类型：含有外教领读、捕蝴蝶等AI测评环节时，适用。海报上将展示测评等学习数据。<br>
+                    C类型：非A、B类型，均适用于C类型。
+                  </div>
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </div>
+            </el-checkbox>
+
           </el-checkbox-group>
+
         </el-form-item>
       </el-form>
     </div>
@@ -341,7 +363,42 @@ export default {
 </script>
 
 <style lang="scss">
+
+.tools-tip-content {
+  line-height: 22px;
+  font-size: 14px;
+}
+
 .template-resource-dialog {
+
+  .tools-checkbox-group {
+    display: flex;
+    flex-direction: column;
+
+    .tools-checkbox-item {
+      display: flex;
+      align-items: center;
+      margin-top: 7px;
+
+      .el-checkbox__label {
+        display: flex;
+        align-items: center;
+
+        .tools-tip {
+          margin-left: 24px;
+          cursor: default;
+          color: #888;
+          .content {
+            line-height: 24px;
+          }
+          i {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
   .segment-card {
     display: flex;
     flex-wrap: wrap;

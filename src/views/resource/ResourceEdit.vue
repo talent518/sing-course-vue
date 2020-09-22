@@ -27,11 +27,9 @@
         </el-form-item>
 
         <el-form-item label="封面：" prop="cover" required>
-
           <cc-form-upload
             v-model="form.cover"
             tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
-
         </el-form-item>
 
         <el-form-item label="教材模板：" prop="textbook_template_id" required>
@@ -109,8 +107,16 @@
                 @click="toolSegementLink(item, index)"
                 type="default"
                 style="width: 200px"
-                v-if="item.tool_type != 3">关联内容
+                v-if="item.tool_type != 3 && item.tool_type != 5">关联内容
               </el-button>
+
+              <div v-if="item.tool_type == 5">
+                {{item.learn_report_template}}模板
+                <cc-form-upload
+                  v-model="item.url"
+                  tips="建议图片尺寸为：750 * 1334px"></cc-form-upload>
+              </div>
+
             </el-form-item>
           </template>
         </el-form-item>
@@ -258,6 +264,13 @@ export default {
         this.loading = true;
         this.ApiResource.getResourceById(this.dialogData.param.id)
           .then((res) => {
+            // 把 learn_report_template 添加到 tools
+            res.tools.forEach(val => {
+              if (val.tool_type == 5) {
+                val.learn_report_template = res.learn_report_template
+              }
+            })
+
             this.form = res;
 
             this.coverSnapshot = res.cover;
@@ -285,9 +298,18 @@ export default {
         this.form.cover = cover || COVER
       }
 
-      let template = this.ApiBasic.getResourceById(value).then((template) => {
+      let template = this.ApiBasic.getResourceById(value).then(template => {
         this.form.segments = [];
+
+        // 如果有（日学习报告）增加 learn_report_template 字段
+        template.tools.forEach(val => {
+          if (val.tool_type == 5) {
+            val.learn_report_template = template.learn_report_template || '-';
+            val.url = val.url || "https://media.changchangenglish.com/new-sing/3b5eaba26f8a263350a1946ef29485efba29337d.png";
+          }
+        })
         this.form.tools = template.tools;
+
         template.items.forEach((e, index) => {
           this.form.segments.push({
             id: index,
@@ -443,7 +465,7 @@ export default {
       let newValue = this.$refs.toolView.getFormData();
       this.toolDialogVisible = false;
       let segmentIndex = undefined;
-      this.form.tools.forEach((value, index) => {
+      this.form.tools.forEach((value, index) => { // todo findIndex ?
         if (value.tool_type === newValue.tool_type) {
           segmentIndex = index;
           return false;
@@ -454,6 +476,13 @@ export default {
       this.form.tools[segmentIndex] = a;
       this.$refs.toolView.restForm();
     },
+
+    /**
+     * type 5 的tool封面更新
+     */
+    toolCoverChange(url) {
+
+    }
   },
 };
 </script>
