@@ -35,7 +35,7 @@
       <el-table-column prop="title" label="课程标题" width=""></el-table-column>
       <!--<el-table-column prop="" label="教具" width=""></el-table-column>-->
       <el-table-column prop="theme_num" label="关联主题数" width=""></el-table-column>
-      <el-table-column prop="textbook_number" label="关联教材数" width=""></el-table-column>
+      <el-table-column prop="textbook_num" label="关联教材数" width=""></el-table-column>
       <el-table-column prop="status_text" label="状态">
         <template slot-scope="scope">
           <cc-cell-switch
