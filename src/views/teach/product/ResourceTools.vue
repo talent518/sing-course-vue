@@ -2,7 +2,7 @@
   <el-dialog class="resource-tool-dialog" title="关联工具" :visible.sync="show" :before-close="beforeClose">
     <div>
       <div
-        v-for="(item, index) in ProductToolTypeEnum"
+        v-for="(item, index) in toolsList"
         :key="index"
         class="m30 resource-tool-item">
         <el-checkbox v-model="item.checked">{{ item.value }}</el-checkbox>
@@ -17,7 +17,7 @@
 
         <cc-form-upload
           v-if="item.key == 2"
-          v-model="item.url"
+          v-model="item.resources[0].url"
           tips="建议图片尺寸为：750 * 1128px"></cc-form-upload>
 
       </div>
@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       show: true,
+      toolsList: [],
       list: [],
       childIsShow: false,
       segmentData: {},
@@ -74,38 +75,44 @@ export default {
     };
   },
   methods: {
+
+    /**
+     * 结构
+     */
+    /*[{
+      "tool_title": "家长须知",
+      "play_type": 1,
+      "tool_type": 1,
+      "resources": [{
+        "id": 77,
+        "title": "哈哈哈哈",
+        "type": 2,
+        "type_text": "毕业证书",
+        "url": "https://media.changchangenglish.com/course/124bbab2455b3668c7798b801dac5862.mp3"
+      }]
+    }, {
+      "tool_title": "毕业证书",
+      "play_type": 1,
+      "tool_type": 2,
+      "resources": [{"id": 75, "title": "", "type": 0, "type_text": "", "url": ""}]
+    }, {
+      "tool_types": "1,2"
+    }]*/
+
     handleSegmentSave() {
       let newValue = (this.$refs.segmentView && this.$refs.segmentView.getFormData()) || this.segmentData;
       let arr = [];
-      let tool_types = "";
-      this.ProductToolTypeEnum.forEach((i) => {
-        if (i.key == 1 && i.checked) {
-          newValue.tool_type = i.key;
-          tool_types += i.key;
-          arr.push(newValue);
-        } else if (i.key == 2 && i.checked) { // 毕业证书
-          debugger
-          let o2 = this.list.find((item) => item.tool_type == i.key);
-          if (o2) {
-            arr.push(o2);
-          } else {
-            arr.push({
-              play_type: 1,
-              tool_type: 2,
-              resources: [{
-                title: "",
-                type: 0,
-                type_text: "",
-                url: this.ProductToolTypeEnum.find(i => i.key == 2).url || "",
-              },],
-            });
-          }
-          tool_types += "," + i.key;
+      /*this.toolsList.forEach((i) => {
+        if (i.checked) {
+          i.resources.map(v => {
+            v.tool_type = i.key
+          });
+          arr.push(i);
         }
-      });
-      arr.push({tool_types});
-      debugger
-      this.$parent.ApiResource.postProduceTool(this.id, {tools: arr});
+      });*/
+      // console.log('save', arr);
+      console.log('save', arr);
+      this.$parent.ApiResource.postProduceTool(this.id, {tools: this.toolsList});
       this.cancel();
       this.$parent.init();
     },
@@ -122,40 +129,50 @@ export default {
   },
   async mounted() {
     if (this.id) {
-      let d = await this.$parent.auxiliaryTool(this.id);
-      let {
-        ProductToolTypeEnum,
-        PlayStatusEnum,
-        ResourcesTypeEnum,
-      } = this.$parent.dictoryObj;
-      ProductToolTypeEnum = JSON.parse(JSON.stringify(ProductToolTypeEnum));
-      ProductToolTypeEnum.forEach((i) => {
-        i.checked = false;
-      });
-      ProductToolTypeEnum;
-      d.forEach((i) => {
-        for (let attr in ProductToolTypeEnum) {
-          if (ProductToolTypeEnum[attr].value === i.tool_title) {
-            ProductToolTypeEnum[attr].checked = true;
-          }
-        }
-      });
 
-      ProductToolTypeEnum.forEach(val => {
-        // 毕业证书增加url
-        if (val.key == 2) {
-          val.url = val.url || 'https://media.changchangenglish.com/new-sing/deaba9b74efe6a26d6c0d06584d80b19a60ed10b.png'
+      let {ProductToolTypeEnum} = this.$parent.dictoryObj,
+        toolsList = JSON.parse(JSON.stringify(ProductToolTypeEnum)); // 用枚举构造列表
+
+      /*ProductToolTypeEnum.forEach((i) => {
+        i.checked = false;
+      });*/
+
+      let toolsData = await this.$parent.auxiliaryTool(this.id); // 已保存的数据
+
+      toolsList.forEach(val => {
+
+        let toolItem = toolsData.find(i => i.tool_type == val.key);
+        if (toolItem) { // 手动合并
+          val.checked = toolItem.checked || false;
+          val.play_type = toolItem.play_type;
+          val.tool_title = toolItem.tool_title;
+          val.tool_type = toolItem.tool_type;
+          val.resources = toolItem.resources;
+        } else { // 添加默认值
+          val.checked = false;
+          val.play_type = 1;
+          val.tool_title = val.value;
+          val.tool_type = val.key;
+          val.resources = [{
+            title: "",
+            type: 0,
+            type_text: "",
+            url: "",
+          }];
         }
+
       })
 
-      this.ProductToolTypeEnum = ProductToolTypeEnum;
-
-      this.list = d;
-      this.list.forEach((i) => {
+      toolsList.forEach((i) => {
         if (i.tool_type == 1) {
           this.segmentData = i;
+        } else if (i.tool_type == 2) {
+          i.resources[0].url = i.resources[0].url || 'https://static-cdn.changchangenglish.com/course/79105504a51cc43633b32615f584d429.png'
         }
       });
+
+      this.toolsList = toolsList;
+
       if (!this.segmentData.hasOwnProperty("resources")) {
         this.segmentData = {play_type: 1, resources: []};
       }
