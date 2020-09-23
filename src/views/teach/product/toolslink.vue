@@ -1,13 +1,12 @@
 <template>
-  <el-form ref="audioandvideoForm" :model="form" label-width="120px">
+  <el-form class="resource-tools-dialog" ref="audioandvideoForm" :model="form" label-width="120px">
     <el-form-item label="播放规则：">
       <el-select v-model="form.play_type" placeholder="请选择">
         <el-option
           v-for="item in dictoryObj.PlayStatusEnum"
           :key="item.key"
           :label="item.value"
-          :value="item.key"
-        >
+          :value="item.key">
         </el-option>
       </el-select>
     </el-form-item>
@@ -17,96 +16,88 @@
     </el-form-item>
 
     <template v-for="(val, index) in form.resources">
-      <el-form-item label="素材名称：">
-        <el-input
-          v-model="val.title"
-          style="width: 216px"
-          placeholder="请填写素材名称"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="播放格式：">
-        <el-select
-          v-model="val.type"
-          placeholder="请选择"
-          @change="stateUpdate"
-        >
-          <el-option
-            v-for="item in dictoryObj.ResourcesTypeEnum"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
 
-      <el-form-item
-        label="视频："
-        v-if="val.type === 1"
-        style="margin-bottom: 44px"
-      >
-        <div class="upload-wrapper">
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="video/mp4"
-            :show-file-list="false"
-            :http-request="
+      <div class="resourec-item" v-if="val.is_show">
+
+        <el-form-item label="素材名称：">
+          <el-input
+            v-model="val.title"
+            style="width: 216px"
+            placeholder="请填写素材名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="播放格式：">
+          <el-select
+            v-model="val.type"
+            placeholder="请选择"
+            @change="stateUpdate">
+            <el-option
+              v-for="item in dictoryObj.ResourcesTypeEnum"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item
+          label="视频："
+          v-if="val.type === 1"
+          style="margin-bottom: 0">
+          <div class="upload-wrapper">
+            <el-upload
+              class="upload-item"
+              action="/api/public/upload"
+              accept="video/mp4"
+              :show-file-list="false"
+              :http-request="
+              (file) => {
+                return uploadFile(file, index);
+              }"
+              list-type="picture-card"
+              multiple>
+              <template v-if="val.url">
+                <div class="video-wrapper">
+                  <video :src="val.url" controls class="upload-video"></video>
+                </div>
+              </template>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+
+            <el-button class="button-del" plain type="danger" @click.stop="videoDelete(index)">移除</el-button>
+          </div>
+        </el-form-item>
+
+        <el-form-item
+          label="音频："
+          v-if="val.type === 2"
+          style="margin-bottom: 0">
+          <div class="upload-wrapper">
+            <el-upload
+              class="upload-item"
+              action="/api/public/upload"
+              accept="audio/mp3"
+              :show-file-list="false"
+              :http-request="
               (file) => {
                 return uploadFile(file, index);
               }
             "
-            list-type="picture-card"
-            multiple
-          >
-            <template v-if="val.url">
-              <div class="video-wrapper">
-                <video :src="val.url" controls class="upload-video"></video>
-                <el-button
-                  @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px"
-                  >删除</el-button
-                >
-              </div>
-            </template>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </div>
-      </el-form-item>
+              list-type="picture-card"
+              multiple>
+              <template v-if="val.url">
+                <div class="video-wrapper">
+                  <audio :src="val.url" controls class="upload-audio"></audio>
+                </div>
+              </template>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
 
-      <el-form-item
-        label="音频："
-        v-if="val.type === 2"
-        style="margin-bottom: 44px"
-      >
-        <div class="upload-wrapper">
-          <el-upload
-            class="upload-item"
-            action="/api/public/upload"
-            accept="audio/mp3"
-            :show-file-list="false"
-            :http-request="
-              (file) => {
-                return uploadFile(file, index);
-              }
-            "
-            list-type="picture-card"
-            multiple
-          >
-            <template v-if="val.url">
-              <div class="video-wrapper">
-                <audio :src="val.url" controls class="upload-audio"></audio>
-                <el-button
-                  @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px"
-                  >删除</el-button
-                >
-              </div>
-            </template>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </div>
-      </el-form-item>
+            <el-button class="button-del" plain type="danger" @click.stop="videoDelete(index)">移除</el-button>
+          </div>
+        </el-form-item>
+      </div>
+
     </template>
   </el-form>
 </template>
@@ -114,7 +105,7 @@
 <script>
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 
 export default {
   name: "AudioandvideoSegment",
@@ -154,7 +145,7 @@ export default {
   },
   methods: {
     handleAdd() {
-      this.form.resources.push({ type: "", url: "", title: "" });
+      this.form.resources.push({type: "", url: "", title: "", is_show: true});
       this.$forceUpdate();
     },
 
@@ -166,7 +157,8 @@ export default {
       that.$forceUpdate();
     },
     videoDelete(i) {
-      this.form.resources.splice(i, 1);
+      // this.form.resources.splice(i, 1);
+      this.form.resources[i].is_show = false;
       this.$forceUpdate();
     },
     getFormData(callback) {
@@ -183,30 +175,52 @@ export default {
 </script>
 
 <style lang="scss">
-.upload-wrapper {
-  display: flex;
 
-  .video-wrapper {
-    overflow: hidden;
-    margin-right: 12px;
-    background-color: #000;
-    border-radius: 6px;
-    width: 200px;
-    height: 148px;
+.resource-tools-dialog {
+  .resourec-item {
+    padding: 20px 0;
+    border-radius: 8px;
+    border: dashed #DCDFE6 1px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .upload-audio {
-      margin: 12px;
+    & + .resourec-item {
+      margin-top: 20px;
     }
 
-    .upload-video {
-      display: block;
-      width: 100%;
-      height: 100%;
+    .button-del {
+      flex-grow: 0;
+      margin-left: 20px;
     }
+
+    .upload-wrapper {
+      display: flex;
+      align-items: center;
+
+      .video-wrapper {
+        overflow: hidden;
+        margin-right: 12px;
+        background-color: #000;
+        border-radius: 6px;
+        width: 200px;
+        height: 148px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .upload-audio {
+          margin: 12px;
+        }
+
+        .upload-video {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
   }
 }
+
+
 </style>

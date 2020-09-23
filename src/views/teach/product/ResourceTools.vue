@@ -29,7 +29,7 @@
     </div>
 
     <div>
-      <el-dialog title="音视频" :visible.sync="childIsShow" append-to-body>
+      <el-dialog title="音视频" :visible.sync="childIsShow" append-to-body top="4vh">
         <toolslink :payload="segmentData" ref="segmentView"></toolslink>
         <div slot="footer">
           <el-button @click="childIsShow = false">取 消</el-button>
@@ -99,7 +99,7 @@ export default {
       "tool_types": "1,2"
     }]*/
 
-    handleSegmentSave() {
+    async handleSegmentSave() {
       let newValue = (this.$refs.segmentView && this.$refs.segmentView.getFormData()) || this.segmentData;
       let arr = [];
       /*this.toolsList.forEach((i) => {
@@ -112,9 +112,11 @@ export default {
       });*/
       // console.log('save', arr);
       console.log('save', arr);
-      this.$parent.ApiResource.postProduceTool(this.id, {tools: this.toolsList});
-      this.cancel();
-      this.$parent.init();
+      this.$parent.ApiResource.postProduceTool(this.id, {tools: this.toolsList}).then(res => {
+        this.$message.success("修改成功");
+        this.cancel();
+        this.$parent.init();
+      });
     },
     cancel() {
       this.$emit("closeTools");
@@ -184,10 +186,6 @@ export default {
 </script>
 <style lang="scss">
 .resource-tool-dialog {
-  .relationBtn {
-    width: 200px;
-  }
-
   .resource-tool-item {
     display: flex;
 
@@ -195,6 +193,5 @@ export default {
       margin-right: 20px;
     }
   }
-
 }
 </style>
