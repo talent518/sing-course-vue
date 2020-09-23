@@ -12,7 +12,8 @@
           v-if="item.key == 1"
           @click="uploadContent"
           class="relationBtn"
-          type="default">关联内容
+          plain
+          type="success">关联内容
         </el-button>
 
         <cc-form-upload
@@ -29,7 +30,7 @@
     </div>
 
     <div>
-      <el-dialog title="音视频" :visible.sync="childIsShow" append-to-body top="4vh">
+      <el-dialog title="音视频" :visible.sync="childIsShow" append-to-body top="4vh" width="800px">
         <toolslink :payload="segmentData" ref="segmentView"></toolslink>
         <div slot="footer">
           <el-button @click="childIsShow = false">取 消</el-button>
