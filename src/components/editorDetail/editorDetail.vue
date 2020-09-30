@@ -66,11 +66,18 @@ import "tinymce/plugins/textpattern";
 import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/media";
 
-import { upload } from "@api/upload";
+import {upload} from "@api/upload";
 
 export default {
   name: "tinymce",
-  props: ["lookData"],
+  props: {
+    lookData: { // todo 优化
+      type: Object,
+      default: {
+        detail: ''
+      }
+    }
+  },
   data() {
     return {
       radio: [],
@@ -99,8 +106,10 @@ export default {
   activated() {
     this.show = true;
   },
-  deactivated() {},
-  mounted() {},
+  deactivated() {
+  },
+  mounted() {
+  },
   methods: {
     beforeAvatarUploadImg(file) {
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
@@ -132,13 +141,13 @@ export default {
       this.dialogVisible = false;
     },
     uploadFile(a) {
-      upload({ file: a.file, type: "local" }).then((res) => {
+      upload({file: a.file, type: "local"}).then((res) => {
         this.$message({
           type: "success",
           message: "上传成功!",
         });
         this.form.imgList = [
-          { name: res.name, url: process.env.MEDIA_URL + res.url },
+          {name: res.name, url: process.env.MEDIA_URL + res.url},
         ];
       });
     },
@@ -183,13 +192,15 @@ export default {
         }
       }
     },
-    removeFile() {},
-    handleExceed() {},
+    removeFile() {
+    },
+    handleExceed() {
+    },
   },
   created: function () {
     tinymce.init({});
   },
-  components: { Editor },
+  components: {Editor},
 };
 </script>
 <style scoped lang="scss">

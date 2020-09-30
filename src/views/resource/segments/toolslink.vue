@@ -32,6 +32,10 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="富文本：" v-if="val.type === 3" style="margin-bottom: 44px">
+        <editor-detail :lookData="val"/>
+      </el-form-item>
+
       <el-form-item label="视频：" v-if="val.type === 1" style="margin-bottom: 44px">
         <div class="upload-wrapper">
           <el-upload
@@ -89,9 +93,13 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import {upload} from "@api/upload";
+import editorDetail from "@/components/editorDetail/editorDetail";
 
 export default {
   name: "AudioandvideoSegment",
+  components: {
+    editorDetail
+  },
   mixins: [commonMessage, menuRole],
   props: {
     payload: {
@@ -113,13 +121,15 @@ export default {
       handler() {
         this.form = this.payload;
         console.log(this.form, 111)
-        this.form.play_type =
-          parseInt(this.form.play_type) || 1;
-        // if(!this.form.payload.play_type){
-        //   this.form.payload.play_type = 1
-        // }
+        this.form.play_type = parseInt(this.form.play_type) || 1;
         if (!this.form.resources) {
           this.form.resources = []
+        } else {
+          this.form.resources.forEach(val => {
+            if (val.type == 3) {
+              val.detail = val.url
+            }
+          })
         }
         this.$forceUpdate();
       },
@@ -129,7 +139,7 @@ export default {
   },
   methods: {
     handleAdd() {
-      this.form.resources.push({type: '', url: '', title: ''})
+      this.form.resources.push({type: '', url: '', title: '', detail: ''})
       this.$forceUpdate();
     },
 
@@ -146,6 +156,15 @@ export default {
       this.$forceUpdate();
     },
     getFormData(callback) {
+
+      if (this.form.resources && this.form.resources.length) {
+        this.form.resources.forEach(val => {
+          if (val.type == 3) {
+            val.url = val.detail
+          }
+        })
+      }
+
       return this.form;
     },
     restForm() {
