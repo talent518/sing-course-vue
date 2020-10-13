@@ -11,6 +11,21 @@
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
+        <el-form-item label="课程类目">
+          <el-select
+            v-model="form.category"
+            placeholder="请选择"
+            style="width: 200px;"
+          >
+            <el-option
+              v-for="(data, index) in dictoryObj.ProductCategoryTypeEnum"
+              :key="index"
+              :label="data.value"
+              :value="data.key"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="课程标题" required>
           <el-input
             placeholder="请输入"
@@ -41,6 +56,169 @@
             tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
         </el-form-item>
 
+        <el-form :model="musicForm" ref="musicForm" size="small" label-width="100px" :rules="musicRules" v-if="form.category==1">
+          <div class="form-section">
+            <div class="form-section-content form-col-1">
+              <el-form-item label="适合宝宝" required prop="number9">
+                <el-input
+                  placeholder="请输入"
+                  v-model="musicForm.number9"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="学习目标" required prop="number10">
+                <el-input
+                  placeholder="请输入"
+                  v-model="musicForm.number10"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-content form-col-2">
+              <el-form-item label="经典音乐" required prop="number1">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number1"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="配乐故事" required prop="number2">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number2"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="亲子游戏" required prop="number3">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number3"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="电子绘本" required prop="number4">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number4"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="音乐技能" required prop="number5">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number5"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="律动舞蹈" required prop="number6">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number6"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="乐器认知" required prop="number7">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number7"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="音乐知识" required prop="number8">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="musicForm.number8"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+
+        <el-form :model="artForm" ref="artForm" size="small" label-width="100px" :rules="artRules" v-if="form.category==2">
+          <div class="form-section">
+            <div class="form-section-content form-col-1">
+              <el-form-item label="适合宝宝" required prop="number9">
+                <el-input
+                  placeholder="请输入"
+                  v-model="artForm.number9"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="学习目标" required prop="number10">
+                <el-input
+                  placeholder="请输入"
+                  v-model="artForm.number10"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-content form-col-2">
+              <el-form-item label="感知名作" required prop="number1">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number1"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="艺术家" required prop="number2">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number2"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="美术故事" required prop="number3">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number3"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="艺术知识" required prop="number4">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number4"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="亲子制作" required prop="number5">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number5"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="艺术手法" required prop="number6">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number6"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="百科知识" required prop="number7">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number7"
+                  clearable
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="综合材料" required prop="number8">
+                <el-input
+                  placeholder="请输入正整数"
+                  v-model="artForm.number8"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -63,19 +241,98 @@ export default {
   name: "CourseDialog",
   props: ["dialogObj"],
   data() {
+    const validpatchStarOnce = (rule, value, callback) => {
+      if (!/^\+?[1-9]\d*$/.test(value)) {
+        callback(new Error('只能输入大于0的正整数'));
+      } else {
+        callback();
+      }
+    };
     return {
       form: {
+        category:0,//课程类目
         title: "", //课程标题
         sub_title: '', //课程副标题
         cover: COVER, //课程封面
         status: 0, //状态
         textbook_number: "", //教材数
       },
+      musicForm:{
+        number1:'',
+        number2:'',
+        number3:'',
+        number4:'',
+        number5:'',
+        number6:'',
+        number7:'',
+        number8:'',
+        number9:'',
+        number10:'',
+      },
+      artForm:{
+        number1:'',
+        number2:'',
+        number3:'',
+        number4:'',
+        number5:'',
+        number6:'',
+        number7:'',
+        number8:'',
+        number9:'',
+        number10:'',
+      },
+      musicRules: {
+        number1: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number2: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number3: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number4: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number5: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number6: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number7: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number8: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number9: [{required: true, message: '请输入'}],
+        number10: [{required: true, message: '请输入'}],
+      },
+      artRules: {
+        number1: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number2: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number3: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number4: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number5: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number6: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number7: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number8: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+        number9: [{required: true, message: '请输入'}],
+        number10: [{required: true, message: '请输入'}],
+      },
     };
   },
   methods: {
     //提交表单内容
     sub() {
+      if(this.form.category==1){
+        this.$refs['musicForm'].validate((valid) => {
+          if (valid) {
+            console.log('music success')
+            // this.preserve()
+          }
+        })
+      }else if(this.form.category==2){
+        this.$refs['artForm'].validate((valid) => {
+          if (valid) {
+            console.log('art success')
+            // this.preserve()
+          }
+        })
+      }else{
+        // this.preserve()
+        console.log('success2')
+      }
+
+
+    },
+
+    preserve(){
       let api,
         form = this.form,
         json = {

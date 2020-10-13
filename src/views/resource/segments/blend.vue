@@ -110,7 +110,7 @@
   import { upload } from "@api/upload";
 
   export default {
-    name: "AudioandvideoSegment",
+    name: "BlendSegment",
     mixins: [commonMessage, menuRole],
     props: {
       payload: {

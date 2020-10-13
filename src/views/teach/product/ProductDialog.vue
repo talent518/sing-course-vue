@@ -8,6 +8,22 @@
       append-to-body>
       <el-form :model="form" ref="form" size="small" label-width="100px">
 
+        <el-form-item label="产品类别">
+          <el-select
+            v-model="form.category"
+            placeholder="请选择"
+            style="width: 200px;"
+            @change="categoryChange"
+          >
+            <el-option
+              v-for="(data, index) in dictoryObj.ProductCategoryTypeEnum"
+              :key="index"
+              :label="data.value"
+              :value="data.key"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="产品标题" required>
           <el-input
             placeholder="请输入"
@@ -47,6 +63,22 @@
             v-model="form.cover"
             tips="建议图片尺寸为：546 * 342px"></cc-form-upload>
 
+        </el-form-item>
+
+        <el-form-item label="班级服务" required>
+          <el-radio v-model="form.radio1" label="0" :disabled="form.category!=0">无</el-radio>
+          <el-radio v-model="form.radio1" label="1" :disabled="form.category!=0">有</el-radio>
+        </el-form-item>
+
+        <el-form-item label="学习模式" required>
+          <el-radio v-model="form.radio2" label="0" :disabled="form.category!=0">每学习日解锁</el-radio>
+          <el-radio v-model="form.radio2" label="1" :disabled="form.category!=0">每自然周自动解锁</el-radio>
+          <el-radio v-model="form.radio2" label="2" :disabled="form.category!=0">每自然日解锁</el-radio>
+        </el-form-item>
+
+        <el-form-item label="随材教具" required>
+          <el-radio v-model="form.radio3" label="0" :disabled="form.category!=0">无</el-radio>
+          <el-radio v-model="form.radio3" label="1" :disabled="form.category!=0">有</el-radio>
         </el-form-item>
 
         <el-form-item label="生产成本">
@@ -91,9 +123,13 @@ export default {
   data() {
     return {
       form: {
+        category:0,//课程类目
         title: "", //课程标题
         sub_title: "", //课程副标题
         cover: COVER, //课程封面
+        radio1:'0',
+        radio2:'0',
+        radio3:'0',
         layout: "", //布局类型
         unit_price: "", //教材单价
         desc: {
@@ -103,6 +139,16 @@ export default {
     };
   },
   methods: {
+    categoryChange(val){
+      console.log(val)
+      if(this.form.category!=0){
+        this.form.radio1 = '0'
+        this.form.radio2 = '1'
+        this.form.radio3 = '1'
+      }
+
+    },
+
     //提交表单内容
     sub() {
       let api,

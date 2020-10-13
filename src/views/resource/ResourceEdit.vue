@@ -167,6 +167,7 @@ import VideoSegment from "@/views/resource/segments/video";
 import AudioSegment from "@/views/resource/segments/audio";
 import EvaluationSegment from "@/views/resource/segments/evaluation";
 import AudioandvideoSegment from "@/views/resource/segments/audioandvideo";
+import BlendSegment from "@/views/resource/segments/blend";
 import ListentothepictureSegment from "@/views/resource/segments/listentothepicture";
 import EatbiscuitsSegment from "@/views/resource/segments/eatbiscuits";
 import LolacallSegment from "@/views/resource/segments/lolacall";
@@ -183,6 +184,7 @@ export default {
     AudioSegment,
     EvaluationSegment,
     AudioandvideoSegment,
+    BlendSegment,
     ListentothepictureSegment,
     EatbiscuitsSegment,
     LolacallSegment,
@@ -347,6 +349,9 @@ export default {
           break;
         case 7:
           this.segmentComponent = EatbiscuitsSegment;
+          break;
+        case 8:
+          this.segmentComponent = BlendSegment;
           break;
       }
       this.segmentData = item;

@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="audioForm" :model="form" label-width="120px">
+  <el-form ref="audioForm" :model="form" label-width="120px" class="audioForm">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择播放规则">
         <el-option
@@ -20,7 +20,11 @@
           action="/api/public/upload"
           accept="audio/mp3"
           :show-file-list="false"
-          :http-request="uploadFile"
+          :http-request="
+              (file) => {
+                return uploadFile(file, '1');
+              }
+            "
           list-type="picture-card"
           multiple
         >
@@ -37,6 +41,34 @@
         </el-upload>
       </div>
     </el-form-item>
+
+    <el-form-item label="封面：">
+      <el-upload
+        class="avatar-uploader"
+        action="/api/public/upload"
+        :show-file-list="false"
+        accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+        :before-upload="beforeAvatarUpload"
+        :http-request="
+              (file) => {
+                return uploadFile(file, '2');
+              }
+            "
+      >
+        <div class="imageWrap">
+          <img
+            v-if="form.payload.bg_image"
+            :src="form.payload.bg_image"
+            class="avatar"
+          />
+
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </div>
+        <div slot="tip" class="el-upload__tip">
+          <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>
+      </el-upload>
+    </el-form-item>
+
   </el-form>
 </template>
 
@@ -64,9 +96,13 @@ export default {
     };
   },
   methods: {
-    async uploadFile(e) {
+    async uploadFile(e,num) {
       let res = await upload(e.file);
-      this.form.payload.resources[0].url = res.url;
+      if(num == 1){
+        this.form.payload.resources[0].url = res.url;
+      }else{
+        this.form.payload.bg_image = res.url;
+      }
       this.$forceUpdate();
     },
     getFormData(callback) {
@@ -90,30 +126,56 @@ export default {
 </script>
 
 <style lang="scss">
-.upload-wrapper {
-  display: flex;
+  .audioForm{
+    .upload-wrapper {
+      display: flex;
 
-  .video-wrapper {
-    overflow: hidden;
-    margin-right: 12px;
-    background-color: #000;
-    border-radius: 6px;
-    width: 200px;
-    height: 148px;
+      .video-wrapper {
+        overflow: hidden;
+        margin-right: 12px;
+        background-color: #000;
+        border-radius: 6px;
+        width: 200px;
+        height: 148px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    .upload-audio {
-      margin: 12px;
+        .upload-audio {
+          margin: 12px;
+        }
+
+        .upload-video {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
-
-    .upload-video {
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409eff;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
       display: block;
-      width: 100%;
-      height: 100%;
     }
   }
-}
+
 </style>
