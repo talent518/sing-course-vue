@@ -118,7 +118,7 @@
               plain
               size="small"
               type="primary"
-              @click="handleDialogEdit(scope.row)">预览
+              @click="handleDialogView(scope.row)">预览
             </el-button>
 
             <el-button
@@ -152,6 +152,7 @@
       @current-change="pageCurrentChange"
       :current-page.sync="page.index"></el-pagination>
 
+    <resource-view :dialog-data="dialogViewData"></resource-view>
     <resource-edit :dialog-data="dialogEditData"></resource-edit>
   </div>
 </template>
@@ -159,6 +160,7 @@
 <script>
 import commonMessage from "@/views/common/commonMessage";
 // import ResourceAdd from "@/views/resource/ResourceAdd";
+import ResourceView from "@/views/resource/ResourceView";
 import ResourceEdit from "@/views/resource/ResourceEdit";
 
 export default {
@@ -166,7 +168,7 @@ export default {
 
   mixins: [commonMessage],
 
-  components: {ResourceEdit},
+  components: {ResourceView,ResourceEdit},
 
   data() {
     return {
@@ -176,6 +178,9 @@ export default {
         title: "",
         sub_title: "",
         status: "",
+      },
+      dialogViewData: {
+        show: false,
       },
       dialogEditData: {
         show: false,
@@ -206,6 +211,14 @@ export default {
           type: "add",
           id: 0,
         },
+      };
+    },
+
+    handleDialogView(row) {
+      row.type = "view";
+      this.dialogViewData = {
+        show: true,
+        param: row,
       };
     },
 
