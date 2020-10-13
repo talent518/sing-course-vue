@@ -8,6 +8,10 @@ class Resource {
     return get("course/textbooks", json);
   }
 
+  getQrcodeById(id) {
+    return get(`course/textbooks/${id}/qrcode`);
+  }
+
   getResourceById(id) {
     return get(`course/textbooks/${id}`);
   }
