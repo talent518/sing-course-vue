@@ -1,5 +1,5 @@
 <template>
-  <el-form class="resource-tools-dialog" ref="audioandvideoForm" :model="form" label-width="120px">
+  <el-form class="resource-tools-dialog" ref="audioandvideoForm" :model="form" label-width="120px" size="medium">
     <el-form-item label="播放规则：">
       <el-select v-model="form.play_type" placeholder="请选择">
         <el-option
@@ -23,8 +23,9 @@
           <el-input
             v-model="val.title"
             style="width: 216px"
-            placeholder="请填写素材名称"
-          ></el-input>
+            placeholder="请填写素材名称"></el-input>
+
+          <el-button class="button-del" plain type="danger" @click.stop="videoDelete(index)">删除</el-button>
         </el-form-item>
         <el-form-item label="播放格式：">
           <el-select
@@ -64,7 +65,6 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
 
-            <el-button class="button-del" plain type="danger" @click.stop="videoDelete(index)">移除</el-button>
           </div>
         </el-form-item>
 
@@ -93,7 +93,6 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
 
-            <el-button class="button-del" plain type="danger" @click.stop="videoDelete(index)">移除</el-button>
           </div>
         </el-form-item>
       </div>
@@ -180,15 +179,21 @@ export default {
   .resourec-item {
     padding: 20px 0;
     border-radius: 8px;
-    border: dashed #DCDFE6 1px;
+    background-color: #F5F7FA;
 
     & + .resourec-item {
       margin-top: 20px;
     }
 
+    /*.resource-item-top {
+      .el-form-item__content {
+
+      }
+    }*/
+
     .button-del {
-      flex-grow: 0;
-      margin-left: 20px;
+      float: right;
+      margin-right: 20px;
     }
 
     .upload-wrapper {

@@ -46,7 +46,7 @@
               :label="item.code + ' ' + item.title"
               :value="item.id">
               <span style="float: left">{{ item.code }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{item.title}}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.title }}</span>
             </el-option>
           </el-select>
           <label style="font-weight: bold" v-else>({{ form.textbook_template_code }}) {{ form.textbook_template_name }}</label>
@@ -111,7 +111,7 @@
               </el-button>
 
               <div v-if="item.tool_type == 5">
-                {{item.learn_report_template}}模板
+                {{ item.learn_report_template }}模板
                 <cc-form-upload
                   v-model="item.url"
                   tips="建议图片尺寸为：750 * 1334px"></cc-form-upload>
@@ -129,7 +129,7 @@
     <el-dialog
       title="编辑环节"
       :visible.sync="segmentDialogVisible"
-      :modal="false">
+      append-to-body>
       <component
         ref="segmentView"
         :is="segmentComponent"
@@ -143,7 +143,7 @@
     <el-dialog
       title="辅助工具"
       :visible.sync="toolDialogVisible"
-      :modal="false">
+      append-to-body>
       <component
         ref="toolView"
         v-if="toolDialogVisible"
