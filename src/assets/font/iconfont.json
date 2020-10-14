@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1444517",
+      "name": "filmstrip",
+      "font_class": "filmstrip",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "1444752",
+      "name": "image",
+      "font_class": "image1",
+      "unicode": "e9d5",
+      "unicode_decimal": 59861
+    },
+    {
+      "icon_id": "1444754",
+      "name": "image-area",
+      "font_class": "image-area",
+      "unicode": "e9d6",
+      "unicode_decimal": 59862
+    },
+    {
+      "icon_id": "1444941",
+      "name": "movie",
+      "font_class": "movie",
+      "unicode": "e9d7",
+      "unicode_decimal": 59863
+    },
+    {
+      "icon_id": "1444945",
+      "name": "music-box",
+      "font_class": "music-box",
+      "unicode": "e9d8",
+      "unicode_decimal": 59864
+    },
+    {
+      "icon_id": "1444946",
+      "name": "music-circle",
+      "font_class": "music-circle",
+      "unicode": "e9d9",
+      "unicode_decimal": 59865
+    },
+    {
+      "icon_id": "1444947",
+      "name": "music-note",
+      "font_class": "music-note",
+      "unicode": "e9da",
+      "unicode_decimal": 59866
+    },
+    {
+      "icon_id": "1445538",
+      "name": "video",
+      "font_class": "video1",
+      "unicode": "e9db",
+      "unicode_decimal": 59867
+    },
+    {
       "icon_id": "4766683",
       "name": "USB",
       "font_class": "USB",
