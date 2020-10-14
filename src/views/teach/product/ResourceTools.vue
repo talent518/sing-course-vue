@@ -170,7 +170,8 @@ export default {
         if (i.tool_type == 1) {
           this.segmentData = i;
         } else if (i.tool_type == 2) {
-          i.resources[0].url = i.resources[0].url || 'https://static-cdn.changchangenglish.com/course/79105504a51cc43633b32615f584d429.png'
+          // i.resources[0].url = i.resources[0].url || 'https://static-cdn.changchangenglish.com/course/79105504a51cc43633b32615f584d429.png'
+          i.resources[0].url = i.resources[0].url || 'https://static-cdn.changchangenglish.com/course/6ad791b900123c63ebb84d39a156f971.png'
         }
       });
 

@@ -12,7 +12,7 @@
     </el-form-item>
 
     <el-form-item label="素材列表：">
-      <el-button type="success" plain @click="handleAdd">新增教材</el-button>
+      <el-button type="success" plain @click="handleAdd">新增素材</el-button>
     </el-form-item>
 
     <template v-for="(val, index) in form.resources">

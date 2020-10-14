@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="audioandvideoForm" :model="form" label-width="120px" class="audioandvideoForm">
+  <el-form ref="audioandvideoForm" :model="form" label-width="120px" size="medium">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择">
         <el-option
@@ -14,11 +14,9 @@
 
     <el-form-item label="素材列表：">
       <el-button
-        type="success"
-        plain
-        @click="handleAdd"
-      >新增素材</el-button
-      >
+        type="success" plain
+        @click="handleAdd">新增素材
+      </el-button>
     </el-form-item>
 
     <template v-for="(val,index) in form.payload.resources">
@@ -60,7 +58,8 @@
                 <el-button
                   @click.stop="videoDelete(index)"
                   style="position: absolute; top: 180px;"
-                >删除</el-button
+                >删除
+                </el-button
                 >
               </div>
             </template>
@@ -90,7 +89,8 @@
                 <el-button
                   @click.stop="videoDelete(index)"
                   style="position: absolute; top: 180px;"
-                >删除</el-button
+                >删除
+                </el-button
                 >
               </div>
             </template>
@@ -132,51 +132,51 @@
 </template>
 
 <script>
-  import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
-  import { upload } from "@api/upload";
+import commonMessage from "@/views/common/commonMessage";
+import menuRole from "@/views/common/menuRole";
+import {upload} from "@api/upload";
 
-  export default {
-    name: "AudioandvideoSegment",
-    mixins: [commonMessage, menuRole],
-    props: {
-      payload: {
-        type: Object,
-        default: {},
+export default {
+  name: "AudioandvideoSegment",
+  mixins: [commonMessage, menuRole],
+  props: {
+    payload: {
+      type: Object,
+      default: {},
+    },
+  },
+  data() {
+    return {
+      form: {
+        id: 0,
+        template_id: 0,
+        payload: {},
       },
-    },
-    data() {
-      return {
-        form: {
-          id: 0,
-          template_id: 0,
-          payload: {},
-        },
-      };
-    },
-    watch: {
-      "payload.id": {
-        handler() {
-          this.form = this.payload;
-          this.form.payload.auto_play =
-            parseInt(this.form.payload.auto_play) || 1;
-          // if(!this.form.payload.auto_play){
-          //   this.form.payload.auto_play = 1
-          // }
-          if(!this.form.payload.resources){
-            this.form.payload.resources = []
-          }
-          this.$forceUpdate();
-        },
-
-        immediate: true,
-      },
-    },
-    methods: {
-      handleAdd(){
-        this.form.payload.resources.push({type:'',url:'',title:''})
+    };
+  },
+  watch: {
+    "payload.id": {
+      handler() {
+        this.form = this.payload;
+        this.form.payload.auto_play =
+          parseInt(this.form.payload.auto_play) || 1;
+        // if(!this.form.payload.auto_play){
+        //   this.form.payload.auto_play = 1
+        // }
+        if (!this.form.payload.resources) {
+          this.form.payload.resources = []
+        }
         this.$forceUpdate();
       },
+
+      immediate: true,
+    },
+  },
+  methods: {
+    handleAdd() {
+      this.form.payload.resources.push({type: '', url: '', title: ''})
+      this.$forceUpdate();
+    },
 
       async uploadFile(e,i) {
         let that = this

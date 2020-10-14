@@ -6,12 +6,13 @@
 @import "./font";
 
 @import "./section/search";
+@import "./section/form";
 
 @import "upload";
 
 .lin-container {
   .el-divider--horizontal {
-    margin: 0px;
+    margin: 0;
   }
   .lin-title {
     height: 59px;
@@ -125,10 +126,6 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.el-dialog {
-  min-width: 800px;
 }
 
 .weight {

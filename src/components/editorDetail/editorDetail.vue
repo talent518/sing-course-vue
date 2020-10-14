@@ -1,6 +1,9 @@
 <template>
   <div class="tinymce">
-    <editor id="tinymce" v-model="lookData.detail" :init="init"></editor>
+    <!--id="tinymce"-->
+    <editor
+      :init="init"
+      v-model="lookData.detail"></editor>
     <div>
       <div class="imgInter" @click="showDialog()">插入图片</div>
     </div>
@@ -76,6 +79,11 @@ export default {
       default: {
         detail: ''
       }
+    },
+
+    height: {
+      type: Number,
+      default: 500
     }
   },
   data() {
@@ -91,14 +99,12 @@ export default {
       show: "",
       dialogVisible: false,
       init: {
-        toolbar:
-          "bold italic underline strikethrough | fontselect | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | ",
+        toolbar: "bold italic underline strikethrough | fontselect | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | ",
         language: "zh_CN",
         language_url: "static/tinymce/langs/zh_CN.js",
         skin_url: "/static/tinymce/skins/lightgray",
-        height: 500,
-        plugins:
-          "preview textpattern colorpicker lists code colorpicker fullpage textcolor wordcount contextmenu media",
+        height: this.height,
+        plugins: "preview textpattern colorpicker lists code colorpicker fullpage textcolor wordcount contextmenu media",
         branding: false,
       },
     };
@@ -198,7 +204,19 @@ export default {
     },
   },
   created: function () {
-    tinymce.init({});
+    /*this.init = {
+      toolbar: "bold italic underline strikethrough | fontselect | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | ",
+      language: "zh_CN",
+      language_url: "static/tinymce/langs/zh_CN.js",
+      skin_url: "/static/tinymce/skins/lightgray",
+      height: this.height,
+      plugins: "preview textpattern colorpicker lists code colorpicker fullpage textcolor wordcount contextmenu media",
+      branding: false,
+    };*/
+
+    this.$nextTick(() => {
+      tinymce.init({});
+    })
   },
   components: {Editor},
 };
