@@ -1,0 +1,115 @@
+$gutter: 20px;
+
+.resource-form {
+
+  .resource-item {
+    position: relative;
+    padding: $gutter 0;
+    border-radius: 8px;
+    background-color: #F5F7FA;
+
+    & + .resource-item {
+      margin-top: $gutter;
+    }
+
+    .el-form-item {
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.resource-item-control {
+        position: absolute;
+        right: $gutter / 2;
+        top: $gutter / 2;
+        //bottom: $gutter / 2;
+        z-index: 1;
+
+        .el-form-item__content {
+          display: flex;
+          //flex-direction: column;
+          //justify-content: space-between;
+          //align-items: center;
+          //height: 100%;
+          padding: $gutter / 2;
+          background-color: #e6ebf1;
+          border-radius: 4px;
+
+          &:before, &:after {
+            display: none;
+          }
+
+          .control-index {
+            font-size: 64px;
+            font-weight: bold;
+            color: #a8b8cc;
+          }
+        }
+
+        .el-button-group {
+          & + .el-button-group {
+            margin-left: $gutter / 2;
+            //margin-top: $gutter / 2;
+          }
+
+          .el-button {
+            padding: 9px 11px;
+          }
+        }
+
+      }
+
+      &.resource-item-index {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        //background-color: #409EFF;
+        background-color: #cce4ff;
+        //border-radius: 8px 4px 8px 4px;
+        border-radius: 8px 2px 8px 2px;
+
+        .el-form-item__content {
+          margin-left: 0 !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+
+        span {
+          font-weight: bold;
+          line-height: 1;
+          //color: #ffffff;
+          color: #3399ff;
+        }
+      }
+
+      .tinymce {
+        .mce-last.mce-btn-group {
+          display: none;
+        }
+
+        .mce-panel.mce-tinymce {
+          box-shadow: none;
+          border: solid 1px #dcdfe6;
+          border-radius: 4px;
+        }
+
+        .mce-statusbar {
+          border-radius: 0 0 4px 4px;
+        }
+
+        .mce-btn-group {
+          border-left: none;
+          border-right: 1px solid #d9d9d9;
+          margin-left: 2px;
+          padding-left: 0;
+          padding-right: 4px;
+        }
+      }
+
+    }
+
+  }
+}

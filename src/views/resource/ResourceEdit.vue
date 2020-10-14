@@ -106,7 +106,7 @@
               <el-button
                 @click="toolSegementLink(item, index)"
                 type="default"
-                style="width: 200px"
+                style="width: 150px"
                 v-if="item.tool_type != 3 && item.tool_type != 5">关联内容
               </el-button>
 
@@ -143,6 +143,7 @@
     <el-dialog
       title="辅助工具"
       :visible.sync="toolDialogVisible"
+      top="5vh" width="672px" :close-on-click-modal="false"
       append-to-body>
       <component
         ref="toolView"

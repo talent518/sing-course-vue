@@ -4,22 +4,36 @@
     <div class="form-upload-content">
       <el-upload
         class="upload-item"
+        :class="`upload-item-${type}`"
         action="/api/public/upload"
-        accept="image/*"
+        :accept="MAP_TYPE_ACCEPT[type]"
         :show-file-list="false"
         :http-request="handleUploadFile"
         list-type="picture-card"
         multiple>
 
-        <div v-if="value" class="upload-item-image">
+        <template v-if="type === 'image'">
+          <div v-if="value" class="upload-content upload-content-image">
+            <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+            <el-image :src="value" style="width: 100%; height: 100%;" fit="contain"></el-image>
+          </div>
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </template>
 
-          <div class="mask"><i class="iconfont icon-cloud-upload"></i></div>
+        <template v-if="type === 'audio'">
+          <div v-if="value" class="upload-content upload-content-audio">
+            <audio :src="value" controls></audio>
+          </div>
+          <i v-else class="iconfont icon-music-note"></i>
+        </template>
 
-          <el-image :src="value" style="width: 100%; height: 100%;" fit="contain"></el-image>
+        <template v-if="type === 'video'">
+          <div v-if="value" class="upload-content upload-content-video">
+            <video :src="value" controls preload="metadata"></video>
+          </div>
+          <i v-else class="iconfont icon-video1"></i>
+        </template>
 
-        </div>
-
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </div>
 
@@ -29,25 +43,38 @@
 </template>
 
 <script>
-import {upload} from "@api/upload"
+import {upload} from "@api/upload";
+
+const MAP_TYPE_ACCEPT = {
+  image: 'image/*',
+  audio: 'audio/mp3',
+  video: 'video/mp4',
+}
 
 export default {
   name: "CcFormUpload", // 表单上传图片组件
 
   props: {
-    value: {
+    value: { // url值
       type: String,
       default: '',
     },
 
-    tips: {
+    type: { // 类型
+      type: String,
+      default: 'image',
+    },
+
+    tips: { // 提示文案
       type: String,
       default: '',
     },
   },
 
   data() {
-    return {};
+    return {
+      MAP_TYPE_ACCEPT: MAP_TYPE_ACCEPT
+    };
   },
 
   methods: {
@@ -75,11 +102,57 @@ export default {
 
   .upload-item {
 
-    .el-upload--picture-card {
-      overflow: hidden;
+    .el-upload {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .upload-item-image {
+    &.upload-item-audio {
+      .el-upload {
+        //width: 300px;
+        padding: 10px;
+        width: 300px;
+        height: 64px;
+      }
+
+      audio {
+        width: 280px;
+        height: 44px;
+        //transform: scale(0.9);
+      }
+    }
+
+    &.upload-item-video {
+      .el-upload {
+        padding: 10px;
+        max-width: 300px;
+        min-width: 150px;
+        width: auto;
+        height: 150px;
+        //height: 168px;
+      }
+
+      .upload-content-video {
+        //box-sizing: border-box;
+        //padding: 10px;
+        video {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+
+    }
+
+    .el-upload--picture-card {
+      overflow: hidden;
+      background-color: #fff;
+    }
+
+    .upload-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       width: 100%;
       height: 100%;

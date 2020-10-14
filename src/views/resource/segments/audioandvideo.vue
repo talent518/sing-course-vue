@@ -1,24 +1,21 @@
 <template>
-  <el-form ref="audioandvideoForm" :model="form" label-width="120px">
+  <el-form ref="audioandvideoForm" :model="form" label-width="120px" size="medium">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择">
         <el-option
           v-for="item in dictoryObj.PlayStatusEnum"
           :key="item.key"
           :label="item.value"
-          :value="item.key"
-        >
+          :value="item.key">
         </el-option>
       </el-select>
     </el-form-item>
 
     <el-form-item label="素材列表：">
       <el-button
-        type="success"
-        plain
-        @click="handleAdd"
-      >新增教材</el-button
-      >
+        type="success" plain
+        @click="handleAdd">新增素材
+      </el-button>
     </el-form-item>
 
     <template v-for="(val,index) in form.payload.resources">
@@ -60,7 +57,8 @@
                 <el-button
                   @click.stop="videoDelete(index)"
                   style="position: absolute; top: 150px;"
-                >删除</el-button
+                >删除
+                </el-button
                 >
               </div>
             </template>
@@ -90,7 +88,8 @@
                 <el-button
                   @click.stop="videoDelete(index)"
                   style="position: absolute; top: 150px;"
-                >删除</el-button
+                >删除
+                </el-button
                 >
               </div>
             </template>
@@ -105,102 +104,102 @@
 </template>
 
 <script>
-  import commonMessage from "@/views/common/commonMessage";
-  import menuRole from "@/views/common/menuRole";
-  import { upload } from "@api/upload";
+import commonMessage from "@/views/common/commonMessage";
+import menuRole from "@/views/common/menuRole";
+import {upload} from "@api/upload";
 
-  export default {
-    name: "AudioandvideoSegment",
-    mixins: [commonMessage, menuRole],
-    props: {
-      payload: {
-        type: Object,
-        default: {},
+export default {
+  name: "AudioandvideoSegment",
+  mixins: [commonMessage, menuRole],
+  props: {
+    payload: {
+      type: Object,
+      default: {},
+    },
+  },
+  data() {
+    return {
+      form: {
+        id: 0,
+        template_id: 0,
+        payload: {},
       },
-    },
-    data() {
-      return {
-        form: {
-          id: 0,
-          template_id: 0,
-          payload: {},
-        },
-      };
-    },
-    watch: {
-      "payload.id": {
-        handler() {
-          this.form = this.payload;
-          this.form.payload.auto_play =
-            parseInt(this.form.payload.auto_play) || 1;
-          // if(!this.form.payload.auto_play){
-          //   this.form.payload.auto_play = 1
-          // }
-          if(!this.form.payload.resources){
-            this.form.payload.resources = []
-          }
-          this.$forceUpdate();
-        },
-
-        immediate: true,
-      },
-    },
-    methods: {
-      handleAdd(){
-        this.form.payload.resources.push({type:'',url:'',title:''})
+    };
+  },
+  watch: {
+    "payload.id": {
+      handler() {
+        this.form = this.payload;
+        this.form.payload.auto_play =
+          parseInt(this.form.payload.auto_play) || 1;
+        // if(!this.form.payload.auto_play){
+        //   this.form.payload.auto_play = 1
+        // }
+        if (!this.form.payload.resources) {
+          this.form.payload.resources = []
+        }
         this.$forceUpdate();
       },
 
-      async uploadFile(e,i) {
-        // console.log(this.form.payload.resources)
-        let that = this
-        let res = await upload(e.file);
-        that.form.payload.resources[i].url = res.url
-        that.$forceUpdate();
-
-      },
-      videoDelete(i) {
-        this.form.payload.resources.splice(i, 1);
-        this.$forceUpdate();
-      },
-      getFormData(callback) {
-        return this.form;
-      },
-      restForm() {
-        return this.$refs.audioandvideoForm.resetFields();
-      },
-      stateUpdate(){
-        this.$forceUpdate();
-      },
+      immediate: true,
     },
-  };
+  },
+  methods: {
+    handleAdd() {
+      this.form.payload.resources.push({type: '', url: '', title: ''})
+      this.$forceUpdate();
+    },
+
+    async uploadFile(e, i) {
+      // console.log(this.form.payload.resources)
+      let that = this
+      let res = await upload(e.file);
+      that.form.payload.resources[i].url = res.url
+      that.$forceUpdate();
+
+    },
+    videoDelete(i) {
+      this.form.payload.resources.splice(i, 1);
+      this.$forceUpdate();
+    },
+    getFormData(callback) {
+      return this.form;
+    },
+    restForm() {
+      return this.$refs.audioandvideoForm.resetFields();
+    },
+    stateUpdate() {
+      this.$forceUpdate();
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-  .upload-wrapper {
+.upload-wrapper {
+  display: flex;
+
+  .video-wrapper {
+    overflow: hidden;
+    margin-right: 12px;
+    background-color: #000;
+    border-radius: 6px;
+    width: 200px;
+    height: 148px;
+
     display: flex;
+    align-items: center;
+    justify-content: center;
 
-    .video-wrapper {
-      overflow: hidden;
-      margin-right: 12px;
-      background-color: #000;
-      border-radius: 6px;
-      width: 200px;
-      height: 148px;
+    .upload-audio {
+      margin: 12px;
+    }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .upload-audio {
-        margin: 12px;
-      }
-
-      .upload-video {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
+    .upload-video {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   }
+}
 </style>
