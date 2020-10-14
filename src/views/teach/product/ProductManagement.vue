@@ -305,9 +305,9 @@ export default {
         id: val.id,
         content: val.content,
         layout: val.layout,
-        layout: val.layout,
-        layout: val.layout,
-        layout: val.layout,
+        class_service: val.class_service,
+        study_mode: val.study_mode,
+        training_aid: val.training_aid,
       };
     },
 
