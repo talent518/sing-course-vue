@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="audioandvideoForm" :model="form" label-width="120px">
+  <el-form ref="audioandvideoForm" :model="form" label-width="120px" class="audioandvideoForm">
     <el-form-item label="播放规则：">
       <el-select v-model="form.payload.auto_play" placeholder="请选择">
         <el-option
@@ -59,7 +59,7 @@
                 <video :src="val.url" controls class="upload-video"></video>
                 <el-button
                   @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px;"
+                  style="position: absolute; top: 180px;"
                 >删除</el-button
                 >
               </div>
@@ -89,7 +89,7 @@
                 <audio :src="val.url" controls class="upload-audio"></audio>
                 <el-button
                   @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 150px;"
+                  style="position: absolute; top: 180px;"
                 >删除</el-button
                 >
               </div>
@@ -97,6 +97,33 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </div>
+      </el-form-item>
+
+      <el-form-item label="封面：" v-if="val.type === 2">
+        <el-upload
+          class="avatar-uploader"
+          action="/api/public/upload"
+          :show-file-list="false"
+          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
+          :before-upload="beforeAvatarUpload"
+          :http-request="
+              (file) => {
+                return coverUploadFile(file, index);
+              }
+            "
+        >
+          <div class="imageWrap">
+            <img
+              v-if="val.bg_image"
+              :src="val.bg_image"
+              class="avatar"
+            />
+
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </div>
+          <div slot="tip" class="el-upload__tip">
+            <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>
+        </el-upload>
       </el-form-item>
 
     </template>
@@ -152,12 +179,16 @@
       },
 
       async uploadFile(e,i) {
-        // console.log(this.form.payload.resources)
         let that = this
         let res = await upload(e.file);
         that.form.payload.resources[i].url = res.url
         that.$forceUpdate();
-
+      },
+      async coverUploadFile(e,i) {
+        let that = this
+        let res = await upload(e.file);
+        that.form.payload.resources[i].bg_image = res.url
+        that.$forceUpdate();
       },
       videoDelete(i) {
         this.form.payload.resources.splice(i, 1);
@@ -177,30 +208,60 @@
 </script>
 
 <style lang="scss">
-  .upload-wrapper {
-    display: flex;
-
-    .video-wrapper {
-      overflow: hidden;
-      margin-right: 12px;
-      background-color: #000;
-      border-radius: 6px;
-      width: 200px;
-      height: 148px;
-
+  .audioandvideoForm{
+    .el-upload--picture-card{
+      width: 178px!important;
+      height: 178px!important;
+    }
+    .upload-wrapper {
       display: flex;
-      align-items: center;
-      justify-content: center;
 
-      .upload-audio {
-        margin: 12px;
-      }
+      .video-wrapper {
+        overflow: hidden;
+        margin-right: 12px;
+        background-color: #000;
+        border-radius: 6px;
+        width: 178px;
+        height: 178px;
 
-      .upload-video {
-        display: block;
-        width: 100%;
-        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .upload-audio {
+          margin: 12px;
+        }
+
+        .upload-video {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
       }
     }
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409eff;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
   }
+
 </style>

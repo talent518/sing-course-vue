@@ -1,6 +1,8 @@
 const url = {
   //课程
   courseList: `course/courses`,
+  musicCourseList: `course/course-musics`,
+  artCourseList: `course/course-arts`,
   //主题
   themeList: `course/themes`,
   //产品
@@ -9,6 +11,8 @@ const url = {
   textbookList: `course/textbooks`,
   //课程管理
   courseDetail: `course/course-details`,
+  musicCourseDetail: `course/course-music-details`,
+  artCourseDetail: `course/course-art-details`,
   //主题管理
   themeDetail: `course/theme-details`,
   //产品管理
@@ -24,56 +28,123 @@ class Teach {
   getCourseListApi(json) {
     return get(`${url.courseList}`, json);
   }
+  getMusicCourseListApi(json) {
+    return get(`${url.musicCourseList}`, json);
+  }
+  getArtCourseListApi(json) {
+    return get(`${url.artCourseList}`, json);
+  }
 
   //课程添加
   postCourseApi(json) {
     return post(`${url.courseList}`, json);
+  }
+  postMusicCourseApi(json) {
+    return post(`${url.musicCourseList}`, json);
+  }
+  postArtCourseApi(json) {
+    return post(`${url.artCourseList}`, json);
   }
 
   //课程修改
   putCourseAPi(json) {
     return put(`${url.courseList}/${json.id}`, json);
   }
+  putMusicCourseAPi(json) {
+    return put(`${url.musicCourseList}/${json.id}`, json);
+  }
+  putArtCourseAPi(json) {
+    return put(`${url.artCourseList}/${json.id}`, json);
+  }
 
   //课程删除
   delCourseApi(id) {
     return del(`${url.courseList}/${id}`);
+  }
+  delMusicCourseApi(id) {
+    return del(`${url.musicCourseList}/${id}`);
+  }
+  delArtCourseApi(id) {
+    return del(`${url.artCourseList}/${id}`);
   }
 
   //课程启用、禁用
   postCourseStatusApi(json) {
     return post(`${url.courseList}/${json.id}/${json.status}`, json);
   }
-
-  //课程关联教材/主题
-  postCourseDetailApi(json) {
-    return post(`${url.courseDetail}`, json);
+  postMusicCourseStatusApi(json) {
+    return post(`${url.musicCourseList}/${json.id}/${json.status}`, json);
+  }
+  postArtCourseStatusApi(json) {
+    return post(`${url.artCourseList}/${json.id}/${json.status}`, json);
   }
 
   //课程关联教材全部清除
   delAllCourseRelationTextbookApi(id) {
     return post(`${url.courseList}/${id}/textbook`);
   }
+  delAllMusicCourseRelationTextbookApi(id) {
+    return post(`${url.musicCourseList}/${id}/textbook`);
+  }
+  delAllArtCourseRelationTextbookApi(id) {
+    return post(`${url.artCourseList}/${id}/textbook`);
+  }
 
   //课程关联主题全部清除
   delAllCourseRelationThemeApi(id) {
     return post(`${url.courseList}/${id}/theme`);
   }
-
-  //课程管理单个移除
-  delCourseDetailApi(id) {
-    return del(`${url.courseDetail}/${id}`);
+  delAllMusicCourseRelationThemeApi(id) {
+    return post(`${url.musicCourseList}/${id}/theme`);
   }
-
-  //获取课程已关联的教材/主题
-  getCourseDetailRelationApi(json) {
-    return get(`${url.courseDetail}`, json);
+  delAllArtCourseRelationThemeApi(id) {
+    return post(`${url.artCourseList}/${id}/theme`);
   }
 
   //课程里的关联列表拖动排序
   patchCourseDetailSortApi(id, json) {
     return patch(`${url.courseList}/${id}/sort`, json);
   }
+  patchMusicCourseDetailSortApi(id, json) {
+    return patch(`${url.musicCourseList}/${id}/sort`, json);
+  }
+  patchArtCourseDetailSortApi(id, json) {
+    return patch(`${url.artCourseList}/${id}/sort`, json);
+  }
+
+  //课程关联教材/主题
+  postCourseDetailApi(json) {
+    return post(`${url.courseDetail}`, json);
+  }
+  postMusicCourseDetailApi(json) {
+    return post(`${url.musicCourseDetail}`, json);
+  }
+  postArtCourseDetailApi(json) {
+    return post(`${url.artCourseDetail}`, json);
+  }
+
+  //课程管理单个移除
+  delCourseDetailApi(id) {
+    return del(`${url.courseDetail}/${id}`);
+  }
+  delMusicCourseDetailApi(id) {
+    return del(`${url.musicCourseDetail}/${id}`);
+  }
+  delArtCourseDetailApi(id) {
+    return del(`${url.artCourseDetail}/${id}`);
+  }
+
+  //获取课程已关联的教材/主题
+  getCourseDetailRelationApi(json) {
+    return get(`${url.courseDetail}`, json);
+  }
+  getMusicCourseDetailRelationApi(json) {
+    return get(`${url.musicCourseDetail}`, json);
+  }
+  getArtCourseDetailRelationApi(json) {
+    return get(`${url.artCourseDetail}`, json);
+  }
+
 
   //获取主题列表
   getThemeListApi(json) {

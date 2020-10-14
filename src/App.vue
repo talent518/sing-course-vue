@@ -82,6 +82,9 @@
             "ProductToolTypeEnum",
             "TextbookToolTypeEnum",
             "ProductCategoryTypeEnum",
+            "BlendResourcesTypeEnum",
+            "CourseMusicPropertiesEnum",
+            "CourseArtPropertiesEnum",
           ],
         };
         let o = {};

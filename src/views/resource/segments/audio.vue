@@ -13,8 +13,6 @@
     </el-form-item>
     <el-form-item label="音频：">
       <div class="upload-wrapper">
-
-
         <el-upload
           class="upload-item"
           action="/api/public/upload"
@@ -127,6 +125,9 @@ export default {
 
 <style lang="scss">
   .audioForm{
+    .el-upload--picture-card{
+      width: 200px!important;
+    }
     .upload-wrapper {
       display: flex;
 

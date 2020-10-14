@@ -1,114 +1,51 @@
 <template>
   <div class="course-management">
-    <el-form inline size="small" class="section-search">
+    <!--<el-form inline size="small" class="section-search">-->
 
-      <el-form-item>
-        <el-input
-          clearable
-          placeholder="请输入课程标题"
-          v-model="search.title"
-          style="width: 200px;"></el-input>
-      </el-form-item>
+    <!--  <el-form-item>-->
+    <!--    <el-input-->
+    <!--      clearable-->
+    <!--      placeholder="请输入课程标题"-->
+    <!--      v-model="search.title"-->
+    <!--      style="width: 200px;"></el-input>-->
+    <!--  </el-form-item>-->
 
-      <el-form-item>
-        <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch">查询</el-button>
-      </el-form-item>
+    <!--  <el-form-item>-->
+    <!--    <el-button v-permission="'CourseView'" type="primary" plain size="small" @click="handleSearch">查询</el-button>-->
+    <!--  </el-form-item>-->
 
-      <el-form-item>
-        <el-button v-permission="'CourseCreate'" type="success" plain size="small" @click="addClass">新增课程</el-button>
-      </el-form-item>
-    </el-form>
+    <!--  <el-form-item>-->
+    <!--    <el-button v-permission="'CourseCreate'" type="success" plain size="small" @click="addClass">新增课程</el-button>-->
+    <!--  </el-form-item>-->
+    <!--</el-form>-->
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane label="上架" name="enable"></el-tab-pane>
-      <el-tab-pane label="下架" name="disable"></el-tab-pane>
+      <el-tab-pane label="英语课程" name="english"></el-tab-pane>
+      <el-tab-pane label="音乐课程" name="music"></el-tab-pane>
+      <el-tab-pane label="美术课程" name="art"></el-tab-pane>
     </el-tabs>
 
-    <el-table
-      style="width: 100%;"
-      :data="classList"
-      v-loading="loading"
-      size="small"
-      border>
-      <el-table-column prop="code" label="编号" width=""></el-table-column>
-      <el-table-column prop="title" label="课程标题" width=""></el-table-column>
-      <!--<el-table-column prop="" label="教具" width=""></el-table-column>-->
-      <el-table-column prop="theme_num" label="关联主题数" width=""></el-table-column>
-      <el-table-column prop="textbook_num" label="关联教材数" width=""></el-table-column>
-      <el-table-column prop="status_text" label="状态">
-        <template slot-scope="scope">
-          <cc-cell-switch
-            :value="scope.row.status"
-            @click="handleSwitch(scope.row.id, scope.row.status)"
-          ></cc-cell-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="220">
-        <template slot-scope="scope">
-          <div style="display: flex; justify-content: space-around;">
-
-            <el-button-group>
-              <el-button
-                v-permission="'CourseUpdate'"
-                @click="editCourse(scope.row)"
-                plain
-                type="warning"
-                size="small">编辑
-              </el-button>
-
-              <el-button
-                v-permission="'CourseCorrelation'"
-                @click="relationClass(scope.row)"
-                plain
-                type="success"
-                size="small">关联主题
-              </el-button>
-
-              <template>
-                <el-popconfirm
-                  v-permission="'CourseDel'"
-                  title="确定要删除课程吗？"
-                  @onConfirm="delCourse(scope.row.id)">
-                  <el-button plain type="danger" size="small" slot="reference">删除</el-button>
-                </el-popconfirm>
-              </template>
-
-            </el-button-group>
-
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <page
-      style="text-align: left;margin: 18px 0"
-      :nowPage="page.now"
-      :total="page.total"
-      :limit="page.limit"
-      @pageChange="onPageChange"
-      @sizeChange="onSizeChange"
-    />
-    <dialog-com :dialogObj="dialogObj" @reflash="init"/>
-    <relation-dialog :dialogObj="relationObj" @reflash="init"/>
+    <english-course v-if="activeName=='english'"></english-course>
+    <music-course v-if="activeName=='music'"></music-course>
+    <art-course v-if="activeName=='art'"></art-course>
   </div>
 </template>
 
 <script>
 import Teach from "@/views/common/teach";
-import dialogCom from "./CourseDialog";
-import relationDialog from "./RelationDialog";
-import page from "@/components/page/page";
+import EnglishCourse from "./englishCourse/EnglishCourse";
+import MusicCourse from "./musicCourse/MusicCourse";
+import ArtCourse from "./artCourse/ArtCourse";
 
 export default {
   mixins: [Teach],
-  components: {dialogCom, page, relationDialog},
+  components: {EnglishCourse,MusicCourse,ArtCourse},
   name: "CourseManagement",
   data() {
     return {
       loading: false,
       params: {},
-      activeName: "all",
+      activeName: "english",
       search: {
         title: "",
       },
@@ -133,6 +70,10 @@ export default {
   },
   mounted() {
     this.init();
+    if(this.$route.query.name){
+      this.activeName = this.$route.query.name
+    }
+    // console.log(this.$route.query.name)
   },
   methods: {
     /**
@@ -251,8 +192,14 @@ export default {
       };
     },
 
-    handleClick(tab) {
-      this.init();
+    handleClick(val) {
+      this.$router.push({
+        name: 'Course',
+        query:{
+          name:val.name
+        }
+      });
+      console.log(this.$route.query.name)
     },
   },
 };

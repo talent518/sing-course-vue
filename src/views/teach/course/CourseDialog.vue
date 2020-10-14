@@ -325,7 +325,7 @@ export default {
           }
         })
       }else{
-        // this.preserve()
+        this.preserve()
         console.log('success2')
       }
 

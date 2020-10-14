@@ -305,6 +305,9 @@ export default {
         id: val.id,
         content: val.content,
         layout: val.layout,
+        layout: val.layout,
+        layout: val.layout,
+        layout: val.layout,
       };
     },
 
