@@ -26,6 +26,7 @@ import CcCellSwitch from "@components/cc/CcCellSwitch"; // 表格内开关 组�
 import CcCellAudio from "@components/cc/CcCellAudio"; // 表格内音频 组件
 import CcCellVideo from "@components/cc/CcCellVideo"; // 表格内视频 组件
 import CcCellImage from "@components/cc/CcCellImage"; // 表格内图片 组件
+import CcCheckBox from "@components/cc/CcCheckBox"; // 多选
 
 Vue.component("CcNumberRange", CcNumberRange);
 Vue.component("CcFormUpload", CcFormUpload);
@@ -33,6 +34,7 @@ Vue.component("CcCellSwitch", CcCellSwitch);
 Vue.component("CcCellAudio", CcCellAudio);
 Vue.component("CcCellVideo", CcCellVideo);
 Vue.component("CcCellImage", CcCellImage);
+Vue.component("CcCheckBox", CcCheckBox);
 
 Vue.config.productionTip = false;
 

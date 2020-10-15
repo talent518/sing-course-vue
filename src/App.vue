@@ -81,6 +81,10 @@
             "ResourcesTypeEnum",
             "ProductToolTypeEnum",
             "TextbookToolTypeEnum",
+            "ProductCategoryTypeEnum",
+            "BlendResourcesTypeEnum",
+            "CourseMusicPropertiesEnum",
+            "CourseArtPropertiesEnum",
           ],
         };
         let o = {};
@@ -116,6 +120,80 @@
       &.router-link-exact-active {
         color: #42b983;
       }
+    }
+  }
+
+  .form-section {
+    /*margin-bottom: 20px;*/
+    /*padding: 0 20px;*/
+
+    + .form-section {
+      margin-top: 20px;
+    }
+
+    .form-section-title {
+      position: relative;
+      padding: 0 15px 15px;
+      line-height: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 1px;
+        z-index: 10;
+        height: 14px;
+        width: 2px;
+        border-radius: 1px;
+        background-color: #409EFF;
+      }
+    }
+
+    .form-section-content {
+      padding: 20px 20px 5px;
+      background-color: #F5F7FA;
+      border-radius: 5px;
+
+      .form-section-title-inner.form-section-title-inner {
+        margin: -5px 0 12px;
+        width: 100%;
+        font-weight: bold;
+
+        .el-form-item__label {
+          /*color: #007fff;*/
+          color: #1f8fff;
+        }
+      }
+
+      .el-select,
+      .el-input,
+      .el-cascader,
+      .el-date-editor {
+        width: 100%;
+      }
+    }
+  }
+
+  .form-col-1 {
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-form-item {
+      flex-shrink: 0;
+      width: 100%;
+    }
+  }
+
+  .form-col-2 {
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-form-item {
+      flex-shrink: 0;
+      width: 50%;
     }
   }
 </style>

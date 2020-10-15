@@ -11,6 +11,21 @@
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
+        <!--<el-form-item label="课程类目">-->
+        <!--  <el-select-->
+        <!--    v-model="form.category"-->
+        <!--    placeholder="请选择"-->
+        <!--    style="width: 200px;"-->
+        <!--  >-->
+        <!--    <el-option-->
+        <!--      v-for="(data, index) in dictoryObj.ProductCategoryTypeEnum"-->
+        <!--      :key="index"-->
+        <!--      :label="data.value"-->
+        <!--      :value="data.key"-->
+        <!--    ></el-option>-->
+        <!--  </el-select>-->
+        <!--</el-form-item>-->
+
         <el-form-item label="课程标题" required>
           <el-input
             placeholder="请输入"
@@ -63,8 +78,16 @@ export default {
   name: "CourseDialog",
   props: ["dialogObj"],
   data() {
+    const validpatchStarOnce = (rule, value, callback) => {
+      if (!/^\+?[1-9]\d*$/.test(value)) {
+        callback(new Error('只能输入大于0的正整数'));
+      } else {
+        callback();
+      }
+    };
     return {
       form: {
+        category:0,//课程类目
         title: "", //课程标题
         sub_title: '', //课程副标题
         cover: COVER, //课程封面
@@ -118,8 +141,9 @@ export default {
         this.$emit("reflash");
         this.dialogObj.show = false;
       });
-    },
 
+
+    },
   },
   watch: {
     "dialogObj.show"(value) {

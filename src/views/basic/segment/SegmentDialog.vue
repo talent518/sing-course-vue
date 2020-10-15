@@ -33,6 +33,16 @@
             >
             </el-option>
           </el-select>
+
+          <el-tooltip placement="top">
+            <div slot="content">
+              环节模板的类别控制使用该环节模板的<br/>
+              环节内可支持的素材种类。如选择的是<br/>
+              “混合”类别，则在往环节内添加素材内容时，<br/>
+              支持视频、音频、图文音、选择题等类型的组合使用
+            </div>
+            <i class="el-icon-question" style="margin-left: 20px"></i>
+          </el-tooltip>
         </el-form-item>
 
         <el-form-item label="样式">

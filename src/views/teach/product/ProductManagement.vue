@@ -293,6 +293,7 @@ export default {
     },
 
     editProduct(val) {
+
       this.dialogObj = {
         type: 2,
         show: true,
@@ -305,6 +306,10 @@ export default {
         id: val.id,
         content: val.content,
         layout: val.layout,
+        class_service: val.class_service,
+        study_mode: val.study_mode,
+        training_aid: val.training_aid,
+        category_type: val.category_type,
       };
     },
 
