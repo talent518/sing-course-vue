@@ -93,6 +93,7 @@ export default {
       this.relationCourseObj = {
         show: true,
         id: this.id,
+        category_type: this.category_type,
       };
     },
     productSort() {
@@ -140,6 +141,7 @@ export default {
         this.productSortBtn = false
         this.$nextTick(() => {
           this.id = this.dialogObj.id;
+          this.category_type = this.dialogObj.category_type;
           this.init();
         });
       }

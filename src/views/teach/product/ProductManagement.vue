@@ -98,7 +98,7 @@
 
               <el-button
                 v-permission="'ProductCorrelation'"
-                @click="relationCourse(scope.row.id)"
+                @click="relationCourse(scope.row)"
                 plain
                 type="success"
                 size="small">关联课程
@@ -313,10 +313,11 @@ export default {
       };
     },
 
-    relationCourse(id) {
+    relationCourse(obj) {
       this.relationObj = {
         show: true,
-        id: id,
+        id: obj.id,
+        category_type: obj.category_type,
       };
     },
 

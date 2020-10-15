@@ -102,7 +102,8 @@ export default {
     },
 
     async init() {
-      let json = {
+      let data,
+        json = {
         scene: "all",
         exclude: "yes",
         status: 1,
@@ -110,7 +111,15 @@ export default {
         title: this.search.title,
         code: this.search.code,
       };
-      let data = await this.ApiTeach.getCourseListApi(json);
+      // let data
+      if(this.dialogObj.category_type==0){
+        data = await this.ApiTeach.getCourseListApi(json);
+      }else if(this.dialogObj.category_type==1){
+        data = await this.ApiTeach.getMusicCourseListApi(json);
+      }else if(this.dialogObj.category_type==2){
+        data = await this.ApiTeach.getArtCourseListApi(json);
+      }
+      // let data = await this.ApiTeach.getCourseListApi(json);
       this.list = data.items;
     },
 
