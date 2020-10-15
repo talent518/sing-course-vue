@@ -101,12 +101,22 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="status_text" label="状态">
-        <template slot-scope="scope">
-          <cc-cell-switch
-            :value="scope.row.status"
-            @click="handleSwitch(scope.row.id, scope.row.status)"></cc-cell-switch>
+      <el-table-column prop="relation_status_text">
+        <template slot="header" slot-scope="scope">
+          <el-tooltip placement="top">
+            <div slot="content">
+              已关联：已被主题关联，但未有该产品订单产生<br/>
+              未关联：未被主题关联<br/>
+              学习中：已被主题关联，且有该产品订单产生
+            </div>
+            <div>状态<i class="el-icon-question" style="margin-left: 8px"></i></div>
+          </el-tooltip>
         </template>
+        <!--<template slot-scope="scope">-->
+        <!--  <cc-cell-switch-->
+        <!--    :value="scope.row.status"-->
+        <!--    @click="handleSwitch(scope.row.id, scope.row.status)"></cc-cell-switch>-->
+        <!--</template>-->
       </el-table-column>
 
       <el-table-column label="操作" width="190">

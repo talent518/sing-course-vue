@@ -162,6 +162,7 @@ export default {
           class_service: form.class_service,
           study_mode: form.study_mode,
           training_aid: form.training_aid,
+          category_type: form.category_type,
           content: form.desc.detail,
         };
 
@@ -234,15 +235,17 @@ export default {
               cover: this.dialogObj.cover,
               unit_price: this.dialogObj.unit_price,
               layout: this.dialogObj.layout,
-              class_service: this.dialogObj.class_service,
-              study_mode: this.dialogObj.study_mode,
-              training_aid: this.dialogObj.training_aid,
+              class_service: this.dialogObj.class_service.toString(),
+              study_mode: this.dialogObj.study_mode.toString(),
+              training_aid: this.dialogObj.training_aid.toString(),
+              category_type: this.dialogObj.category_type,
             };
             let richText = {...this.dialogObj}.content;
             this.form.desc = {
               detail: richText,
             };
           }
+          this.categoryChange(this.form.category_type)
         });
       }
 

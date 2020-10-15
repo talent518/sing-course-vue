@@ -34,7 +34,7 @@
 
         <el-form-item label="教材模板：" prop="textbook_template_id" required>
           <el-select
-            v-if="form.id == 0"
+
             v-model="form.textbook_template_id"
             filterable
             clearable
@@ -49,7 +49,7 @@
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.title }}</span>
             </el-option>
           </el-select>
-          <label style="font-weight: bold" v-else>({{ form.textbook_template_code }}) {{ form.textbook_template_name }}</label>
+          <!--<label style="font-weight: bold" v-else>({{ form.textbook_template_code }}) {{ form.textbook_template_name }}</label>-->
         </el-form-item>
 
         <el-form-item label="关联环节：" prop="segments">
@@ -250,19 +250,20 @@ export default {
 
   methods: {
     init() {
+      this.ApiBasic.getResource({scene: "all", status: 1})
+        .then((res) => {
+          this.listTemplateResource = res.items;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
       if (this.dialogData.param.id === 0) {
         this.loading = true;
         this.title = '新增教材';
         this.form.tools = [];
         this.form.cover = COVER;
         this.coverSnapshot = '';
-        this.ApiBasic.getResource({scene: "all", status: 1})
-          .then((res) => {
-            this.listTemplateResource = res.items;
-          })
-          .catch(() => {
-            this.loading = false;
-          });
+
       } else {
         this.loading = true;
         this.ApiResource.getResourceById(this.dialogData.param.id)
