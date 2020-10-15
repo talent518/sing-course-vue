@@ -22,17 +22,15 @@
 
       <div class="resource-item">
 
-        <el-form-item class="resource-item-index">
-          <span>{{index + 1}}</span>
-        </el-form-item>
-
         <!--如果不用el-form-item包起来，按钮的size不会跟着form设置的size变化-->
         <el-form-item class="resource-item-control">
 
-
-          <!--<el-button-group>
-            <span class="control-index">{{index + 1}}</span>
-          </el-button-group>-->
+          <el-button-group>
+            <!--<span class="control-index">{{index + 1}}</span>-->
+            <el-button type="primary" plain style="pointer-events: none;">
+              <span style="display:inline-flex; justify-content: center; min-width: 12px; font-weight:bold;">{{index + 1}}</span>
+            </el-button>
+          </el-button-group>
 
           <el-button-group>
             <el-button :disabled="index == 0" @click="moveUp(index)"><i class="el-icon-top"></i></el-button>
@@ -65,47 +63,10 @@
         </el-form-item>
 
         <el-form-item label="视频：" v-if="val.type === 1">
-          <!--<div class="upload-wrapper">
-            <el-upload
-              class="upload-item"
-              action="/api/public/upload"
-              accept="video/mp4"
-              :show-file-list="false"
-              :http-request="(file) => {return uploadFile(file, index);}"
-              list-type="picture-card"
-              multiple>
-              <template v-if="val.url">
-                <div class="video-wrapper">
-                  <video :src="val.url" controls class="upload-video"></video>
-                </div>
-              </template>
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </div>-->
-
           <cc-form-upload type="video" v-model="val.url"></cc-form-upload>
-
         </el-form-item>
 
         <el-form-item label="音频：" v-if="val.type === 2">
-          <!--<div class="upload-wrapper">
-            <el-upload
-              class="upload-item"
-              action="/api/public/upload"
-              accept="audio/mp3"
-              :show-file-list="false"
-              :http-request="(file) => {return uploadFile(file, index);}"
-              list-type="picture-card"
-              multiple>
-              <template v-if="val.url">
-                <div class="video-wrapper">
-                  <audio :src="val.url" controls class="upload-audio"></audio>
-                </div>
-              </template>
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </div>-->
-
           <cc-form-upload type="audio" v-model="val.url"></cc-form-upload>
         </el-form-item>
 

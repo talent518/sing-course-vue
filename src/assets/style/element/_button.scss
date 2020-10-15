@@ -8,13 +8,19 @@ $border-color: #E7E7E7;
       border-right-color: $border-color;
     }
 
-    &.el-button:first-child {
+    &.el-button:first-child:not(:last-child) {
       border-right-color: $border-color;
     }
 
-    &.el-button:last-child {
+    &.el-button:last-child:not(:first-child) {
       border-left-color: $border-color;
     }
+
+    &.el-button.el-button--primary.is-plain:first-child:last-child {
+      border-left-color: #b3d8ff;
+      border-right-color: #b3d8ff;
+    }
+
   }
 
 }
