@@ -71,7 +71,7 @@
           <cc-form-upload type="audio" v-model="val.url"></cc-form-upload>
         </el-form-item>
         <el-form-item label="封面：" v-if="val.type === 2">
-          <cc-form-upload type="image" v-model="val.bg_image"></cc-form-upload>
+          <cc-form-upload type="image" v-model="val.bg_image" tips="建议图片尺寸为：600 * 600px"></cc-form-upload>
         </el-form-item>
 
         <!--图文音模板-->
