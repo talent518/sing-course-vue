@@ -57,7 +57,7 @@
                 <video :src="val.url" controls class="upload-video"></video>
                 <el-button
                   @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 180px;"
+                  style="position: absolute; top: 150px;"
                 >删除
                 </el-button
                 >
@@ -88,7 +88,7 @@
                 <audio :src="val.url" controls class="upload-audio"></audio>
                 <el-button
                   @click.stop="videoDelete(index)"
-                  style="position: absolute; top: 180px;"
+                  style="position: absolute; top: 150px;"
                 >删除
                 </el-button
                 >
@@ -99,31 +99,35 @@
         </div>
       </el-form-item>
 
-      <el-form-item label="封面：" v-if="val.type === 2">
-        <el-upload
-          class="avatar-uploader"
-          action="/api/public/upload"
-          :show-file-list="false"
-          accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"
-          :before-upload="beforeAvatarUpload"
-          :http-request="
-              (file) => {
-                return coverUploadFile(file, index);
-              }
-            "
-        >
-          <div class="imageWrap">
-            <img
-              v-if="val.bg_image"
-              :src="val.bg_image"
-              class="avatar"
-            />
+      <!--<el-form-item label="封面：" v-if="val.type === 2">-->
+      <!--  <el-upload-->
+      <!--    class="avatar-uploader"-->
+      <!--    action="/api/public/upload"-->
+      <!--    :show-file-list="false"-->
+      <!--    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF"-->
+      <!--    :before-upload="beforeAvatarUpload"-->
+      <!--    :http-request="-->
+      <!--        (file) => {-->
+      <!--          return coverUploadFile(file, index);-->
+      <!--        }-->
+      <!--      "-->
+      <!--  >-->
+      <!--    <div class="imageWrap">-->
+      <!--      <img-->
+      <!--        v-if="val.bg_image"-->
+      <!--        :src="val.bg_image"-->
+      <!--        class="avatar"-->
+      <!--      />-->
 
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </div>
-          <div slot="tip" class="el-upload__tip">
-            <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>
-        </el-upload>
+      <!--      <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+      <!--    </div>-->
+      <!--    <div slot="tip" class="el-upload__tip">-->
+      <!--      <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>-->
+      <!--  </el-upload>-->
+      <!--</el-form-item>-->
+
+      <el-form-item label="封面：" v-if="val.type === 2">
+        <cc-form-upload type="image" v-model="val.bg_image" tips="只能上传图片文件，且不超过100kb"></cc-form-upload>
       </el-form-item>
 
     </template>
@@ -135,7 +139,7 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import {upload} from "@api/upload";
-
+const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
 export default {
   name: "AudioandvideoSegment",
   mixins: [commonMessage, menuRole],
@@ -150,13 +154,23 @@ export default {
       form: {
         id: 0,
         template_id: 0,
-        payload: {},
+        payload: {
+          // resources:[
+          //   {
+          //     type: '',
+          //     url: '',
+          //     title: '',
+          //     bg_image:COVER
+          //   }
+          // ]
+        },
       },
     };
   },
   watch: {
     "payload.id": {
       handler() {
+
         this.form = this.payload;
         this.form.payload.auto_play =
           parseInt(this.form.payload.auto_play) || 1;
@@ -165,7 +179,14 @@ export default {
         // }
         if (!this.form.payload.resources) {
           this.form.payload.resources = []
+        }else{
+          this.form.payload.resources.forEach(e=>{
+            if(!e.bg_image){
+              e.bg_image = COVER
+            }
+          })
         }
+
         this.$forceUpdate();
       },
 
@@ -174,8 +195,9 @@ export default {
   },
   methods: {
     handleAdd() {
-      this.form.payload.resources.push({type: '', url: '', title: ''})
+      this.form.payload.resources.push({type: '', url: '', title: '',bg_image:COVER})
       this.$forceUpdate();
+
     },
 
       async uploadFile(e,i) {
@@ -238,6 +260,7 @@ export default {
           height: 100%;
         }
       }
+
     }
     .avatar-uploader .el-upload {
       border: 1px dashed #d9d9d9;
