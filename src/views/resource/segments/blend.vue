@@ -108,7 +108,7 @@
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
-
+  const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
   const NEW_ITEM = {
     url: '',
     type: 1,
@@ -116,7 +116,7 @@
     image: '',
     audio: '',
     text: '',
-    bg_image: '',
+    bg_image: COVER,
     subject_image:'',
     answer:[],
   };
@@ -154,6 +154,12 @@
           // }
           if (!this.form.payload.resources) {
             this.form.payload.resources = []
+          }else{
+            this.form.payload.resources.forEach(e=>{
+              if(!e.bg_image){
+                e.bg_image = COVER
+              }
+            })
           }
           this.$forceUpdate();
         },
