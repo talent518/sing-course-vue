@@ -160,7 +160,7 @@ export default {
         },
         this.filter
       );
-      param.status = 1;
+      // param.status = 1;
       this.ApiResource.getResource(param)
         .then((res) => {
           this.loading = false;
