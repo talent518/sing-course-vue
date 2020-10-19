@@ -40,7 +40,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="课程类型" required>
+        <el-form-item label="产品类型" required>
           <el-select
             v-model="form.layout"
             filterable
@@ -81,7 +81,7 @@
           <el-radio v-model="form.training_aid" label="1" :disabled="form.category_type!=0">有</el-radio>
         </el-form-item>
 
-        <el-form-item label="生产成本">
+        <el-form-item label="生产成本" required>
           <el-input
             class="unit_price"
             placeholder="请填写单节教材的价格"
@@ -170,6 +170,13 @@ export default {
         this.$message({
           type: 'error',
           message: '请输入标题!'
+        });
+        return false;
+      }
+      if (!form.unit_price) {
+        this.$message({
+          type: 'error',
+          message: '请填写生产成本!'
         });
         return false;
       }

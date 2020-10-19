@@ -71,7 +71,7 @@
           <cc-form-upload type="audio" v-model="val.url"></cc-form-upload>
         </el-form-item>
         <el-form-item label="封面：" v-if="val.type === 2">
-          <cc-form-upload type="image" v-model="val.bg_image"></cc-form-upload>
+          <cc-form-upload type="image" v-model="val.bg_image" tips="建议图片尺寸为：长360px * 高270px"></cc-form-upload>
         </el-form-item>
 
         <!--图文音模板-->
@@ -87,7 +87,7 @@
 
         <!--选择题模板-->
         <el-form-item label="题目图片：" v-if="val.type === 8">
-          <cc-form-upload type="image" v-model="val.subject_image"></cc-form-upload>
+          <cc-form-upload type="image" v-model="val.subject_image" tips="建议图片尺寸为：长600px * 高370px"></cc-form-upload>
         </el-form-item>
         <el-form-item label="正确答案：" v-if="val.type === 8">
           <el-checkbox-group v-model="val.answer" @change="checkChange">

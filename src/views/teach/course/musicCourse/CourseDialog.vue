@@ -7,7 +7,7 @@
       :close-on-click-modal="false"
       append-to-body
     >
-      <el-form :model="form" ref="form" size="small" label-width="100px">
+      <el-form :model="form" ref="form" size="small" label-width="100px" >
         <!--<div class="form-section">-->
         <!--  <div class="form-section-content form-col-2">-->
 
@@ -77,7 +77,7 @@
               </el-form-item>
 
               <template v-for="(item,index) in properties">
-                <el-form-item :label="item.label" required>
+                <el-form-item :label="item.label" required :prop="'number'+index+1">
                   <el-input
                     placeholder="请输入"
                     v-model="item.value"
@@ -127,61 +127,79 @@ export default {
         weeks:'',
         lessons:'',
       },
+      // rules:{
+      //   number1: [{required: true, message: '请输入'}],
+      //   number2: [{required: true, message: '请输入'}],
+      //   number3: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number4: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number5: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number6: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number7: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number8: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number9: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //   number10: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
+      //
+      // },
       properties: []
     };
   },
   methods: {
     //提交表单内容
     sub() {
-      let api,
-        form = this.form,
-        json = {
-          title: form.title,
-          sub_title: form.sub_title,
-          status: form.status,
-          cover: form.cover,
-          textbook_number: form.textbook_number,
-          weeks: form.weeks,
-          lessons: form.lessons,
-          properties:[]
-        };
+      // this.$refs['form'].validate((valid) => {
+      //   if (valid) {
+          let api,
+            form = this.form,
+            json = {
+              title: form.title,
+              sub_title: form.sub_title,
+              status: form.status,
+              cover: form.cover,
+              textbook_number: form.textbook_number,
+              weeks: form.weeks,
+              lessons: form.lessons,
+              properties:[]
+            };
 
-      this.properties.forEach(e=>{
-        json.properties.push({key:e.key,value:e.value});
-      })
-      if (!form.title) {
-        this.$message({
-          type: 'error',
-          message: '请输入标题!'
-        });
-        return false;
-      }
-      if (!form.cover) {
-        this.$message({
-          type: 'error',
-          message: '请上传课程封面!'
-        });
-        return false;
-      }
+          this.properties.forEach(e=>{
+            json.properties.push({key:e.key,value:e.value});
+          })
+          if (!form.title) {
+            this.$message({
+              type: 'error',
+              message: '请输入标题!'
+            });
+            return false;
+          }
+          if (!form.cover) {
+            this.$message({
+              type: 'error',
+              message: '请上传课程封面!'
+            });
+            return false;
+          }
 
-      if (this.dialogObj.type == 2) {
-        json.id = this.dialogObj.id;
-        api = this.ApiTeach.putMusicCourseAPi;
-      } else {
-        api = this.ApiTeach.postMusicCourseApi;
-      }
+          if (this.dialogObj.type == 2) {
+            json.id = this.dialogObj.id;
+            api = this.ApiTeach.putMusicCourseAPi;
+          } else {
+            api = this.ApiTeach.postMusicCourseApi;
+          }
 
-      api(json).then((res) => {
-        if (JSON.stringify(res) === '{}') {
-          this.$message({
-            type: "success",
-            message: "保存成功",
+          api(json).then((res) => {
+            if (JSON.stringify(res) === '{}') {
+              this.$message({
+                type: "success",
+                message: "保存成功",
+              });
+            }
+            this.$emit("reflash");
+            this.dialogObj.show = false;
           });
         }
-        this.$emit("reflash");
-        this.dialogObj.show = false;
-      });
-    },
+    //   })
+    //
+    // },
   },
   watch: {
     "dialogObj.show"(value) {
