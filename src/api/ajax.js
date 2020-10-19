@@ -98,7 +98,8 @@ export default (baseURL) => {
                 message: errmessage,
                 type: "error",
               });
-              return data.code;
+              // return data.code;
+              return Promise.reject(data)
             }
             if (data.code == 403) {
               return [];
