@@ -40,7 +40,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="课程类型" required>
+        <el-form-item label="产品类型" required>
           <el-select
             v-model="form.layout"
             filterable
