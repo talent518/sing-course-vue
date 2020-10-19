@@ -50,7 +50,7 @@
           <el-input v-model="val.title" style="width: 150px" placeholder="请填写"></el-input>
         </el-form-item>
 
-        <el-form-item label="播放格式：">
+        <el-form-item label="素材类型：">
           <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate" style="width: 150px">
             <el-option
               v-for="item in dictoryObj.BlendResourcesTypeEnum"
