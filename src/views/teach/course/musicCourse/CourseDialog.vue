@@ -77,7 +77,7 @@
               </el-form-item>
 
               <template v-for="(item,index) in properties">
-                <el-form-item :label="item.label" required :prop="'number'+index+1">
+                <el-form-item :label="item.label" required>
                   <el-input
                     placeholder="请输入"
                     v-model="item.value"
