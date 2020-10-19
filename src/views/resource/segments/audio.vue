@@ -75,6 +75,8 @@ import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import { upload } from "@api/upload";
 
+const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
+
 export default {
   name: "AudioSegment",
   mixins: [commonMessage, menuRole],
@@ -89,7 +91,9 @@ export default {
       form: {
         id: 0,
         template_id: 0,
-        payload: {},
+        payload: {
+
+        },
       },
     };
   },
@@ -116,6 +120,9 @@ export default {
         this.form = this.payload;
         this.form.payload.auto_play =
           parseInt(this.form.payload.auto_play) || "";
+        if(!this.form.payload.bg_image){
+          this.form.payload.bg_image = COVER
+        }
       },
       immediate: true,
     },
