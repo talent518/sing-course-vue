@@ -127,19 +127,6 @@ export default {
         weeks:'',
         lessons:'',
       },
-      // rules:{
-      //   number1: [{required: true, message: '请输入'}],
-      //   number2: [{required: true, message: '请输入'}],
-      //   number3: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number4: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number5: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number6: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number7: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number8: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number9: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //   number10: [{required: true, message: '请输入正整数',validator: validpatchStarOnce}],
-      //
-      // },
       properties: []
     };
   },
