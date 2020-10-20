@@ -292,7 +292,13 @@ export default {
 
     handleTemplateChange(value) {
       this.loading = true;
-
+      if(this.dialogData.param.relation_status==1){
+        this.$message({
+          type: "error",
+          message: "已关联不支持更换教材模板!",
+        });
+        return false;
+      }
       // todo 这里有逻辑问题（如果已经有cover是否要）
       // 通过 coverSnapshot 是否可用解决？
       if (!this.coverSnapshot) {
