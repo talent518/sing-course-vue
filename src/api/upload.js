@@ -1,6 +1,6 @@
 import * as qiniu from "qiniu-js";
 import base from "@api/base";
-
+import store from "@/store";
 const MAX_FILESIZE = 1024 * 1024 * 10;
 
 /**
@@ -8,7 +8,7 @@ const MAX_FILESIZE = 1024 * 1024 * 10;
  * @param json
  * @returns {Promise}
  */
-export function upload(file) {
+export function upload(file, callback) {
   return new Promise((resolve, reject) => {
     /**
      * 判断文件类型
@@ -49,16 +49,19 @@ export function upload(file) {
       );
       let observer = {
         next(res) {
-          /*let progress = Number(res.total.percent.toFixed(0));
-            if (json.obj) {
-              json.obj.file.percent = progress;
-              json.obj.onProgress(json.obj.file);
-            }
-            if (store.state.progressList.find(i => {
-              return i.id === json.file.uid
-            })) {
-              store.dispatch('setProgress', {type: 'change', id: json.file.uid, num: progress});
-            }*/
+
+          let progress = Number(res.total.percent.toFixed(0));
+          // console.log(progress)
+          if(callback) callback(progress)
+          // if (json.obj) {
+          //   json.obj.file.percent = progress;
+          //   json.obj.onProgress(json.obj.file);
+          // }
+          // if (store.state.progressList.find(i => {
+          //   return i.id === json.file.uid
+          // })) {
+          //   store.dispatch('progress', {type: 'change',  num: progress});
+          // }
         },
         error(err) {
           if (document.getElementsByClassName("el-message").length > 0) {

@@ -23,7 +23,7 @@
       <el-form-item label="素材名称：">
         <el-input v-model="val.title" style="width: 216px" placeholder="请填写素材名称"></el-input>
       </el-form-item>
-      <el-form-item label="播放格式：">
+      <el-form-item label="素材类型：">
         <el-select v-model="val.type" placeholder="请选择" @change="stateUpdate">
           <el-option
 
@@ -66,6 +66,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </div>
+        <el-progress v-if="progress>0&&progress<100" :percentage="progress" style="width: 190px"></el-progress>
       </el-form-item>
 
       <el-form-item label="音频：" v-if="val.type === 2" style="margin-bottom: 44px">
@@ -127,7 +128,7 @@
       <!--</el-form-item>-->
 
       <el-form-item label="封面：" v-if="val.type === 2">
-        <cc-form-upload type="image" v-model="val.bg_image" tips="只能上传图片文件，且不超过100kb"></cc-form-upload>
+        <cc-form-upload type="image" v-model="val.bg_image" tips="建议图片尺寸为：长360px * 高270px"></cc-form-upload>
       </el-form-item>
 
     </template>
@@ -139,7 +140,7 @@
 import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import {upload} from "@api/upload";
-const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
+const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png'
 export default {
   name: "AudioandvideoSegment",
   mixins: [commonMessage, menuRole],
@@ -165,6 +166,7 @@ export default {
           // ]
         },
       },
+      progress:0,
     };
   },
   watch: {
@@ -202,7 +204,7 @@ export default {
 
       async uploadFile(e,i) {
         let that = this
-        let res = await upload(e.file);
+        let res = await upload(e.file,(progress)=>{this.progress=progress;});
         that.form.payload.resources[i].url = res.url
         that.$forceUpdate();
       },
