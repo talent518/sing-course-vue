@@ -75,21 +75,21 @@
         </el-form-item>
 
         <!--图文音模板-->
-        <el-form-item label="图片：" v-if="val.type === 7">
+        <el-form-item label="图片：" v-if="val.type === 7" required>
           <cc-form-upload type="image" v-model="val.image"></cc-form-upload>
         </el-form-item>
-        <el-form-item label="音频：" v-if="val.type === 7">
+        <el-form-item label="音频：" v-if="val.type === 7" required>
           <cc-form-upload type="audio" v-model="val.audio"></cc-form-upload>
         </el-form-item>
-        <el-form-item label="文字：" v-if="val.type === 7" style="padding-right: 80px">
+        <el-form-item label="文字：" v-if="val.type === 7" style="padding-right: 80px" required>
           <el-input type="textarea" v-model="val.text"></el-input>
         </el-form-item>
 
         <!--选择题模板-->
-        <el-form-item label="题目图片：" v-if="val.type === 8">
+        <el-form-item label="题目图片：" v-if="val.type === 8" required>
           <cc-form-upload type="image" v-model="val.subject_image" tips="建议图片尺寸为：长600px * 高370px"></cc-form-upload>
         </el-form-item>
-        <el-form-item label="正确答案：" v-if="val.type === 8">
+        <el-form-item label="正确答案：" v-if="val.type === 8" required>
           <el-checkbox-group v-model="val.answer" @change="checkChange">
             <el-checkbox label="A"></el-checkbox>
             <el-checkbox label="B"></el-checkbox>
