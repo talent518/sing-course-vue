@@ -468,23 +468,6 @@ export default {
         }
       }
 
-      if (newValue.type == 8) {
-        console.log(newValue.payload.resources)
-        newValue.payload.resources.forEach((e) => {
-
-          if(e.answer.length==0){
-            flag = true;
-          }
-        });
-        if (flag) {
-          this.$message({
-            type: "error",
-            message: "请选择答案！",
-          });
-          return false;
-        }
-      }
-
       this.segmentDialogVisible = false;
       let segmentIndex = undefined;
       this.form.segments.forEach((value, index) => {
