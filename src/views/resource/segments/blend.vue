@@ -108,7 +108,7 @@
   import commonMessage from "@/views/common/commonMessage";
   import menuRole from "@/views/common/menuRole";
   import {upload} from "@api/upload";
-  const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
+  const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png'
   const NEW_ITEM = {
     url: '',
     type: 1,

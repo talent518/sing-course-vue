@@ -34,7 +34,7 @@
 
         <el-form-item label="教材模板：" prop="textbook_template_id" required>
           <el-select
-            :disabled="dialogData.param.relation_status==1"
+            :disabled="relation_status==1"
             v-model="form.textbook_template_id"
             filterable
             clearable
@@ -49,6 +49,7 @@
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.title }}</span>
             </el-option>
           </el-select>
+          <span v-if="relation_status==1">(已关联状态无法修改模板)</span>
           <!--<label style="font-weight: bold" v-else>({{ form.textbook_template_code }}) {{ form.textbook_template_name }}</label>-->
         </el-form-item>
 
@@ -208,6 +209,7 @@ export default {
 
   data() {
     return {
+      relation_status:0,
       coverSnapshot: '', // 封面快照（用于标识之前是否有cover）
       form: {
         id: 0,
@@ -240,6 +242,7 @@ export default {
 
   watch: {
     "dialogData.show"(val) {
+      this.relation_status  = this.dialogData.param.relation_status
       if (val) this.init();
       else this.$refs.form.resetFields();
     },

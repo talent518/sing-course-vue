@@ -63,7 +63,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </div>
         <div slot="tip" class="el-upload__tip">
-          <el-link type="danger" :underline="false">只能上传图片文件，且不超过100kb</el-link></div>
+          <el-link type="danger" :underline="false">建议图片尺寸为：长360px * 高270px</el-link></div>
       </el-upload>
     </el-form-item>
 
@@ -75,7 +75,7 @@ import commonMessage from "@/views/common/commonMessage";
 import menuRole from "@/views/common/menuRole";
 import { upload } from "@api/upload";
 
-const COVER = 'https://static-cdn.changchangenglish.com/course/c6ae41dd961f24a72c0d407e8510cdfec6a3684c.png';
+const COVER = 'https://static-cdn.changchangenglish.com/course/e4e395e4b223fbcbbb27a0c91b8d9801001399b6.png'
 
 export default {
   name: "AudioSegment",

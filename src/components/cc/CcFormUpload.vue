@@ -25,6 +25,7 @@
             <audio :src="value" controls></audio>
           </div>
           <i v-else class="iconfont icon-music-note"></i>
+
         </template>
 
         <template v-if="type === 'video'">
@@ -36,151 +37,156 @@
 
       </el-upload>
     </div>
-
+    <el-progress v-if="progress>0&&progress<100" :percentage="progress" style="width: 190px"></el-progress>
     <div v-if="tips" class="form-upload-tip"><i class="el-icon-warning"></i> {{tips}}</div>
 
   </div>
 </template>
 
 <script>
-import {upload} from "@api/upload";
+  import {upload} from "@api/upload";
 
-const MAP_TYPE_ACCEPT = {
-  image: 'image/*',
-  audio: 'audio/mp3',
-  video: 'video/mp4',
-}
+  const MAP_TYPE_ACCEPT = {
+    image: 'image/*',
+    audio: 'audio/mp3',
+    video: 'video/mp4',
+  }
 
-export default {
-  name: "CcFormUpload", // 表单上传图片组件
+  export default {
+    name: "CcFormUpload", // 表单上传图片组件
 
-  props: {
-    value: { // url值
-      type: String,
-      default: '',
+    props: {
+      value: { // url值
+        type: String,
+        default: '',
+      },
+
+      type: { // 类型
+        type: String,
+        default: 'image',
+      },
+
+      tips: { // 提示文案
+        type: String,
+        default: '',
+      },
     },
 
-    type: { // 类型
-      type: String,
-      default: 'image',
+    data() {
+      return {
+        MAP_TYPE_ACCEPT: MAP_TYPE_ACCEPT,
+        progressFlag: false, // 关闭进度条
+        progress: 0// 动态显示进度条
+      };
     },
 
-    tips: { // 提示文案
-      type: String,
-      default: '',
-    },
-  },
+    methods: {
 
-  data() {
-    return {
-      MAP_TYPE_ACCEPT: MAP_TYPE_ACCEPT
-    };
-  },
-
-  methods: {
-    handleUploadFile(e) {
-      upload(e.file).then((res) => {
-        this.$emit("input", res.url);
-        this.$emit("change", res.url);
-      });
+      handleUploadFile(e) {
+        // this.progress({type: 'new', id: e.file.uid})
+        console.log(this.$store)
+        upload(e.file, (progress)=>{this.progress=progress;}).then((res) => {
+          this.$emit("input", res.url);
+          this.$emit("change", res.url);
+        });
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss">
-.cc-form-upload {
+  .cc-form-upload {
 
-  .form-upload-content {
-    display: block;
-  }
-
-  .form-upload-tip {
-    display: block;
-    line-height: 32px;
-  }
-
-  .upload-item {
-
-    .el-upload {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .form-upload-content {
+      display: block;
     }
 
-    &.upload-item-audio {
-      .el-upload {
-        //width: 300px;
-        padding: 10px;
-        width: 300px;
-        height: 64px;
-      }
-
-      audio {
-        width: 280px;
-        height: 44px;
-        //transform: scale(0.9);
-      }
+    .form-upload-tip {
+      display: block;
+      line-height: 32px;
     }
 
-    &.upload-item-video {
+    .upload-item {
+
       .el-upload {
-        padding: 10px;
-        max-width: 300px;
-        min-width: 150px;
-        width: auto;
-        height: 150px;
-        //height: 168px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .upload-content-video {
-        //box-sizing: border-box;
-        //padding: 10px;
-        video {
-          max-width: 100%;
-          max-height: 100%;
+      &.upload-item-audio {
+        .el-upload {
+          //width: 300px;
+          padding: 10px;
+          width: 300px;
+          height: 64px;
+        }
+
+        audio {
+          width: 280px;
+          height: 44px;
+          //transform: scale(0.9);
         }
       }
 
-    }
+      &.upload-item-video {
+        .el-upload {
+          padding: 10px;
+          max-width: 300px;
+          min-width: 150px;
+          width: auto;
+          height: 150px;
+          //height: 168px;
+        }
 
-    .el-upload--picture-card {
-      overflow: hidden;
-      background-color: #fff;
-    }
+        .upload-content-video {
+          //box-sizing: border-box;
+          //padding: 10px;
+          video {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
 
-    .upload-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: 100%;
-      height: 100%;
-
-      &:hover .mask {
-        opacity: 1;
       }
 
-      .mask {
-        transition: opacity 280ms;
-        opacity: 0;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
+      .el-upload--picture-card {
+        overflow: hidden;
+        background-color: #fff;
+      }
+
+      .upload-content {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: rgba(0, 0, 0, 0.5);
-        .iconfont {
-          color: #ffffff;
-          font-size: 28px;
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        &:hover .mask {
+          opacity: 1;
+        }
+
+        .mask {
+          transition: opacity 280ms;
+          opacity: 0;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(0, 0, 0, 0.5);
+          .iconfont {
+            color: #ffffff;
+            font-size: 28px;
+          }
         }
       }
     }
-  }
 
-}
+  }
 </style>

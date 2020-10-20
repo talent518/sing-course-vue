@@ -40,6 +40,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
+      <el-progress v-if="progress>0&&progress<100" :percentage="progress" style="width: 190px"></el-progress>
     </el-form-item>
   </el-form>
 </template>
@@ -64,6 +65,7 @@ export default {
         id: 0,
         template_id: 0,
         payload: {},
+        progress:0,
       },
     };
   },
@@ -83,7 +85,7 @@ export default {
   },
   methods: {
     async uploadFile(e) {
-      let res = await upload(e.file);
+      let res = await upload(e.file,(progress)=>{this.progress=progress;});
       this.form.payload.resources[0].url = res.url;
       console.log(this.form.payload.resources)
       this.$forceUpdate();
