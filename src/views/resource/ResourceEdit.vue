@@ -34,7 +34,7 @@
 
         <el-form-item label="教材模板：" prop="textbook_template_id" required>
           <el-select
-
+            :disabled="dialogData.param.relation_status==1"
             v-model="form.textbook_template_id"
             filterable
             clearable
@@ -292,13 +292,13 @@ export default {
 
     handleTemplateChange(value) {
       this.loading = true;
-      if(this.dialogData.param.relation_status==1){
-        this.$message({
-          type: "error",
-          message: "已关联不支持更换教材模板!",
-        });
-        return false;
-      }
+      // if(this.dialogData.param.relation_status==1){
+      //   this.$message({
+      //     type: "error",
+      //     message: "已关联不支持更换教材模板!",
+      //   });
+      //   return false;
+      // }
       // todo 这里有逻辑问题（如果已经有cover是否要）
       // 通过 coverSnapshot 是否可用解决？
       if (!this.coverSnapshot) {
